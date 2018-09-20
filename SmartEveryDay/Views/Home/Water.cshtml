@@ -1,0 +1,57 @@
+﻿
+
+@{
+    ViewBag.Title = "Water";
+    
+ }
+
+
+
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var rootDir = "@Url.Content("~/")";
+        var val = "nadina";
+
+     
+
+        $('#getRemoni').on('click', function () {
+            console.log("Param");
+            console.log(rootDir);
+            var url = '@Url.Action("getRemoni", "/Controllers/WaterController/")'; //other version of url
+            var url2 = rootDir + "/WaterController/getRemoni"
+
+        $.ajax({
+            url: "/Controllers/WaterController/getRemoni",
+            type: "Post",
+            dataType: "json",
+            data: {'someId' : val}
+
+
+
+        }).done(function (response)
+        {
+            console.log(response)
+        }).fail(function (response) {
+            console.log("Ajax failed")
+        }
+        )
+
+        })
+
+    })
+
+
+</script>
+
+
+
+<!-- html part for the page-->
+<h2>Water</h2>
+
+<p id="RemoniText"> here will be some text </p>
+<button id="btnclear"> Clear </button>
+<button id="getRemoni"> Get Remoni</button>
+

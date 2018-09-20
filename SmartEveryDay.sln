@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEveryDay", "SmartEveryDay\SmartEveryDay.csproj", "{31192CCA-CCBB-4DE4-81FB-B2E7E888481E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartEveryDay.Tests", "SmartEveryDay.Tests\SmartEveryDay.Tests.csproj", "{03FAB3BC-0FB5-4B35-8E97-579FC89F4123}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Remoni.API.DataAccess", "Remoni.API.DataAccess\Remoni.API.DataAccess.csproj", "{9B480E7A-3813-4AEE-A20D-8B23DCDD6267}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{03FAB3BC-0FB5-4B35-8E97-579FC89F4123}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03FAB3BC-0FB5-4B35-8E97-579FC89F4123}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03FAB3BC-0FB5-4B35-8E97-579FC89F4123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B480E7A-3813-4AEE-A20D-8B23DCDD6267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B480E7A-3813-4AEE-A20D-8B23DCDD6267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B480E7A-3813-4AEE-A20D-8B23DCDD6267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B480E7A-3813-4AEE-A20D-8B23DCDD6267}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

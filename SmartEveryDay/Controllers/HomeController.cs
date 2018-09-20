@@ -14,5 +14,13 @@ namespace SmartEveryDay.Controllers
 
             return View();
         }
+
+
+        public ActionResult Water()
+        {
+            ViewBag.Title = "Water";
+
+            return View();
+        }
     }
 }
