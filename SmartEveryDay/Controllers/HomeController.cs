@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿
+using System;
 using System.Web.Mvc;
 
 namespace SmartEveryDay.Controllers
@@ -16,11 +14,18 @@ namespace SmartEveryDay.Controllers
         }
 
 
-        public ActionResult Water()
+
+        public async System.Threading.Tasks.Task<ActionResult> Water()
         {
             ViewBag.Title = "Water";
-
+           // var remoniclient = new RemoniApiCreateClient();
+           // var other = remoniclient.CreateRemoniApiClient("nadina77@gmail.com", "NADzuk3412.");
+            // var alarms = other.Alarms.GetCollectionAsyncByqueryOptionsWithHttpMessagesAsync().Result;
+           // var temp = await other.Accounts.GetCollectionAsyncByqueryOptionsWithHttpMessagesAsync();
+          //  var name = temp.Response.StatusCode;
             return View();
         }
+
+
     }
 }

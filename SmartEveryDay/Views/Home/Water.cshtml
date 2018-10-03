@@ -1,4 +1,4 @@
-﻿
+﻿@model SmartEveryDay.Models.WaterModel
 
 @{
     ViewBag.Title = "Water";
@@ -18,14 +18,14 @@
      
 
         $('#getRemoni').on('click', function () {
-            console.log("Param");
-            console.log(rootDir);
-            var url = '@Url.Action("getRemoni", "/Controllers/WaterController/")'; //other version of url
-            var url2 = rootDir + "/WaterController/getRemoni"
+            console.log("GetRemoni JS started:");
+          
+           
+       
 
         $.ajax({
-            url: "/Controllers/WaterController/getRemoni",
-            type: "Post",
+            url: "/Water/getData",
+            type: "Get",
             dataType: "json",
             data: {'someId' : val}
 
@@ -33,7 +33,11 @@
 
         }).done(function (response)
         {
-            console.log(response)
+            console.log(response);
+            
+           
+
+
         }).fail(function (response) {
             console.log("Ajax failed")
         }
