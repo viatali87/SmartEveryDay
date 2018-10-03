@@ -7,7 +7,7 @@
 
 
 
-<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
 
 <script type="text/javascript">
 
@@ -15,40 +15,45 @@
         var rootDir = "@Url.Content("~/")";
         var val = "nadina";
 
-     
+
 
         $('#getRemoni').on('click', function () {
             console.log("GetRemoni JS started:");
-          
-           
-       
-
-        $.ajax({
-            url: "/Water/getData",
-            type: "Get",
-            dataType: "json",
-            data: {'someId' : val}
 
 
 
-        }).done(function (response)
-        {
-            console.log(response);
-            console.log("nadina molodec");
-            
-           
+
+            $.ajax({
+                url: "/Water/getData",
+                type: "Get",
+                dataType: "json",
+                data: { 'someId': val }
 
 
-        }).fail(function (response) {
-            console.log("Ajax failed")
-        }
-        )
 
-        })
+            }).done(function (response) {
+                console.log(response);
+                console.log("nadina molodec");
+                $('#RemoniText').html(response);
+
+
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            }
+            )
+
+        });
+
+   
+
+    $('#btnclear').on('click', function () {
+        $('#RemoniText').html("Here will be some text again");
+      
+
+    });
 
     })
-
-
 </script>
 
 
