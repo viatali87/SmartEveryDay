@@ -1,0 +1,67 @@
+﻿
+
+@{
+    ViewBag.Title = "Light";
+    
+ }
+
+
+
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+       
+
+
+
+        $('#getRemoni').on('click', function () {
+            console.log("GetRemoni JS started:");
+
+
+
+
+            $.ajax({
+                url: "/Water/getData",
+                type: "Get",
+                dataType: "json",
+                data: { 'someId': val }
+
+
+
+            }).done(function (response) {
+                console.log(response);
+                console.log("nadina molodec");
+                $('#RemoniText').html(response);
+
+
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            }
+            )
+
+        });
+
+   
+
+        $('#btnON').on('click', function () {
+        $('#RemoniText').html("Light on");
+      
+        $('#btnOFF').on('click', function () {
+            $('#RemoniText').html("Light off");
+    });
+
+    })
+</script>
+
+
+
+<!-- html part for the page-->
+<h2>Water</h2>
+
+<p id="Text"> Turn the light on or off </p>
+<button id="btnON" style="background-color:green"> ON </button>
+<button id="btnOFF" style="background-color:red"> OFF</button>
+
