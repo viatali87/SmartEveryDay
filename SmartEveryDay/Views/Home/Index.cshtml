@@ -1,10 +1,12 @@
-﻿
+﻿<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/index.css">
+</head>
 <div class="row">
     <div class="col-md-4">
         
-        <h2>Light :)</h2>
+        <h2>Light </h2>
        <!-- <p>@Html.ActionLink("Light", "Light", "Home")</p> -->
-        <button id="btnclear" > @Html.ActionLink("Light", "Light", "Home") </button>
+        <button type="button" class="btn btn-success xxx" id="btnLight" > @Html.ActionLink("Light", "Light", "Home") </button>
 
 
         <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
@@ -14,7 +16,8 @@
     </div>
     <div class="col-md-4">
         <h2>Flow Water </h2>
-        <p>@Html.ActionLink("Water","Water", "Home")</p>
+        <button type="button" class="btn btn-primary xxx" id="btnWater"> @Html.ActionLink("Water","Water", "Home") </button>
+        
       
 
         <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
@@ -22,6 +25,7 @@
     </div>
     <div class="col-md-4">
         <h2>Curtains Lea</h2>
+        <button type="button" class="btn btn-warning xxx" id="btnCurtains"> @Html.ActionLink("Curtains", "Curtains", "Home") </button>
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
     </div>
 </div>
