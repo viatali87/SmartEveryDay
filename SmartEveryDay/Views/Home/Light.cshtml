@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Light";
+}
+
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+
+<script type="text/javascript">
+ 
+    $(document).ready(function () {
+        var str;
+
+        $('#btnON').on('click', function () {
+            $.ajax({
+            url: "https://cloud.arest.io/wasdqe/digital/2/0",
+                context: document.body
+            }).success(function (data) {               
+                 mesg = data.message;
+            }).fail(function (data) {
+                console.log("Light fail");
+            })
+        
+           
+        });
+        $('#btnOFF').on( 'click', function () {
+        
+            $.ajax({
+                url: "https://cloud.arest.io/wasdqe/digital/2/1",
+                context: document.body
+            }).success(function (data) {                
+                 mesg = data.message;                
+            })
+            .fail(function (data) {
+                console.log("Light fail");
+            })
+        });
+       //var temp = function isLightOnOrOff() {
+       //     var isOnOrOff;
+       //     $.ajax({
+       //         url: "https://cloud.arest.io/wasdqe/digital/2/",
+       //         context: document.body
+       //     }).success(function (data) {
+       //         isOnOrOff = data.return_value;
+       //         if (isOnOrOff == 0) {
+       //             str = "Light is ON";
+       //         }
+       //         if (isOnOrOff == 1) {
+       //             str = "Light is OFF";
+       //         }
+       //         else str = "Something is wrong";
+       //         $('#textMessage').html(str);
+       //         return str;
+       //     })
+       //     .fail(function (data) {
+       //         console.log("Light fail");
+       //     })
+       // }
+       //$('#textMessage').html(temp);
+
+        var x =
+            function(){$.getJSON("https://cloud.arest.io/wasdqe/digital/2/", function (data) {
+           //var items = [];
+           //$.each(data, function (key, val) {
+           //    console.log(data);
+           //    items.push("<li id='" + key + "'>" + val + "</li>");
+           //});
+               // console.log(data);
+             //   $("#statustext").html("");
+           var isOnOrOff = data.return_value;
+         //  console.log(typeof isOnOrOff);
+           if (isOnOrOff == 1) {
+               str = "Light is OFF";
+           }
+          else if (isOnOrOff == 0) {
+               str = "Light is ON";
+           }
+          else { str = "Not connected"; }
+           $("#statustext").html(str);
+           //$("<ul/>", {
+           //    "class": "my-new-list",
+           //    html: str
+           //}).appendTo("#statustext");
+            });
+            }
+        var test = $("#statustext");
+        setInterval(x.bind(null,test),1000);
+        //window.setInterval(x, 1000);
+     //setTimeout(x,1000);
+    })
+   
+</script>
+
+<!-- html part for the page-->
+
+<h2>Light</h2>
+<p id="Text"> Turn the light on or off </p>
+<button id="btnON" style="background-color:green"> ON </button>
+<button id="btnOFF" style="background-color:red"> OFF</button>
+<div id="textMessage">
+    <p >Status Light</p>
+    <p id="statustext"></p>
+</div>

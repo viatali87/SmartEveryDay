@@ -26,14 +26,11 @@ namespace SmartEveryDay.Controllers
             return View();
         }
 
-
-        public ActionResult AdminView()
+        public ActionResult Light()
         {
-            ViewBag.Title = "AdminView";
-
+            ViewBag.Title = "Light";
+            
             return View();
         }
-
-
     }
 }
