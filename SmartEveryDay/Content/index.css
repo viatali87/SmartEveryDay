@@ -1,7 +1,14 @@
 ﻿
 
-.xxx a {
+#btnLight {
     
     color:black  !important;
+  text-decoration-color:black;
+
+}
+#btnWater {
+    
+    color:black  !important;
+   
 
 }
