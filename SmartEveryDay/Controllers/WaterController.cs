@@ -57,7 +57,7 @@ namespace SmartEveryDay.Controllers
 
             int id = getAccountIdbylogin("nadina77@gmail.com", "NADzuk3412.");
 
-
+            getAllUnitsByAccountId(id, "nadina77@gmail.com", "NADzuk3412.");
 
             return Json(response.Content, JsonRequestBehavior.AllowGet);
 

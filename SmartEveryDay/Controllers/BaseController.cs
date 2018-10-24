@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
+using SmartEveryDay.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,26 +49,35 @@ namespace SmartEveryDay.Controllers
             return temp;
         }
 
-        public int getAllUnitsByAccountId (int id, string emeil, string password)
+        public List<UnitModel> getAllUnitsByAccountId (int id, string emeil, string password)
         {
-
-
-
+            List<UnitModel> temp = new List<UnitModel>();
             ConnectRemoniAPI(Method.GET);
+
             var myUrl = "https://api.remoni.com/v1/Units?orderby=UnitId&top=10000";
             client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator(emeil, password) };
+
             response = client.Execute(request);
 
             dynamic conv = JsonConvert.DeserializeObject(response.Content);
-            int temp = conv[0].AccountId;
+             for (int i = 0; i < conv.Count; i++)
+            {
+                var unit = new UnitModel
+                {
+                    UnitId = conv[i].UnitId,
+                    UnitName = conv[i].Name
+                };
+                temp.Add(unit);
+            };
+            
 
             return temp;
 
         }
+ //https://api.remoni.com/v1/Data?orderby=Timestamp&Timestamp=gt(2016-07-03)&UnitId=eq(1502)&AggregateType=eq(Hour)&top=10000
 
 
-       
-      
+
 
 
 
