@@ -8,6 +8,11 @@ namespace SmartEveryDay
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/admin-lte/js").Include(
+              "~/admin-lte/js/app.js",
+              "~/admin-lte/plugins/fastclick/fastclick.js"
+              ));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -21,8 +26,11 @@ namespace SmartEveryDay
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap-lumen.css",
-                      "~/Content/site.css"));
+                      "~/Content/bootstrap.css",
+                      "~/Content/site.css",
+                      "~/admin-lte/css/AdminLTE.css",
+                      "~/admin-lte/css/skins/skin-blue.css"
+                      ));
         }
     }
 }
