@@ -12,8 +12,8 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        
-        var val = "nadina55";
+        var rootDir = "@Url.Content("~/")";
+        var val = "nadina";
 
 
 
@@ -34,7 +34,7 @@
             }).done(function (response) {
                 console.log(response);
                 console.log("nadina molodec");
-                $('#RemoniText').html("Here should be response from Remoni!");
+                $('#RemoniText').html(response);
 
 
 
