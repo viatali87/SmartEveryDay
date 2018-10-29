@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace SmartEveryDay.Controllers
 {
-    public class WaterController : Controller
+    public class WaterController : BaseController
     {
         private IRestClient client;
         private IRestRequest request;
@@ -21,39 +21,13 @@ namespace SmartEveryDay.Controllers
         {
             return View();
 
-
-
-
-
         }
 
 
-
-
-        [HttpPost]
-        public JsonResult getRemoni(WaterModel water)
-        {
-
-
-
-            try
-            {
-                return Json("Vitaly+ LEA", JsonRequestBehavior.AllowGet);
-            }
-
-            catch
-            {
-                throw new System.ArgumentException("Json not success");
-            }
-
-        }
 
         private JsonResult GetResult()
         {
-            request = new RestRequest();
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddHeader("accept", "application/json");
-            request.AddHeader("accept", "application/x-yaml");
+            this.ConnectRemoniAPI(Method.GET);
             var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
             client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator("nadina77@gmail.com", "NADzuk3412.") };
             response = client.Execute(request);
@@ -80,9 +54,32 @@ namespace SmartEveryDay.Controllers
             var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
             client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator("nadina77@gmail.com", "NADzuk3412.") };
             response = client.Execute(request);
+
+            int id = getAccountIdbylogin("nadina77@gmail.com", "NADzuk3412.");
+
+            getAllUnitsByAccountId(id, "nadina77@gmail.com", "NADzuk3412.");
+
             return Json(response.Content, JsonRequestBehavior.AllowGet);
 
+
         }
+
+        public JsonResult getUnits()
+        {
+            request = new RestRequest();
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddHeader("accept", "application/json");
+            request.AddHeader("accept", "application/x-yaml");
+            var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
+            client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator("nadina77@gmail.com", "NADzuk3412.") };
+
+            int id = getAccountIdbylogin("nadina77@gmail.com", "NADzuk3412.");
+            var temp = getAllUnitsByAccountId(id, "nadina77@gmail.com", "NADzuk3412.");
+
+            return Json(temp, JsonRequestBehavior.AllowGet);
+
+        }
+
 
 
         // GET: Water/Details/5

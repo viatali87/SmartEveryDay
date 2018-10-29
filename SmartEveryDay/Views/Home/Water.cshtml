@@ -5,26 +5,19 @@
     
  }
 
-
-
 <script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var rootDir = "@Url.Content("~/")";
+        
         var val = "nadina";
 
-
-
-        $('#getRemoni').on('click', function () {
+    $('#getRemoni').on('click', function () {
             console.log("GetRemoni JS started:");
 
-
-
-
             $.ajax({
-                url: "/Water/getData",
+                url: "/Water/getUnits",
                 type: "Get",
                 dataType: "json",
                 data: { 'someId': val }
@@ -34,7 +27,11 @@
             }).done(function (response) {
                 console.log(response);
                 console.log("nadina molodec");
-                $('#RemoniText').html(response);
+                var tempString = "";
+                for (var i = 0; i < response.length; i++) {
+                    tempString += "Unit id:"+ response[i].UnitId + " Unit name: " + response[i].UnitName + '</p>' ;
+                }
+                $('#RemoniText').html(tempString);
 
 
 
