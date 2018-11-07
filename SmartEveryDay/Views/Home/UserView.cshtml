@@ -1,0 +1,93 @@
+﻿@{
+    var user = "Nadina";
+    var emeil = "nadina77@gmail.com";
+    ViewBag.Title = "UserView";
+}
+
+
+
+<!--Stylesheets and bootstrap for user menu icon and dropdown-->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!--Stylesheets foru icons -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<!--customised stylesheet-->
+<link rel="stylesheet" href="~/Content/UserView.css" />
+<meta name="viewport" content="width=device-width" />
+<div class="container">
+    <div id="UserViewHeader">
+        <div class="row">
+            <div class="col-lg-6"><h3 id="id1">UserView Some text here</h3></div>
+            <div class="col-lg-6">
+                <nav class="navbar navbar-default nav-menu" id="id2">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <strong>@user</strong>
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="navbar-login">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <p class="text-center">
+                                                    <span class="glyphicon glyphicon-user icon-size"></span>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p class="text-left"><strong>@user</strong></p>
+                                                <p class="text-left small">@emeil</p>
+                                            <p class="text-left">
+                                                <a href="#" class="btn btn-primary btn-block btn-sm">Logout</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="navbar-login navbar-login-session">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <p>
+                                                <a href="#" class="btn btn-primary btn-block">My Profile</a>
+                                                <a href="#" class="btn btn-primary btn-block">Reporting</a>
+                                                <a href="#" class="btn btn-danger btn-block">Change Password</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+    <div class="topnav">
+        <div class="row">
+           <div class="align-content-md-center col-md-3"> <a href="@Url.Action("Water", "Home")"><i class="fas fa-tint"></i></a></div>
+        <div class="align-content-md-center col-md-3">
+            <a href="@Url.Action("Light","Home")"><i class="fas fa-lightbulb"></i></a>
+        </div>
+        <div class="align-content-md-center col-md-3">
+            <a href="@Url.Action("Curtains", "Home")"><i class="fas fa-columns"></i></a>
+        </div>
+        <div class="align-content-md-center col-md-3">
+            <a href="@Url.Action("Scenario", "Home")"><i class="fas fa-bolt"></i></a>
+        </div>
+                </div>
+    </div>
+   
+
+
+
+
+    </div>
+

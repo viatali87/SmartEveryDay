@@ -1,0 +1,167 @@
+﻿
+
+#id2 {
+float: right;
+ 
+}
+
+
+/*the user account dropdown css*/
+.navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size
+{
+    font-size: 87px;
+}
+
+
+
+ /* The navigation bar container with icons */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+
+    
+}
+
+/* Navbar links */
+.topnav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    
+    text-decoration: none;
+    font-size: 750%;
+}
+
+/* On different screeans, make the menu links stack on top of each other instead of next to each other */
+@media screen and (max-width: 345px) {
+    .topnav a {
+        float: none;
+        width: 100%;
+    }
+
+   
+}
+
+
+@media screen and (max-width: 500px) {
+    .topnav a {
+        float: none;
+        width: 100%;
+    }
+}
+ @media screen and (max-width: 700px) {
+    .topnav a {
+        float: none;
+        width: 100%;
+    }
+} 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+/*
+body {
+  font-family: 'Open Sans', 'sans-serif';
+}
+.navbar-default{background:#3285D1;border-color: #3285D1;}
+.navbar-default .navbar-nav > li > a{color:#FFF;}
+.nav > li > a{margin:15px; font-size: 17px; color:#FFF;}
+.nav .open > a, .nav .open > a:hover, 
+.nav .open > a:focus,
+.nav > li > a:hover, .nav > li > a:focus{background-color:transparent !important;}
+
+.navbar-brand{    
+    margin: 15px !important;
+    padding: 13px !important;
+    color: #fff !important;
+    font-size: 2em !important;
+    font-weight: bold !Important;
+    }
+    
+.navbar-toggle{margin-top:20px !important;}
+.dropdown-menu{background:#fff !important;}
+.navbar-login
+{
+    width: 350px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size
+{
+    font-size: 87px;
+}
+
+.nav > li.nav-iconitem > a {
+  display: inline-block;
+
+ 
+}
+
+#rowMenu {
+    box-sizing: border-box;
+    font-size: 950%;
+
+    
+ }
+    #rowMenu > li {
+        padding: 5%;
+       
+    }
+
+  #rowMenu > li  a:hover {
+    background-color: #ddd;
+    color: black;
+
+
+ @media screen and (max-width: 600px) {
+ #rowMenu {
+    background-color: olive;
+     float: none;
+     width: 100%;
+  }   
+}
+
+.nav > li.nav-iconitem > a.nav-iconitem__text {
+  padding-right: 0;
+
+}
+
+.nav > li.nav-iconitem > a.nav-iconitem__icon {
+  padding-left: 0;
+
+}
+
+*/
