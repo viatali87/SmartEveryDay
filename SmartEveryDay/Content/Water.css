@@ -1,0 +1,9 @@
+﻿
+    .modal-backdrop{
+  opacity:0; transition:opacity .2s;
+}
+.modal-backdrop.in{
+  opacity:.7;
+}
+
+

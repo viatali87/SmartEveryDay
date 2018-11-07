@@ -285,6 +285,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
+    <Content Include="Content\UserView.css" />
+    <Content Include="Content\Water.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -331,6 +333,7 @@
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -348,6 +351,8 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Home\Water.cshtml" />
     <Content Include="Views\Home\Light.cshtml" />
+    <Content Include="Views\Home\AdminView.cshtml" />
+    <Content Include="Views\Home\UserView.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>

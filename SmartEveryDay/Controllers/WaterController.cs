@@ -80,7 +80,35 @@ namespace SmartEveryDay.Controllers
 
         }
 
+        public JsonResult getDataByUnitid(int id)
+        {
+           
+            List<WaterModel> temp = new List<WaterModel>();
+            var emeil = "Nadina77@gmail.com";
+            var password = "NADzuk3412.";
+            request = new RestRequest();
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddHeader("accept", "application/json");
+            request.AddHeader("accept", "application/x-yaml");
+//still hardcoded value of id -1502, and hardcoded dates
+            var myUrl = "https://api.remoni.com/v1/Data?orderby=Timestamp&Timestamp=ge(2018-08-04)&Timestamp=lt(2018-08-09)&UnitId=eq(1502)&AggregateType=eq(Day)&top=10000";
+            client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator(emeil, password) };
 
+            response = client.Execute(request);
+            
+            dynamic conv = JsonConvert.DeserializeObject(response.Content);
+            for (int i = 0; i < conv.Count; i++)
+            {
+                var data = new WaterModel
+                {
+                    DataType = conv[i].DataType,
+                    Temperature = conv[i].Value,
+                    timeStamp = conv[i].Timestamp
+                };
+                temp.Add(data);
+            }
+            return Json(temp, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: Water/Details/5
         public ActionResult Details(int id)

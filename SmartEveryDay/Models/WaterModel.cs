@@ -11,13 +11,14 @@ namespace SmartEveryDay.Models
     public class WaterModel
     {
        
+     //   public int AccountId { get; set; }
+        public string DataType { get; set; }
+        public decimal Temperature { get; set; }
 
-        public string AccountId { get; set; }
-        public decimal temp1 { get; set; }
+        //public decimal temp2 { get; set; }
 
-        public decimal temp2 { get; set; }
 
-        public DateTime timeStamp { get; set;  }
+        public string timeStamp { get; set;  }
 
 
 

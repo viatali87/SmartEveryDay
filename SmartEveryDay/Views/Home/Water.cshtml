@@ -5,60 +5,166 @@
     
  }
 
-<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+ 
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/Water.css" />
 <script type="text/javascript">
 
     $(document).ready(function () {
-        
-        var val = "nadina";
+        var UnitId;
+        $.ajax({
+            type: "GET",
+            url: '/Water/getUnits',
+            dataType: 'json',
+            success: function (response) {
+             
+                $('#RemoniUnitTable').DataTable({
 
-    $('#getRemoni').on('click', function () {
-            console.log("GetRemoni JS started:");
-
-            $.ajax({
-                url: "/Water/getUnits",
-                type: "Get",
-                dataType: "json",
-                data: { 'someId': val }
-
-
-
-            }).done(function (response) {
-                console.log(response);
-                console.log("nadina molodec");
-                var tempString = "";
-                for (var i = 0; i < response.length; i++) {
-                    tempString += "Unit id:"+ response[i].UnitId + " Unit name: " + response[i].UnitName + '</p>' ;
+                    "searching": false,
+                    "lengthChange": false,
+                   
+                    data: response,
+                    columns: [
+                        { data: 'UnitId' },
+                        { data: 'UnitName' }, 
+                       
+                    ]
                 }
-                $('#RemoniText').html(tempString);
+                );
+              
 
 
-
-            }).fail(function (response) {
-                console.log("Ajax failed")
+            },
+            error: function (obj, textstatus) {
+                alert(obj.msg);
             }
-            )
-
         });
 
-   
+//onclick function to click on the row and display extra data on modal
+    $('#RemoniUnitTable tbody').on('click', 'tr', function () {
+        var table = $('#RemoniUnitTable').DataTable();
+   //     var table1 = $('#RemoniDataTable').DataTable();
+        var currentRowData = table.row(this).data();
+         UnitId = currentRowData.UnitId;
+        var UnitName = currentRowData.UnitName;
+        $('#ModalTitle').text(UnitId + "  " + UnitName);
+        
+     
 
-    $('#btnclear').on('click', function () {
-        $('#RemoniText').html("Here will be some text again");
-      
-
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
     });
 
-    })
+   /* $('#button').click(function () {
+        table.row('.selected').remove().draw(false);
+    });*/
+
+    $('#RemoniUnitTable tbody').on('click', 'tr', function () {
+        // var RemoniUnitTable = $('#RemoniUnitTable').dataTable();
+        console.log(UnitId);
+        
+        $.ajax({
+            type: "GET",
+            url: '/Water/getDataByUnitid',
+            dataType: 'json',
+            data: { 'id': UnitId },
+            success: function (response) {
+
+                $('#RemoniDataTable').DataTable({
+
+                    "searching": true,
+                    "lengthChange": true,
+
+                    data: response,
+                    columns: [
+                        { data: 'Temperature' },
+                        { data: 'timeStamp' },
+                        { data: 'DataType' },
+
+                    ]
+
+                }
+
+                   
+                );
+
+
+
+            },
+            error: function (obj, textstatus) {
+                alert(obj.msg);
+              
+            }
+        });
+
+
+        $('#newModal').modal('show');
+       
+      
+
+        });
+        
+    });
+
+
+
 </script>
 
 
 
 <!-- html part for the page-->
 <h2>Water</h2>
+<table id="RemoniUnitTable"  class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Unit Id</th>
+            <th>Unit Name</th>
+        </tr>
+    </thead>
+    <tbody>
+           
+    </tbody>
+</table>
 
-<p id="RemoniText"> here will be some text </p>
-<button id="btnclear"> Clear </button>
-<button id="getRemoni"> Get Remoni</button>
 
+
+
+
+
+<!-- Modal -->
+<div class="modal" id="newModal" role="dialog" aria-labelledby="exampleModalCenterTitle" >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="RemoniDataTable" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Tmp</th>
+                            <th>timestamp</th>
+                            <th>DataType</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
