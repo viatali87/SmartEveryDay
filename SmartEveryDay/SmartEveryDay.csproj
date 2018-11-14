@@ -281,6 +281,7 @@
       <DependentUpon>LoginDB.mdf</DependentUpon>
     </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\AdminView.css" />
     <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -351,9 +352,11 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Home\Water.cshtml" />
     <Content Include="Views\Home\Light.cshtml" />
-    <Content Include="Views\Home\AdminView.cshtml" />
+    <Content Include="Views\Home\AdminView1.cshtml" />
     <Content Include="Views\Home\UserView.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Views\Home\AdminView.cshtml" />
+    <Content Include="Views\Shared\AdminSharedLeftSidebar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Device\" />
