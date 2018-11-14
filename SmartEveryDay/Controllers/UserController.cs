@@ -11,15 +11,6 @@ namespace SmartEveryDay.Controllers
 {
     public class UserController : Controller, IUserController
     {
-        public Guid userId { get; set; }
-        public string userName { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public Guid houseId { get; set; }
-        public string phonenumber { get; set; }
-        public string email { get; set; }
-        public bool isAdmin { get; set; }
-
         public DatabaseAdapter db;
 
         public UserController()
