@@ -377,6 +377,7 @@ namespace SmartEveryDay.Models
 
         private void exampleMethod()
         {
+            string querystring = "";
             try
             {
                 using (con)
