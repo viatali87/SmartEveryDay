@@ -6,6 +6,7 @@
     ViewBag.Title = "UserProfile";
 }
 <script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
 <h2>Profile</h2>
 <form action"" name="countryReg">
     <label for="Country">Country</label>
@@ -20,21 +21,23 @@
         function saveCountry() {
             //var val = JSON.stringify('{ "country": "Japan"}');
             //var val = JSON.parse('{ "country": "Japan"}');
-            var dict = [];
-            dict.push({
-                key: "country",
-                value: "Japan"
-            });
-            //var val = SerializeJSON(dict);
+            //var mylist = List<KeyValuePair<K,V>>;
+            var myDictionary = {
+                "firstname" : "Kimbo",
+                "lastname" : "Dublolingur",
+                "phonenumber" : "44444444",
+                "houseid": "CE61F280-E5F7-45A4-904A-0D2E02EE6A78",
+                "username" : "ko",
+                "email" : "ko@gmail.com",
+                "isadmin" : "false"
+            };
 
-            //var val = JsonConvert.SerializeObject(dict, Formatting.Indented);
-            var val = "{ \"country\": \"Japan\"}";
-            alert(val);
+            var val = JSON.stringify(myDictionary);
+            console.log("String: " + val);
 
             $.ajax({
                 type: "POST",
-                url: "/User/sendData",
-                dataType: "json",
+                url: "/User/createUser",
                 data: { val }
             }).done(function (response) {
                 var res = response;

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SmartEveryDay.Models
 {
-    public class User
+    public class User: IUser
     {
         public Guid UserId { get; set; }
         public string Username { get; set; }
