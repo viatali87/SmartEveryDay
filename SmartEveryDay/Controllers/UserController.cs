@@ -84,5 +84,32 @@ namespace SmartEveryDay.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public JsonResult getAllUsers ()
+        {
+            IEnumerable<User> temp = null;
+            DatabaseAdapter adapter = new DatabaseAdapter();
+
+            try
+            {
+                temp = adapter.getAllUsers();
+            }
+
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in getAllUsers() request  Nadina" + e);
+            }
+
+            try
+            {
+            return Json(temp.ToList(), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in JSon request"+ e);
+            }
+
+        }
     }
 }

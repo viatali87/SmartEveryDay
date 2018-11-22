@@ -1,0 +1,87 @@
+﻿
+
+@{
+
+    Layout = "~/Views/Shared/_AdminLeftSidebar.cshtml";
+    
+}
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var UnitId;
+        var UnitName;
+
+        console.log("AAAAAAAAAAAAAAAAAAa");
+
+
+        $.ajax({
+            type: "GET",
+            url: '/User/getAllUsers',
+            dataType: 'json',
+            success: function (response) {
+
+                $('#AccountDataTable').DataTable({
+
+
+                    data: response,
+                    columns: [
+
+                        { data: 'UserId' },
+                        { data: 'Username' },
+                        { data: 'FirstName' },
+                        { data: 'HouseId' },
+                        { data: 'PhoneNo' },
+                        { data: 'Email' },
+                        { data: 'IsAdmin' },
+                    ]
+                }
+                );
+                  console.log(response)
+
+
+            },
+            error: function (obj, textstatus) {
+                alert(obj.msg);
+            }
+        });
+
+
+   $('.button-left').click(function(){
+       $('.sidebar').toggleClass('fliph');
+   });
+
+});
+
+</script>
+
+
+    <div id="AdminViewBody">
+        <H3>Admin view 1! NOT shared! Here vill be some text soon!</H3>
+        <table id="AccountDataTable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>User id</th>
+                    <th>UserName</th>
+                    <th>RealName</th>
+                    <th>House Id</th>
+                    <th>Phone</th>
+                    <th>Emeil</th>
+                    <th>IsAdmin</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+
+    </div>
+
+
+
+
+
