@@ -12,12 +12,12 @@ namespace SmartEveryDay.Controllers
 {
     public class UserController : Controller, IUserController
     {
-        public Data.DatabaseAdapter db;
+        public DatabaseAdapter db;
 
         public UserController()
         {
             //db = new Models.DatabaseAdapter();
-            db = Data.DatabaseAdapter.Instance();
+            db = DatabaseAdapter.Instance();
         }
         [HttpPost]
         public JsonResult sendData(string val)
@@ -91,7 +91,7 @@ namespace SmartEveryDay.Controllers
         public JsonResult getAllUsers ()
         {
             IEnumerable<User> temp = null;
-            DatabaseAdapter adapter = new DatabaseAdapter();
+            DatabaseAdapter adapter = DatabaseAdapter.Instance(); 
 
             try
             {

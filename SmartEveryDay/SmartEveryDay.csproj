@@ -222,6 +222,7 @@
     <Compile Include="Controllers\IRoomController.cs" />
     <Compile Include="Controllers\IScenarioController.cs" />
     <Compile Include="Controllers\IUserController.cs" />
+    <Compile Include="Controllers\LightController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\ScenarioController.cs" />
@@ -258,7 +259,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LightController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WaterController.cs" />
@@ -268,7 +268,6 @@
     </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\DatabaseAdapter.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\IDevice.cs" />
     <Compile Include="Models\IRoom.cs" />
@@ -370,6 +369,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Device\" />
+    <Folder Include="Views\Light\" />
     <Folder Include="Views\Log\" />
     <Folder Include="Views\Room\" />
     <Folder Include="Views\Scenario\" />

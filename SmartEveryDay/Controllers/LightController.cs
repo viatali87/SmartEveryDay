@@ -1,42 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+using System.Web;
+using System.Web.Mvc;
 
 namespace SmartEveryDay.Controllers
 {
-    public class LightController : ApiController
+    public class LightController : Controller
     {
-        // GET: api/Light
-        public IEnumerable<string> Get()
+        // GET: Light
+        public ActionResult Index()
         {
-            return new string[] { "value1", "value2" };
+            return View();
         }
 
-        // GET: api/Light/5
-        public string Get(int id)
+
+        [HttpGet]
+        public int turnOnLight()
         {
-            return "value";
+
+            //https://cloud.arest.io/wasdqe/digital/2/1
+
+            return 1;
         }
 
-        // POST: api/Light
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT: api/Light/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Light/5
-        public void Delete(int id)
-        {
-        }
-
-        
     }
 }
