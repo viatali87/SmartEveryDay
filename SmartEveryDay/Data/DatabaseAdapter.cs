@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using SmartEveryDay.Models;
 
-namespace SmartEveryDay.Models
+namespace SmartEveryDay.Data
 {
     public class DatabaseAdapter
     {
@@ -101,26 +101,37 @@ namespace SmartEveryDay.Models
             {
                 using (con)
                 {
-                    SqlCommand command = new SqlCommand(querystring, con);
-                    con.Open();
-
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    using (SqlCommand command = new SqlCommand(querystring, con))
                     {
+                        con.Open();
+                        //command.ExecuteNonQuery();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
 
-                        User us = new User();
-                        us.UserId = (Guid)reader["users_id"];
-                        us.Username = (string)reader["username"];
-                        us.FirstName = (string)reader["real_first_name"];
-                        us.LastName = (string)reader["real_surname"];
-                        us.HouseId = (Guid)reader["house_id"];
-                        us.PhoneNo = (string)reader["phonenumber"];
-                        us.Email = (string)reader["email"];
-                        us.IsAdmin = (bool)reader["isAdmin"];
+                                User us = new User();
+                                us.UserId = (Guid)reader["users_id"];
+                                us.Username = (string)reader["username"];
+                                us.FirstName = (string)reader["real_first_name"];
+                                us.LastName = (string)reader["real_surname"];
+                                /*Guid temp = (Guid)reader["house_id"];
+                                if (temp != null)
+                                {
+                                    us.HouseId = temp;
+                                }*/
+                                us.HouseId = (Guid)reader["house_id"];
+                                us.PhoneNo = (string)reader["phonenumber"];
+                                us.Email = (string)reader["email"];
+                                us.IsAdmin = (bool)reader["isAdmin"];
 
-                        userlist.Add(us);
-                    }
+                                userlist.Add(us);
+
+                            }
+                        }
+
+
+}
                  }
              } catch
             {

@@ -262,6 +262,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WaterController.cs" />
+    <Compile Include="Data\DatabaseAdapter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -283,10 +284,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\DBeveryday.mdf" />
-    <Content Include="App_Data\DBeveryday_log.ldf">
-      <DependentUpon>DBeveryday.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\LoginDB.mdf" />
     <Content Include="App_Data\LoginDB_log.ldf">
       <DependentUpon>LoginDB.mdf</DependentUpon>

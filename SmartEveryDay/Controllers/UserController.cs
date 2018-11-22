@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SmartEveryDay.Models;
+using SmartEveryDay.Data;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 
@@ -11,11 +12,12 @@ namespace SmartEveryDay.Controllers
 {
     public class UserController : Controller, IUserController
     {
-        public DatabaseAdapter db;
+        public Data.DatabaseAdapter db;
 
         public UserController()
         {
-            db = new Models.DatabaseAdapter();
+            //db = new Models.DatabaseAdapter();
+            db = Data.DatabaseAdapter.Instance();
         }
         [HttpPost]
         public JsonResult sendData(string val)
@@ -56,7 +58,8 @@ namespace SmartEveryDay.Controllers
 
             //string temp = db.saveData(data);
             //return Json(temp);
-            return Json("Result: " + new JavaScriptSerializer().Serialize(db.saveNewUser(newUser))); 
+            return Json("Result: " + new JavaScriptSerializer().Serialize(db.saveNewUser(newUser)));
+            //return Json("Result: " + new JavaScriptSerializer().Serialize(db.getAllUsers()));
         }
 
         public string DeleteUser(Guid userId)
