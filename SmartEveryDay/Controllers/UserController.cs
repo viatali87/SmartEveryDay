@@ -12,12 +12,12 @@ namespace SmartEveryDay.Controllers
 {
     public class UserController : Controller, IUserController
     {
-        public Data.DatabaseAdapter db;
+        public DatabaseAdapter db;
 
         public UserController()
         {
             //db = new Models.DatabaseAdapter();
-            db = Data.DatabaseAdapter.Instance();
+            db = DatabaseAdapter.Instance();
         }
         [HttpPost]
         public JsonResult sendData(string val)
@@ -86,6 +86,33 @@ namespace SmartEveryDay.Controllers
         public User CreateUser(string userName, string firstName, string lastName, Guid houseId, string phonenumber, string email, bool isAdmin)
         {
             throw new NotImplementedException();
+        }
+
+        public JsonResult getAllUsers ()
+        {
+            IEnumerable<User> temp = null;
+            DatabaseAdapter adapter = DatabaseAdapter.Instance(); 
+
+            try
+            {
+                temp = adapter.getAllUsers();
+            }
+
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in getAllUsers() request  Nadina" + e);
+            }
+
+            try
+            {
+            return Json(temp.ToList(), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in JSon request"+ e);
+            }
+
         }
     }
 }
