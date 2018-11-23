@@ -62,6 +62,17 @@ namespace SmartEveryDay.Controllers
             //return Json("Result: " + new JavaScriptSerializer().Serialize(db.getAllUsers()));
         }
 
+        [HttpPost]
+        public JsonResult getAllUsers(string val)
+        {
+            List<User> userslist = db.getAllUsers();
+            foreach (var item in userslist)
+            {
+                Console.WriteLine(item.ToString());
+            }
+            return Json("All users: " + new JavaScriptSerializer().Serialize(userslist));
+
+        }
         public string DeleteUser(Guid userId)
         {
             throw new NotImplementedException();
