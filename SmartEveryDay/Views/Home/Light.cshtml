@@ -10,7 +10,7 @@
         //Function for turning the light on
         $('#btnON').on('click', function () {
             $.ajax({
-                url: "https://cloud.arest.io/wasdqe/digital/2/0",
+                url: "https://cloud.arest.io/light_id1/digital/2/0",
                 context: document.body
             }).success(function (data) {
                 mesg = data.message;
@@ -23,7 +23,7 @@
         $('#btnOFF').on('click', function () {
 
             $.ajax({
-                url: "https://cloud.arest.io/wasdqe/digital/2/1",
+                url: "https://cloud.arest.io/light_id1/digital/2/1",
                 context: document.body
             }).success(function (data) {
                 mesg = data.message;
@@ -35,7 +35,7 @@
 
         //Function for showing the status of the light
         var x = function () {
-            $.getJSON("https://cloud.arest.io/wasdqe/digital/2/", function (data) {
+            $.getJSON("https://cloud.arest.io/light_id1/digital/2/", function (data) {
                 var isOnOrOff = data.return_value;
                 if (isOnOrOff == 1) {
                     str = "Light is OFF";
