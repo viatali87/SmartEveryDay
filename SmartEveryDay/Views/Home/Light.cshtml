@@ -8,9 +8,23 @@
         var str;
 
         //Function for turning the light on
+        $('#btnON1').on('click', function () {
+            console.log("button 1");
+            $.ajax({
+                url: '/Light/turnOnLight',
+                context: document.body
+            }).success(function (data) {
+                mesg = data.message;
+                console.log(data);
+            }).fail(function (data) {
+                console.log("Light fail");
+            })
+        });
+
+        //Function for turning the light on
         $('#btnON').on('click', function () {
             $.ajax({
-                url: "https://cloud.arest.io/wasdqe/digital/2/0",
+                url: "https://cloud.arest.io/light_id1/digital/2/0",
                 context: document.body
             }).success(function (data) {
                 mesg = data.message;
@@ -23,7 +37,7 @@
         $('#btnOFF').on('click', function () {
 
             $.ajax({
-                url: "https://cloud.arest.io/wasdqe/digital/2/1",
+                url: "https://cloud.arest.io/light_id1/digital/2/1",
                 context: document.body
             }).success(function (data) {
                 mesg = data.message;
@@ -35,7 +49,7 @@
 
         //Function for showing the status of the light
         var x = function () {
-            $.getJSON("https://cloud.arest.io/wasdqe/digital/2/", function (data) {
+            $.getJSON("https://cloud.arest.io/light_id1/digital/2/", function (data) {
                 var isOnOrOff = data.return_value;
                 if (isOnOrOff == 1) {
                     str = "Light is OFF";
@@ -59,6 +73,7 @@
 <p id="Text"> Turn the light on or off </p>
 <button id="btnON" style="background-color:green"> ON </button>
 <button id="btnOFF" style="background-color:red"> OFF</button>
+<button id="btnON1" style="background-color:green"> ON1 </button>
 <div id="textMessage">
     <p>Status Light</p>
     <p id="statusLight"></p>

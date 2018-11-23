@@ -47,6 +47,14 @@ namespace SmartEveryDay.Controllers
             return View();
         }
 
+        public ActionResult AdminView1()
+        {
+            ViewBag.Title = "AdminView1";
+
+            return View();
+        }
+
+
 
     }
 }

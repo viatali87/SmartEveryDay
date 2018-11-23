@@ -11,8 +11,8 @@ aside {
 
 
 /** css from https://bootsnipp.com/snippets/kl2OQ **/
-@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
-@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700');
+/**@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";**/
+/**@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700');*/
 
 body {
     font-size: 14px;
@@ -6190,7 +6190,7 @@ button.close {
         perspective: 1000px;
     }
 }
-
+/*
 @supports ((-webkit-transform:translate3d(0,0,0)) or (transform:translate3d(0,0,0))) {
     .carousel-item {
         -webkit-transition: -webkit-transform .6s ease-in-out;
@@ -6204,7 +6204,7 @@ button.close {
         perspective: 1000px;
     }
 }
-
+*/
 .carousel-item-next, .carousel-item-prev, .carousel-item.active {
     display: -webkit-box;
     display: -webkit-flex;
@@ -6233,7 +6233,7 @@ button.close {
         transform: translate3d(-100%,0,0);
     }
 }
-
+/*
 @supports ((-webkit-transform:translate3d(0,0,0)) or (transform:translate3d(0,0,0))) {
     .carousel-item-next.carousel-item-left, .carousel-item-prev.carousel-item-right {
         -webkit-transform: translate3d(0,0,0);
@@ -6250,7 +6250,7 @@ button.close {
         transform: translate3d(-100%,0,0);
     }
 }
-
+*/
 .carousel-control-next, .carousel-control-prev {
     position: absolute;
     top: 0;

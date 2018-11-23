@@ -7,6 +7,7 @@ using SmartEveryDay.Models;
 using RestSharp;
 using RestSharp.Authenticators;
 using Newtonsoft.Json;
+using SmartEveryDay.Data;
 
 namespace SmartEveryDay.Controllers
 {
@@ -22,6 +23,34 @@ namespace SmartEveryDay.Controllers
             return View();
 
         }
+        //this method should call RemoniDataAccess ExecuteClient - but I got errors.
+        public JsonResult getUnits(string emeil, string password)
+        {
+            List<UnitModel> temp = new List<UnitModel>();
+
+            var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
+
+          //  RemoniDataAccess response =  ExecuteClient(myUrl, emeil, password);
+           // dynamic conv = JsonConvert.DeserializeObject(response.Content);
+
+/*
+            for (int i = 0; i < conv.Count; i++)
+            {
+                var unit = new UnitModel
+                {
+                    UnitId = conv[i].UnitId,
+                    UnitName = conv[i].Name
+                };
+                temp.Add(unit);
+            };*/
+
+            
+             return Json(temp, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
 
 
 
@@ -82,7 +111,7 @@ namespace SmartEveryDay.Controllers
 
         public JsonResult getDataByUnitid(int id)
         {
-           
+
             List<WaterModel> temp = new List<WaterModel>();
             var emeil = "Nadina77@gmail.com";
             var password = "NADzuk3412.";
@@ -90,12 +119,12 @@ namespace SmartEveryDay.Controllers
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddHeader("accept", "application/json");
             request.AddHeader("accept", "application/x-yaml");
-//still hardcoded value of id -1502, and hardcoded dates
-            var myUrl = "https://api.remoni.com/v1/Data?orderby=Timestamp&Timestamp=ge(2018-08-04)&Timestamp=lt(2018-08-09)&UnitId=eq(1502)&AggregateType=eq(Day)&top=10000";
+            //still hardcoded value of id -1502, and hardcoded dates
+            var myUrl = "https://api.remoni.com/v1/Data?orderby=Timestamp&Timestamp=ge(2018-08-04)&Timestamp=lt(2018-08-04)&UnitId=eq(1502)&AggregateType=eq(Day)&top=10000";
             client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator(emeil, password) };
 
             response = client.Execute(request);
-            
+
             dynamic conv = JsonConvert.DeserializeObject(response.Content);
             for (int i = 0; i < conv.Count; i++)
             {

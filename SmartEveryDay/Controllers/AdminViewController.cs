@@ -6,24 +6,18 @@ using System.Web.Mvc;
 
 namespace SmartEveryDay.Controllers
 {
-    public class LightController : Controller
+    public class AdminViewController : Controller
     {
-        // GET: Light
+        // GET: AdminView
         public ActionResult Index()
         {
             return View();
         }
 
-
-        [HttpGet]
-        public int turnOnLight()
+        public ActionResult AdminAccounts()
         {
-
-            //https://cloud.arest.io/wasdqe/digital/2/1
-
-            return 1;
+            return View("AdminAccounts");
         }
-
 
     }
 }
