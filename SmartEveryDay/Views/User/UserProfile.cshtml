@@ -7,27 +7,30 @@
 }
 <script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
 <h2>Profile</h2>
+<p id="thetext">Hallo</p>
 <form action"" name="countryReg">
     <label for="Country">Country</label>
     <input type="text" name="countryName" id="countryName" placeholder="Write country here" />
 </form>
 <button id="submitbutton">Click me</button>
+<button id="getUsersButton">Get all users</button>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
 
         function save() {
+            var t = document.getElementById("thetext");
             //var val = JSON.stringify('{ "country": "Japan"}');
             //var val = JSON.parse('{ "country": "Japan"}');
             //var mylist = List<KeyValuePair<K,V>>;
             var myDictionary = {
-                "firstname" : "Lisa",
-                "lastname" : "Lisulingur",
-                "phonenumber" : "555555555",
+                "firstname" : "Lily",
+                "lastname" : "Baba",
+                "phonenumber" : "777777",
                 "houseid": "CE61F280-E5F7-45A4-904A-0D2E02EE6A78",
-                "username" : "liii",
-                "email" : "lisa@gmail.com",
+                "username" : "fwef",
+                "email" : "lilypad@gmail.com",
                 "isadmin" : "false"
             };
 
@@ -40,13 +43,33 @@
                 data: { val }
             }).done(function (response) {
                 var res = response;
+                document.getElementById("p").textContent += " this has just been added";
+                t.textContent += "Response: " + response;
                 alert("Response: " + res);
             }).fail(function (response) {
                 console.log("Ajax failed")
             })
-        } // End of save country
+        } // End of save
 
         document.getElementById("submitbutton").addEventListener("click", save);
+
+        function getUsers() {
+            document.getElementById("thetext").textContent = "-----------";
+            var val = JSON.stringify("yay");
+            $.ajax({
+                type: "POST",
+                url: "/User/getAllUsers",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                document.getElementById("thetext").textContent += response;
+                
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getUsersButton").addEventListener("click", getUsers);
 
 
     } // Document ready ends

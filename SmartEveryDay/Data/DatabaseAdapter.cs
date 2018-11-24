@@ -16,7 +16,7 @@ namespace SmartEveryDay.Data
     {
         private static DatabaseAdapter instance = new DatabaseAdapter();
 
-        SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+        //SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
         private DatabaseAdapter()
         {
@@ -29,16 +29,91 @@ namespace SmartEveryDay.Data
                 return instance;
             
         }
-        
+
+        public User saveNewUser(User user)
+        {
+            string attempt = sendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
+            return getUserById(user.UserId);
+        }
+
         /// <summary>
         /// Takes a user and saves a new row in the Users table
         /// </summary>
         /// <param name="user"></param>
         /// <returns>A user</returns>
-        public User saveNewUser(User user)  // WORKS but the if statement is untested!
+        public User saveNewUserSecure(User user)  // WORKS but the if statement is untested!
         {
-            string attempt = sendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
+            /*Guid userid = user.UserId;
+            string username = user.Username;
+            string firstname = user.FirstName;
+            string lastname = user.LastName;
+            Guid houseid = user.HouseId;
+            string phonenr = user.PhoneNo;
+            string email = user.Email;
+            bool isadmin = user.IsAdmin;*/
+            string sql = @"INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin)
+                VALUES(@userid, @username, @firstname, @lastname, @houseid, @phonenr, @email, @isadmin)";
+
+            //string attempt = sendQueryNoResponse(sql);
+            //var cmd = new SqlCommand(sql, con);
+            List<SqlParameter> list = new List<SqlParameter>()
+            {
+                new SqlParameter() { ParameterName = "@userid", SqlDbType = SqlDbType.UniqueIdentifier, Value = user.UserId },
+                new SqlParameter() { ParameterName = "@username", SqlDbType = SqlDbType.VarChar, Value = user.Username },
+                new SqlParameter() { ParameterName = "@firstname", SqlDbType = SqlDbType.VarChar, Value = user.FirstName },
+                new SqlParameter() { ParameterName = "@lastname", SqlDbType = SqlDbType.VarChar, Value = user.LastName },
+                new SqlParameter() { ParameterName = "@houseid", SqlDbType = SqlDbType.UniqueIdentifier, Value = user.HouseId },
+                new SqlParameter() { ParameterName = "@phonenr", SqlDbType = SqlDbType.VarChar, Value = user.PhoneNo },
+                new SqlParameter() { ParameterName = "@email", SqlDbType = SqlDbType.VarChar, Value = user.Email },
+                new SqlParameter() { ParameterName = "@isadmin", SqlDbType = SqlDbType.Bit, Value = user.IsAdmin }
+
+            };
+            sendQueryNoResponse(list);
+            //sendQueryNoResponse(sql);
+            /*
+            cmd.Parameters.Add("@userid", user.UserId);
+            cmd.Parameters.Add("@username", user.Username);
+            cmd.Parameters.Add("@firstname", user.FirstName);
+            cmd.Parameters.Add("@lastname", user.LastName);
+            cmd.Parameters.Add("@houseid", user.HouseId);
+            cmd.Parameters.Add("@phonenr", user.PhoneNo);
+            cmd.Parameters.Add("@email", user.Email);
+            cmd.Parameters.Add("@isadmin", user.IsAdmin);*/
+
+                //con.Open();
+                /*SqlCommand cmd = con.CreateCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = query;*/
+                //cmd.ExecuteNonQuery();
+                //return "Query processed successfully";
+        
+                //con.Close();
+            
             return getUserById(user.UserId);
+        }
+
+        private string sendQueryNoResponse(List<SqlParameter> list)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            try
+            {
+                con.Open();
+                SqlCommand cmd = con.CreateCommand();
+                //cmd.CommandType = System.Data.CommandType.Text;
+                //cmd.CommandText = query;
+                cmd.Parameters.AddRange(list.ToArray());
+                cmd.ExecuteNonQuery();
+                return "Query processed successfully";
+            }
+            catch
+            {
+                return "Error";
+            }
+            finally
+            {
+                con.Close();
+            }
         }
 
         /// <summary>
@@ -48,8 +123,62 @@ namespace SmartEveryDay.Data
         /// <returns>A user</returns>
         public User getUserById(Guid userId)
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             string id = userId.ToString();
             string querystring = "SELECT Users_id, Users.username, Users.real_first_name, Users.real_surname, Users.house_id, Users.email, Users.phonenumber, Users.isAdmin FROM Users WHERE Users.Users_id = '" + id + "'";
+            //SqlDataReader reader = sendQueryGetResponse(querystring);
+
+            User us = new User();
+
+            try
+            {
+                using (con)
+                {
+                    SqlCommand command = new SqlCommand(querystring, con);
+                    con.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        us.UserId = (Guid)reader["users_id"];
+                        us.Username = (string)reader["username"];
+                        us.FirstName = (string)reader["real_first_name"];
+                        us.LastName = (string)reader["real_surname"];
+                        us.HouseId = (Guid)reader["house_id"];
+                        us.PhoneNo = (string)reader["phonenumber"];
+                        us.Email = (string)reader["email"];
+                        us.IsAdmin = (bool)reader["isAdmin"];
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+            return us;
+        }
+
+        /// <summary>
+        /// Gets all information about a user using the users Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>A user</returns>
+
+        public User getUserByIdSecure(Guid userId)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string id = userId.ToString();
+            string querystring = 
+                @"SELECT Users_id, Users.username, Users.real_first_name, Users.real_surname, Users.house_id, Users.email, Users.phonenumber, Users.isAdmin 
+                FROM Users 
+                WHERE Users.Users_id = @id";
             //SqlDataReader reader = sendQueryGetResponse(querystring);
 
             User us = new User();
@@ -93,49 +222,58 @@ namespace SmartEveryDay.Data
         /// <returns>List of Users</returns>
         public List<User> getAllUsers()
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             string querystring = "SELECT Users_id, Users.username, Users.real_first_name, Users.real_surname, Users.house_id, Users.email, Users.phonenumber, Users.isAdmin FROM Users";
 
             //SqlDataReader reader = sendQueryGetResponse(querystring);
             List<User> userlist = new List<User>();
             try
             {
+
                 using (con)
                 {
-                    using (SqlCommand command = new SqlCommand(querystring, con))
+                    if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
+                    }
+                    using (SqlCommand command = new SqlCommand(querystring, con))
+                    {
+                        int counter = 0;
+                        
                         //command.ExecuteNonQuery();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
+                        SqlDataReader reader = command.ExecuteReader();
+
                             while (reader.Read())
                             {
-
+                                counter += 1;
                                 User us = new User();
                                 us.UserId = (Guid)reader["users_id"];
                                 us.Username = (string)reader["username"];
                                 us.FirstName = (string)reader["real_first_name"];
                                 us.LastName = (string)reader["real_surname"];
-                                /*Guid temp = (Guid)reader["house_id"];
-                                if (temp != null)
-                                {
-                                    us.HouseId = temp;
-                                }*/
-                                us.HouseId = (Guid)reader["house_id"];
                                 us.PhoneNo = (string)reader["phonenumber"];
                                 us.Email = (string)reader["email"];
                                 us.IsAdmin = (bool)reader["isAdmin"];
-
+                                if(us.IsAdmin)
+                                {
+                                    // Skip saving house id
+                                } else
+                                {
+                                    us.HouseId = (Guid)reader["house_id"];
+                                }
                                 userlist.Add(us);
 
                             }
-                        }
+                        
 
-
-}
+                        int yes = counter;
+                    }
+                        
                  }
              } catch
             {
-
+                
             } finally
             {
                 con.Close();
@@ -150,6 +288,8 @@ namespace SmartEveryDay.Data
         /// <returns>A list of devices</returns>
         public List<Device> getDevicesByHouseId(Guid houseId)
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             string id = houseId.ToString();
             string querystring = "SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online FROM Device AS D INNER JOIN House_devices AS HD ON D.device_id = HD.device_id WHERE HD.house_id = '" + id +"'";
             //SqlDataReader reader = sendQueryGetResponse(querystring);
@@ -195,6 +335,8 @@ namespace SmartEveryDay.Data
         /// <returns>A list of devices</returns>
         public List<Device> getAllDevices()
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             string querystring = "SELECT device_id, status_id, device_type, device_name, is_online FROM Device";
             //SqlDataReader reader = sendQueryGetResponse(querystring);
             List<Device> deviceList = new List<Device>();
@@ -241,6 +383,8 @@ namespace SmartEveryDay.Data
         /// <returns>A list of devices</returns>
         public List<Device> getRoomsAndDevicesByHouseId(string houseId)
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             string querystring = @"
             
             SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online, R.room_id, R.room_name 
@@ -297,6 +441,8 @@ namespace SmartEveryDay.Data
         /// <returns>A string indicating if the query was successful</returns>
         private string sendQueryNoResponse(string query)
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             try
             {
                 con.Open();
@@ -315,6 +461,8 @@ namespace SmartEveryDay.Data
             }
         }
 
+
+
         /// <summary>
         /// Send a query that returns a response, a SqlDataReader containing the data
         /// </summary>
@@ -322,6 +470,8 @@ namespace SmartEveryDay.Data
         /// <returns>A SqlDataReader containing the information asked for</returns>
         private SqlDataReader sendQueryGetResponse(string query)
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             try
             {
                 using (con)
@@ -388,7 +538,14 @@ namespace SmartEveryDay.Data
             us.Username = (string)record["username"];
             us.FirstName = (string)record["real_first_name"];
             us.LastName = (string)record["real_surname"];
-            us.HouseId = (Guid)record["house_id"];
+            Guid temp = (Guid)record["house_id"];
+            if(temp == Guid.Empty)
+            {
+                //us.HouseId = Guid.Empty;
+            } else
+            {
+                us.HouseId = (Guid)record["house_id"];
+            }
             us.PhoneNo = (string)record["phonenumber"];
             us.Email = (string)record["email"];
             us.IsAdmin = (bool)record["isAdmin"];
@@ -401,6 +558,8 @@ namespace SmartEveryDay.Data
 
         private void exampleMethod()
         {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
             string querystring = "";
             try
             {
