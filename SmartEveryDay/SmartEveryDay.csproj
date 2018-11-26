@@ -216,6 +216,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminViewController.cs" />
+    <Compile Include="Controllers\CurtainsController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\IDeviceController.cs" />
     <Compile Include="Controllers\ILogController.cs" />
@@ -259,7 +260,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LightController.cs" />
     <Compile Include="Controllers\Test.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -367,8 +367,10 @@
     <Content Include="Views\Shared\_AdminLeftSidebar.cshtml" />
     <Content Include="Views\AdminView\Index.cshtml" />
     <Content Include="Views\AdminView\AdminAccounts.cshtml" />
+    <Content Include="Views\Home\Curtains.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Curtains\" />
     <Folder Include="Views\Device\" />
     <Folder Include="Views\Light\" />
     <Folder Include="Views\Log\" />

@@ -32,7 +32,12 @@ namespace SmartEveryDay.Controllers
             
             return View();
         }
+        public ActionResult Curtains()
+        {
+            ViewBag.Title = "Curtains";
 
+            return View();
+        }
         public ActionResult UserView()
         {
             ViewBag.Title = "UserView";
