@@ -25,9 +25,9 @@ namespace SmartEveryDay.Data
 
         public static DatabaseAdapter Instance()
         {
-
-            return instance;
-
+            
+                return instance;
+            
         }
 
         public User saveNewUser(User user)
@@ -80,15 +80,15 @@ namespace SmartEveryDay.Data
             cmd.Parameters.Add("@email", user.Email);
             cmd.Parameters.Add("@isadmin", user.IsAdmin);*/
 
-            //con.Open();
-            /*SqlCommand cmd = con.CreateCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = query;*/
-            //cmd.ExecuteNonQuery();
-            //return "Query processed successfully";
-
-            //con.Close();
-
+                //con.Open();
+                /*SqlCommand cmd = con.CreateCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = query;*/
+                //cmd.ExecuteNonQuery();
+                //return "Query processed successfully";
+        
+                //con.Close();
+            
             return getUserById(user.UserId);
         }
 
@@ -175,7 +175,7 @@ namespace SmartEveryDay.Data
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
             string id = userId.ToString();
-            string querystring =
+            string querystring = 
                 @"SELECT Users_id, Users.username, Users.real_first_name, Users.real_surname, Users.house_id, Users.email, Users.phonenumber, Users.isAdmin 
                 FROM Users 
                 WHERE Users.Users_id = @id";
@@ -240,44 +240,41 @@ namespace SmartEveryDay.Data
                     using (SqlCommand command = new SqlCommand(querystring, con))
                     {
                         int counter = 0;
-
+                        
                         //command.ExecuteNonQuery();
                         SqlDataReader reader = command.ExecuteReader();
 
-                        while (reader.Read())
-                        {
-                            counter += 1;
-                            User us = new User();
-                            us.UserId = (Guid)reader["users_id"];
-                            us.Username = (string)reader["username"];
-                            us.FirstName = (string)reader["real_first_name"];
-                            us.LastName = (string)reader["real_surname"];
-                            us.PhoneNo = (string)reader["phonenumber"];
-                            us.Email = (string)reader["email"];
-                            us.IsAdmin = (bool)reader["isAdmin"];
-                            if (us.IsAdmin)
+                            while (reader.Read())
                             {
-                                // Skip saving house id
-                            }
-                            else
-                            {
-                                us.HouseId = (Guid)reader["house_id"];
-                            }
-                            userlist.Add(us);
+                                counter += 1;
+                                User us = new User();
+                                us.UserId = (Guid)reader["users_id"];
+                                us.Username = (string)reader["username"];
+                                us.FirstName = (string)reader["real_first_name"];
+                                us.LastName = (string)reader["real_surname"];
+                                us.PhoneNo = (string)reader["phonenumber"];
+                                us.Email = (string)reader["email"];
+                                us.IsAdmin = (bool)reader["isAdmin"];
+                                if(us.IsAdmin)
+                                {
+                                    // Skip saving house id
+                                } else
+                                {
+                                    us.HouseId = (Guid)reader["house_id"];
+                                }
+                                userlist.Add(us);
 
-                        }
-
+                            }
+                        
 
                         int yes = counter;
                     }
-
-                }
-            }
-            catch
+                        
+                 }
+             } catch
             {
-
-            }
-            finally
+                
+            } finally
             {
                 con.Close();
             }
@@ -294,7 +291,7 @@ namespace SmartEveryDay.Data
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
             string id = houseId.ToString();
-            string querystring = "SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online FROM Device AS D INNER JOIN House_devices AS HD ON D.device_id = HD.device_id WHERE HD.house_id = '" + id + "'";
+            string querystring = "SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online FROM Device AS D INNER JOIN House_devices AS HD ON D.device_id = HD.device_id WHERE HD.house_id = '" + id +"'";
             //SqlDataReader reader = sendQueryGetResponse(querystring);
             List<Device> deviceList = new List<Device>();
 
@@ -458,8 +455,7 @@ namespace SmartEveryDay.Data
             catch
             {
                 return "Error";
-            }
-            finally
+            } finally
             {
                 con.Close();
             }
@@ -543,11 +539,10 @@ namespace SmartEveryDay.Data
             us.FirstName = (string)record["real_first_name"];
             us.LastName = (string)record["real_surname"];
             Guid temp = (Guid)record["house_id"];
-            if (temp == Guid.Empty)
+            if(temp == Guid.Empty)
             {
                 //us.HouseId = Guid.Empty;
-            }
-            else
+            } else
             {
                 us.HouseId = (Guid)record["house_id"];
             }

@@ -8,6 +8,5 @@ namespace SmartEveryDay.Controllers
 {
     interface IDeviceController
     {
-       
     }
 }
