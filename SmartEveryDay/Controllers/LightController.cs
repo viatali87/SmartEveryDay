@@ -21,7 +21,6 @@ namespace SmartEveryDay.Controllers
 
             var client = new WebClient();
             var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/0");
-
             return content;
         }
 
