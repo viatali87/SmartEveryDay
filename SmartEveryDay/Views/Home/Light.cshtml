@@ -12,7 +12,7 @@
         $('#btnON').on('click', function () {
             $.ajax({
                 // type: "GET",
-                url: '/Light/TurnLightOn',
+                url: '/Device/TurnLightOn',
                 dataType: 'json',   
                 context: document.body
             }).success(function (data) {
@@ -28,7 +28,7 @@
 
             $.ajax({
                 // type: "GET",
-                url: '/Light/TurnLightOff',
+                url: '/Device/TurnLightOff',
                 dataType: 'json',
                 context: document.body
             }).success(function (data) {
