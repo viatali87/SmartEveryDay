@@ -1,6 +1,8 @@
-﻿@{
-    ViewBag.Title = "Light";
+﻿
+@{
+    ViewBag.Title = "Curtains";
 }
+
 <script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script type="text/javascript">
 
@@ -9,26 +11,26 @@
 
 
         //Function for turning the light on
-        $('#btnON').on('click', function () {
+        $('#btnOpen').on('click', function () {
             $.ajax({
                 // type: "GET",
-                url: '/Light/TurnLightOn',
-                dataType: 'json',   
+                url: '/Curtains/TurnCurtainsOpen',
+                dataType: 'json',
                 context: document.body
             }).success(function (data) {
                 mesg = data.message;
                 console.log(mesg);
             }).fail(function (data) {
-                console.log("Light fail");
+                console.log("Curtains fail");
             })
         });
 
         //Function for turning the light off
-        $('#btnOFF').on('click', function () {
+        $('#btnclosed').on('click', function () {
 
             $.ajax({
                 // type: "GET",
-                url: '/Light/TurnLightOff',
+                url: '/Curtains/TurnCurtainsClosed',
                 dataType: 'json',
                 context: document.body
             }).success(function (data) {
@@ -36,7 +38,7 @@
                 console.log(mesg);
             })
             .fail(function (data) {
-                console.log("Light fail");
+                console.log("Curtains fail");
             })
         });
 
@@ -45,29 +47,30 @@
             $.getJSON("https://cloud.arest.io/light_id1/digital/2/", function (data) {
                 var isOnOrOff = data.return_value;
                 if (isOnOrOff == 1) {
-                    str = "Light is OFF";
+                    str = "Curtains is Closed";
                 }
                 else if (isOnOrOff == 0) {
-                    str = "Light is ON";
+                    str = "Curtains is Open";
                 }
                 else { str = "Not connected"; }
-                $("#statusLight").html(str);
+                $("#statusCurtains").html(str);
             });
         }
         //setInterval() method will execute the function once every 1 second
-        var test = $("#statusLight");
+        var test = $("#statusCurtains");
         setInterval(x.bind(null, test), 1000);
 
     })
 
 </script>
-<!-- html part for the light page-->
-<h2>Light</h2>
-<p id="Text"> Turn the light on or off </p>
-<button id="btnON" class="btn btn-info"> ON </button>
-<button id="btnOFF" class="btn btn-dark"> OFF</button>
+
+<h2>Curtains</h2>
+
+<p id="Text"> Turn the curtains in open or closed position </p>
+<button id="btnOpen" class="btn btn-info"> Open </button>
+<button id="btnclosed" class="btn btn-dark"> Closed</button>
 
 <div id="textMessage">
-    <p>Status Light</p>
-    <p id="statusLight"></p>
+    <p>Status Curtains</p>
+    <p id="statusCurtains"></p>
 </div>

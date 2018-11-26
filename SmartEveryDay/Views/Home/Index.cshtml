@@ -18,9 +18,10 @@
         </p>
 
     </div>
+    
     <div class="col-md-4">
         <h2>Flow Water </h2>
-        <!-- <button type="button" class="btn btn-primary " id="btnWater"> @Html.ActionLink("Water","Water", "Home") </button> -->
+        <!--<button type="button" class="btn btn-primary " id="btnWater"> @Html.ActionLink("Water","Water", "Home") </button> -->
 
         <button type="button" class="btn btn-primary" id="btnWater"> Flow Water </button>
         <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
@@ -35,7 +36,7 @@
     </div>
     <div class="col-md-4">
         <h2>Curtains</h2>
-        <!-- <button type="button" class="btn btn-warning" id="btnCurtains"> @Html.ActionLink("Curtains", "Curtains", "Home") </button>-->
+         
 
         <button type="button" class="btn btn-warning" id="btnCurtains"> Curtains </button>
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
@@ -53,6 +54,12 @@
             location.href = '@Url.Action("Light","Home")';
             console.log("button pressed")
         });
+
+        $('#btnCurtains').on('click', function () {
+            console.log('In pula mea')
+                location.href = '@Url.Action("Curtains","Home")';
+                console.log("button pressed")
+            });
 
         $('#btnAdminView').on('click', function () {
             location.href = '@Url.Action("AdminView","Home")';
@@ -75,11 +82,9 @@
             console.log("button pressed")
         });
 
-        $('#btnCurtains').on('click', function () {
-            location.href = '@Url.Action("Curtains", "Home")';
-            console.log("button pressed")
-        });
+       
 
     })
 
 </script>
+

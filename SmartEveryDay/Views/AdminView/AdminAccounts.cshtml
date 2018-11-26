@@ -5,10 +5,15 @@
     Layout = "~/Views/Shared/_AdminLeftSidebar.cshtml";
     
 }
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+<!--customised stylesheet-->
+<link rel="stylesheet" href="~/Content/AdminAccount.css" />
+
 
 
 
@@ -16,9 +21,6 @@
     $(document).ready(function () {
         var UnitId;
         var UnitName;
-
-        console.log("AAAAAAAAAAAAAAAAAAa");
-
 
         $.ajax({
             type: "GET",
@@ -64,7 +66,7 @@
 <body>
     <div id="AdminViewBody">
         <H3>Admin view 1! NOT shared! Here vill be some text soon!</H3>
-        <table id="AccountDataTable" class="display" style="width:100%">
+        <table id="AccountDataTable" class="display" style="width:50%">
             <thead>
                 <tr>
                     <th>User id</th>

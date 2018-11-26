@@ -24,7 +24,7 @@ namespace SmartEveryDay.Controllers
 
         }
         //this method should call RemoniDataAccess ExecuteClient - but I got errors.
-        public JsonResult getUnits(string emeil, string password)
+        public JsonResult getUnits1(string emeil, string password)
         {
             List<UnitModel> temp = new List<UnitModel>();
 
