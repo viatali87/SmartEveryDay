@@ -4,16 +4,94 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SmartEveryDay.Models;
+using SmartEveryDay.Data;
+using System.Web.Script.Serialization;
 
 namespace SmartEveryDay.Controllers
 {
-    public class DeviceController : Controller
+    public class DeviceController : Controller, IDeviceController
     {
+        DatabaseAdapter adapter;
+
         // GET: Device
         public ActionResult Index()
         {
             return View();
         }
+
+        public DeviceController()
+        {
+            adapter = DatabaseAdapter.Instance();
+        }
+
+        // Returns a Device
+        [HttpPost]
+        public JsonResult AddNewDevice(string val)
+        {
+            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
+            Device dev = getDeviceFromJson(JSONObj);
+            return Json(adapter.AddNewDevice(dev));
+        }
+
+        private Device getDeviceFromJson(Dictionary<string, string> jasonObj)
+        {
+            Device dev = new Device();
+            dev.DeviceId = jasonObj["deviceid"];
+            dev.DeviceName = jasonObj["devicename"];
+            dev.DeviceType = jasonObj["devicetype"];
+            dev.Room = jasonObj["room"];
+            dev.RoomId = new Guid(jasonObj["roomid"]);
+            dev.IsOnline = Convert.ToBoolean(jasonObj["isonline"]);
+            return dev;
+        }
+
+        // Returns a string confirming if device was disabled or not.
+        [HttpPost]
+        public JsonResult DisableDevice(string deviceId)
+        {
+            return Json(adapter.DisableDevice(deviceId));
+        }
+
+        // Returns an updated Device
+        [HttpPost]
+        public JsonResult EditDevice(Device updatedDevice)
+        {
+            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
+            Device dev = getDeviceFromJson(JSONObj);
+            return Json(adapter.EditDevice(dev));
+        }
+
+        // Returns a list of all devices in the database
+        [HttpPost]
+        public JsonResult GetAllDevices()
+        {
+            return Json(adapter.GetAllDevices());
+        }
+
+        // Returns a list of all of the devices in the home, includes what rooms they are in
+        [HttpPost]
+        public JsonResult GetAllDevicesByHouseId(Guid houseId)
+        {
+            return Json(adapter.GetDevicesByHouseId(houseId));
+        }
+
+        // Retuns a list of Rooms and each one has a list of devices
+        [HttpPost]
+        public JsonResult GetRoomsAndDevicesByHouseId(Guid houseId)
+        {
+            return Json(adapter.GetRoomsAndDevicesByHouseId(houseId));
+        }
+
+        // Removes the connection from a home to a certain device
+        [HttpPost]
+        public JsonResult RemoveDeviceFromHome(string deviceId)
+        {
+            return Json(adapter.RemoveDeviceFromHome(deviceId));
+        }
+
+
+
 
         public string TurnCurtainsOpen()
         {
