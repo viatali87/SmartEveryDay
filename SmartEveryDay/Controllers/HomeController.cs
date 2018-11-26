@@ -55,6 +55,12 @@ namespace SmartEveryDay.Controllers
         }
 
 
+        // GET: User
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
+
 
     }
 }

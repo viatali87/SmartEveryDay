@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Web.Mvc;
 
 namespace SmartEveryDay.Controllers
 {
-    interface IUserController
+    public interface IUserController
     {
-        User CreateUser(string userName, string firstName, string lastName, Guid houseId, string phonenumber, string email, bool isAdmin);
-        String DeleteUser(Guid userId);
-        User EditUser(Guid userId);
-        User GetUser(Guid userId);
+        JsonResult CreateUser(string val);
+        JsonResult GetUser(Guid userId);
+        JsonResult GetAllUsers();
+        JsonResult EditUser(string val);
+        JsonResult DeleteUser(Guid userId);
 
     }
 }
