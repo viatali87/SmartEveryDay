@@ -39,7 +39,7 @@ namespace SmartEveryDay.Controllers
             Device dev = new Device();
             dev.DeviceId = jasonObj["deviceid"];
             dev.DeviceName = jasonObj["devicename"];
-            dev.DeviceType = jasonObj["devicetype"];
+            dev.DeviceType = int.Parse(jasonObj["devicetype"]);
             dev.Room = jasonObj["room"];
             dev.RoomId = new Guid(jasonObj["roomid"]);
             dev.IsOnline = Convert.ToBoolean(jasonObj["isonline"]);
@@ -66,19 +66,21 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetAllDevices()
         {
-            return Json(adapter.GetAllDevices());
+            List<Device> list = adapter.GetAllDevices();
+            return Json(list);
         }
 
         // Returns a list of all of the devices in the home, includes what rooms they are in
         [HttpPost]
-        public JsonResult GetAllDevicesByHouseId(Guid houseId)
+        public JsonResult GetAllDevicesByHouseId(string val)
         {
+            Guid houseId
             return Json(adapter.GetDevicesByHouseId(houseId));
         }
 
         // Retuns a list of Rooms and each one has a list of devices
         [HttpPost]
-        public JsonResult GetRoomsAndDevicesByHouseId(Guid houseId)
+        public JsonResult GetRoomsAndDevicesByHouseId(string val)
         {
             return Json(adapter.GetRoomsAndDevicesByHouseId(houseId));
         }

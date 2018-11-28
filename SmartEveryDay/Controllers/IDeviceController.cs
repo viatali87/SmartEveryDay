@@ -7,9 +7,9 @@ namespace SmartEveryDay.Controllers
 {
     interface IDeviceController
     {
-        JsonResult GetAllDevicesByHouseId(Guid houseId);
+        JsonResult GetAllDevicesByHouseId(string val);
         JsonResult GetAllDevices();
-        JsonResult GetRoomsAndDevicesByHouseId(Guid houseId);
+        JsonResult GetRoomsAndDevicesByHouseId(string val);
         JsonResult AddNewDevice(string val);
         JsonResult RemoveDeviceFromHome(string deviceId);
         JsonResult DisableDevice(string deviceId);
