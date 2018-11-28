@@ -7,7 +7,18 @@ namespace SmartEveryDay.Models
 {
     public class Room : IRoom
     {
-        public string name { get; set; }
-        public List<Device> roomDevices { get; set; }
+        public Guid RoomId { get; set; }
+        public string Name { get; set; }
+        public List<Device> RoomDevices { get; set; }
+
+        public Room()
+        {
+            RoomDevices = new List<Device>();
+        }
+
+        public void AddDevice(Device dev)
+        {
+            RoomDevices.Add(dev);
+        }
     }
 }

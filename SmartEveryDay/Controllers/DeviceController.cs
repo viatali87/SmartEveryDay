@@ -74,7 +74,8 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetAllDevicesByHouseId(string val)
         {
-            Guid houseId
+            string id = val.Substring(1, 36);
+            Guid houseId = new Guid(id);
             return Json(adapter.GetDevicesByHouseId(houseId));
         }
 
@@ -82,6 +83,8 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetRoomsAndDevicesByHouseId(string val)
         {
+            string id = val.Substring(1, 36);
+            Guid houseId = new Guid(id);
             return Json(adapter.GetRoomsAndDevicesByHouseId(houseId));
         }
 

@@ -18,7 +18,7 @@ namespace SmartEveryDay.Data
         List<User> GetAllUsers();
         List<Device> GetAllDevices();
         List<Device> GetDevicesByHouseId(Guid houseId);
-        List<List<Device>> GetRoomsAndDevicesByHouseId(Guid houseId);
+        List<Room> GetRoomsAndDevicesByHouseId(Guid houseId);
         Device AddNewDevice(Device device);
         string RemoveDeviceFromHome(string deviceId);
         string DisableDevice(string deviceId);
