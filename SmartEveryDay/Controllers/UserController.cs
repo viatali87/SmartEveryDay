@@ -37,32 +37,6 @@ namespace SmartEveryDay.Controllers
         }
 
         [HttpPost]
-        public JsonResult createUser(string val)
-        {
-        Console.Write("In CreateUser in UserController");
-        var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
-        User newUser = new User();
-            newUser.FirstName = JSONObj["firstname"];
-            newUser.LastName = JSONObj["lastname"];
-            newUser.PhoneNo = JSONObj["phonenumber"];
-            newUser.HouseId = new Guid(JSONObj["houseid"]);
-            newUser.Username = JSONObj["username"];
-            newUser.Email = JSONObj["email"];
-            newUser.IsAdmin = Convert.ToBoolean(JSONObj["isadmin"]);
-            Guid id = Guid.NewGuid();
-            newUser.UserId = id;
-
-            
-
-            // db.saveData2(data.country);
-
-            //string temp = db.saveData(data);
-            //return Json(temp);
-            return Json("Result: " + new JavaScriptSerializer().Serialize(db.saveNewUser(newUser)));
-            //return Json("Result: " + new JavaScriptSerializer().Serialize(db.getAllUsers()));
-        }
-
-        [HttpPost]
         public JsonResult getAllUsers(string val)
         {
             List<User> userslist = db.getAllUsers();
@@ -94,10 +68,6 @@ namespace SmartEveryDay.Controllers
             return View();
         }
 
-        public User CreateUser(string userName, string firstName, string lastName, Guid houseId, string phonenumber, string email, bool isAdmin)
-        {
-            throw new NotImplementedException();
-        }
 
         public JsonResult getAllUsers ()
         {
@@ -125,5 +95,33 @@ namespace SmartEveryDay.Controllers
             }
 
         }
+
+        [HttpPost]
+        public JsonResult CreateUser(string userName, string firstName, string lastName, string houseId, string phonenumber, string email, bool isAdmin)
+        {
+            User newUser = new User();
+
+            newUser.FirstName = firstName;
+            newUser.LastName = lastName;
+            newUser.PhoneNo = phonenumber;
+            newUser.HouseId = new Guid(houseId);
+            newUser.Username = userName;
+            newUser.Email = email;
+            newUser.IsAdmin = isAdmin;
+            Guid id = Guid.NewGuid();
+            newUser.UserId = id;
+
+            try
+            {
+                return Json(db.saveNewUser(newUser));
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in JSon request" + e);
+            }
+
+
+        }
+
     }
 }

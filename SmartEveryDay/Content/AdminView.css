@@ -1,14 +1,22 @@
-﻿/*customised css*/
-
-aside {
-    float: left;
+﻿#panel {
+    margin-bottom:15px;
+    
 }
 
+aside {
+    float: none;
+    position: absolute;
+    background-color: yellow;
+}
 
+#bodyX {
+    position: relative;
+    margin-left: 220px;
+    background-color: #f7f9fc;
+    max-width:76%;
+    margin-top: 3px;
 
-
-
-
+}
 
 /** css from https://bootsnipp.com/snippets/kl2OQ **/
 /**@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";**/
@@ -17,7 +25,7 @@ aside {
 body {
     font-size: 14px;
     color: #333;
-    list-style: 26px;
+    list-style: circle;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -6239,12 +6247,10 @@ button.close {
         -webkit-transform: translate3d(0,0,0);
         transform: translate3d(0,0,0);
     }
-
     .active.carousel-item-right, .carousel-item-next {
         -webkit-transform: translate3d(100%,0,0);
         transform: translate3d(100%,0,0);
     }
-
     .active.carousel-item-left, .carousel-item-prev {
         -webkit-transform: translate3d(-100%,0,0);
         transform: translate3d(-100%,0,0);

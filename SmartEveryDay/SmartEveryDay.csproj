@@ -361,14 +361,16 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Home\Water.cshtml" />
     <Content Include="Views\Home\Light.cshtml" />
-    <Content Include="Views\Home\AdminView1.cshtml" />
     <Content Include="Views\Home\UserView.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
-    <Content Include="Views\Home\AdminView.cshtml" />
     <Content Include="Views\Shared\_AdminLeftSidebar.cshtml" />
     <Content Include="Views\AdminView\Index.cshtml" />
     <Content Include="Views\AdminView\AdminAccounts.cshtml" />
     <Content Include="Views\Home\Curtains.cshtml" />
+    <Content Include="Views\AdminView\AdminDevices.cshtml" />
+    <Content Include="Views\AdminView\AdminScenarios.cshtml" />
+    <Content Include="Views\AdminView\AdminSupportCases.cshtml" />
+    <Content Include="Views\AdminView\AdminReports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Curtains\" />
