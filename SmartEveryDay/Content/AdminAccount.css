@@ -1,2 +1,6 @@
-﻿body {
+﻿#AdminViewBody {
+    max-width: 80%;
+    margin-left: 220px;
+    position: absolute;
 }
+

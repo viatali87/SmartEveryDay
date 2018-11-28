@@ -27,27 +27,7 @@ namespace SmartEveryDay.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateUser(string val)
-        {
-            Console.Write("In CreateUser in UserController");
-            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
-            User newUser = new User();
-                newUser.FirstName = JSONObj["firstname"];
-                newUser.LastName = JSONObj["lastname"];
-                newUser.PhoneNo = JSONObj["phonenumber"];
-                newUser.HouseId = new Guid(JSONObj["houseid"]);
-                newUser.Username = JSONObj["username"];
-                newUser.Email = JSONObj["email"];
-                newUser.IsAdmin = Convert.ToBoolean(JSONObj["isadmin"]);
-                Guid id = Guid.NewGuid();
-                newUser.UserId = id;
-            
-             
-            return Json("Result: " + new JavaScriptSerializer().Serialize(db.SaveNewUser(newUser)));
-        }
-
-        [HttpPost]
-        public JsonResult DeleteUser(string val)
+        public JsonResult getAllUsers(string val)
         {
             string temp;
             DatabaseAdapter adapter = DatabaseAdapter.Instance();
@@ -132,6 +112,32 @@ namespace SmartEveryDay.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult CreateUser(string userName, string firstName, string lastName, string houseId, string phonenumber, string email, bool isAdmin)
+        {
+            User newUser = new User();
+
+            newUser.FirstName = firstName;
+            newUser.LastName = lastName;
+            newUser.PhoneNo = phonenumber;
+            newUser.HouseId = new Guid(houseId);
+            newUser.Username = userName;
+            newUser.Email = email;
+            newUser.IsAdmin = isAdmin;
+            Guid id = Guid.NewGuid();
+            newUser.UserId = id;
+
+            try
+            {
+                return Json(db.saveNewUser(newUser));
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in JSon request" + e);
+            }
+
+
+        }
 
     }
 }

@@ -37,12 +37,24 @@ namespace SmartEveryDay.Data
             
         }
 
-        public User SaveNewUser(User user)
+      
+
+
+        public User saveNewUser(User user)
         {
-            string attempt = SendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
-            return GetUserById(user.UserId);
-           
+            try
+            {
+                string attempt = sendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
+                return user;
+
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in dbAdapter " + e);
+                
+            }
         }
+
 
         /// <summary>
         /// Takes a user and saves a new row in the Users table

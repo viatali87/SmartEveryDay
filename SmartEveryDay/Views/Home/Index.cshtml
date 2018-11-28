@@ -27,8 +27,7 @@
         <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
         <h3>Re-directing to Admin view: </h3>
          <button type="button" class="btn btn-primary " id="btnAdminView"> Admin View  </button>
-        <h3>Re-directing to Admin view: draft for Admin account table </h3>
-        <button type="button" class="btn btn-primary " id="btnAdminView1"> Admin Acount view  </button>
+        <
 
         <h3>Re-directing to UserView view: </h3>
         <button type="button" class="btn btn-primary" id="btnUserView"> User View </button>
@@ -62,13 +61,10 @@
             });
 
         $('#btnAdminView').on('click', function () {
-            location.href = '@Url.Action("AdminView","Home")';
+            location.href = '@Url.Action("AdminAccounts", "AdminView")';
             console.log("button pressed")
         });
-        $('#btnAdminView1').on('click', function () {
-            location.href = '@Url.Action("AdminView1","Home")';
-            console.log("button pressed")
-        });
+       
 
         $('#btnUserView').on('click', function () {
             location.href = '@Url.Action("UserView","Home")';
