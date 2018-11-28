@@ -47,18 +47,21 @@ namespace SmartEveryDay.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteUser(Guid userId)
+        public JsonResult DeleteUser(string val)
         {
+            string temp;
             DatabaseAdapter adapter = DatabaseAdapter.Instance();
             try
             {
-                adapter.DeleteUser(userId);
+                // Remove escape characters that are automatically added in
+                string query = val.Substring(1, 36);
+                // Send request to database adapter
+                temp = adapter.DeleteUser(query);
             } catch
             {
                 return Json("User not deleted");
             }
-            
-            return Json("User deleted");
+            return Json(temp);
         }
 
         [HttpPost]
@@ -88,12 +91,12 @@ namespace SmartEveryDay.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetUser(Guid userId)
+        public JsonResult GetUser(string val)
         {
             DatabaseAdapter adapter = DatabaseAdapter.Instance();
             try
             {
-                return Json(adapter.GetUserById(userId));
+                return Json(adapter.GetUserById(new Guid(val)));
             }
             catch (System.Exception e)
             {

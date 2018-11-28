@@ -100,12 +100,18 @@ namespace SmartEveryDay.Data
             return GetUserById(user.UserId);
         }
 
-        public string DeleteUser(Guid userId)
+        public string DeleteUser(string val)
+        {
+            string attempt = SendQueryNoResponse("DELETE Users where Users_id = '" + val + "'");
+            return "User deleted";
+        }
+
+        public string EditUser(User user)
         {
             throw new NotImplementedException();
         }
 
-        public string EditUser(User user)
+        User IDatabaseAdapter.EditUser(User user)
         {
             throw new NotImplementedException();
         }
@@ -628,7 +634,6 @@ namespace SmartEveryDay.Data
                 con.Close();
             }
         }
-
 
     }
 }

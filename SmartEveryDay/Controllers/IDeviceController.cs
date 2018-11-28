@@ -13,7 +13,7 @@ namespace SmartEveryDay.Controllers
         JsonResult AddNewDevice(string val);
         JsonResult RemoveDeviceFromHome(string deviceId);
         JsonResult DisableDevice(string deviceId);
-        JsonResult EditDevice(Device updatedDevice);
+        JsonResult EditDevice(string val);
 
 
     }

@@ -14,7 +14,7 @@ namespace SmartEveryDay.Data
         User SaveNewUser(User user);
         User GetUserById(Guid userId);
         User EditUser(User user);
-        string DeleteUser(Guid userId);
+        string DeleteUser(string val);
         List<User> GetAllUsers();
         List<Device> GetAllDevices();
         List<Device> GetDevicesByHouseId(Guid houseId);

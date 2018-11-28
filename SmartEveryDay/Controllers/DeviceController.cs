@@ -55,7 +55,7 @@ namespace SmartEveryDay.Controllers
 
         // Returns an updated Device
         [HttpPost]
-        public JsonResult EditDevice(Device updatedDevice)
+        public JsonResult EditDevice(string val)
         {
             var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
             Device dev = getDeviceFromJson(JSONObj);
