@@ -14,7 +14,7 @@
         $('#btnOpen').on('click', function () {
             $.ajax({
                 // type: "GET",
-                url: '/Curtains/TurnCurtainsOpen',
+                url: '/Device/TurnCurtainsOpen',
                 dataType: 'json',
                 context: document.body
             }).success(function (data) {
@@ -30,7 +30,7 @@
 
             $.ajax({
                 // type: "GET",
-                url: '/Curtains/TurnCurtainsClosed',
+                url: '/Device/TurnCurtainsClosed',
                 dataType: 'json',
                 context: document.body
             }).success(function (data) {

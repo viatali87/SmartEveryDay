@@ -12,8 +12,14 @@
     <label for="Country">Country</label>
     <input type="text" name="countryName" id="countryName" placeholder="Write country here" />
 </form>
-<button id="submitbutton">Click me</button>
 <button id="getUsersButton">Get all users</button>
+<input id="inputbox" />
+<button id="deleteuser">Delete user</button>
+<button id="adduser">Add hardcoded user</button>
+
+<input id="inputbox2" />
+<button id="getdevices">GetAllDevicesForAHouseId</button>
+
 
 <script type="text/javascript">
 
@@ -43,7 +49,7 @@
                 data: { val }
             }).done(function (response) {
                 var res = response;
-                document.getElementById("p").textContent += " this has just been added";
+                //document.getElementById("p").textContent += " this has just been added";
                 t.textContent += "Response: " + response;
                 alert("Response: " + res);
             }).fail(function (response) {
@@ -51,7 +57,7 @@
             })
         } // End of save
 
-        document.getElementById("submitbutton").addEventListener("click", save);
+        document.getElementById("adduser").addEventListener("click", save);
 
         function getUsers() {
             document.getElementById("thetext").textContent = "-----------";
@@ -71,6 +77,42 @@
 
         document.getElementById("getUsersButton").addEventListener("click", getUsers);
 
+        function deleteuser() {
+            var value = document.getElementById('inputbox').value;
+            var val = JSON.stringify(value);
+            alert(val);
+            $.ajax({
+                type: "POST",
+                url: "/User/DeleteUser",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                document.getElementById("thetext").textContent += response;
+                alert("Done!");
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End of delete users
+
+        document.getElementById("deleteuser").addEventListener("click", deleteuser);
+
+        function getDevices() {
+            document.getElementById("thetext").textContent = "Devices: ";
+            var val = JSON.stringify("yay");
+            $.ajax({
+                type: "POST",
+                url: "/User/GetAllDevices",
+                //data: { val }
+            }).done(function (response) {
+                var res = response;
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getdevices").addEventListener("click", getDevices);
 
     } // Document ready ends
     );

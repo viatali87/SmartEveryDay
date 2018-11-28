@@ -216,14 +216,12 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminViewController.cs" />
-    <Compile Include="Controllers\CurtainsController.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\IDeviceController.cs" />
     <Compile Include="Controllers\ILogController.cs" />
     <Compile Include="Controllers\IRoomController.cs" />
     <Compile Include="Controllers\IScenarioController.cs" />
     <Compile Include="Controllers\IUserController.cs" />
-    <Compile Include="Controllers\LightController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\ScenarioController.cs" />
@@ -265,6 +263,7 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WaterController.cs" />
     <Compile Include="Data\DatabaseAdapter.cs" />
+    <Compile Include="Data\IDatabaseAdapter.cs" />
     <Compile Include="Data\RemoniDataAccess.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -275,6 +274,7 @@
     <Compile Include="Models\IDevice.cs" />
     <Compile Include="Models\IRoom.cs" />
     <Compile Include="Models\IUser.cs" />
+    <Compile Include="Models\Room.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\UnitModel.cs" />

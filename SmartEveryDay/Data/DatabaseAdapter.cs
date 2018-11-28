@@ -12,7 +12,7 @@ using SmartEveryDay.Models;
 
 namespace SmartEveryDay.Data
 {
-    public class DatabaseAdapter
+    public class DatabaseAdapter : IDatabaseAdapter
     {
         private static DatabaseAdapter instance = new DatabaseAdapter();
 
@@ -25,8 +25,15 @@ namespace SmartEveryDay.Data
 
         public static DatabaseAdapter Instance()
         {
-            
+            if(instance == null)
+            {
+               return new DatabaseAdapter();
+            } else
+            {
                 return instance;
+            }
+            
+                
             
         }
 
@@ -54,7 +61,7 @@ namespace SmartEveryDay.Data
         /// </summary>
         /// <param name="user"></param>
         /// <returns>A user</returns>
-        public User saveNewUserSecure(User user)  // WORKS but the if statement is untested!
+        public User SaveNewUserSecure(User user)  // WORKS but the if statement is untested!
         {
             /*Guid userid = user.UserId;
             string username = user.Username;
@@ -81,7 +88,7 @@ namespace SmartEveryDay.Data
                 new SqlParameter() { ParameterName = "@isadmin", SqlDbType = SqlDbType.Bit, Value = user.IsAdmin }
 
             };
-            sendQueryNoResponse(list);
+            SendQueryNoResponse(sql);
             //sendQueryNoResponse(sql);
             /*
             cmd.Parameters.Add("@userid", user.UserId);
@@ -102,10 +109,51 @@ namespace SmartEveryDay.Data
         
                 //con.Close();
             
-            return getUserById(user.UserId);
+            return GetUserById(user.UserId);
         }
 
-        private string sendQueryNoResponse(List<SqlParameter> list)
+        public string DeleteUser(string val)
+        {
+            string attempt = SendQueryNoResponse("DELETE Users where Users_id = '" + val + "'");
+            return "User deleted";
+        }
+
+        public string EditUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        User IDatabaseAdapter.EditUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Device AddNewDevice(Device device)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string RemoveDeviceFromHome(string deviceId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string DisableDevice(string deviceId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Device EditDevice(Device updatedDevice)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<List<Device>> GetRoomsAndDevicesByHouseId(Guid houseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string SendQueryNoResponse(List<SqlParameter> list)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -134,7 +182,7 @@ namespace SmartEveryDay.Data
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>A user</returns>
-        public User getUserById(Guid userId)
+        public User GetUserById(Guid userId)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -183,7 +231,7 @@ namespace SmartEveryDay.Data
         /// <param name="userId"></param>
         /// <returns>A user</returns>
 
-        public User getUserByIdSecure(Guid userId)
+        public User GetUserByIdSecure(Guid userId)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -233,7 +281,7 @@ namespace SmartEveryDay.Data
         /// Get a list of all users
         /// </summary>
         /// <returns>List of Users</returns>
-        public List<User> getAllUsers()
+        public List<User> GetAllUsers()
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -299,7 +347,7 @@ namespace SmartEveryDay.Data
         /// </summary>
         /// <param name="houseId"></param>
         /// <returns>A list of devices</returns>
-        public List<Device> getDevicesByHouseId(Guid houseId)
+        public List<Device> GetDevicesByHouseId(Guid houseId)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -346,7 +394,7 @@ namespace SmartEveryDay.Data
         /// Get all devices from all users
         /// </summary>
         /// <returns>A list of devices</returns>
-        public List<Device> getAllDevices()
+        public List<Device> GetAllDevices()
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -394,7 +442,7 @@ namespace SmartEveryDay.Data
         /// </summary>
         /// <param name="houseId"></param>
         /// <returns>A list of devices</returns>
-        public List<Device> getRoomsAndDevicesByHouseId(string houseId)
+        public List<Device> GetRoomsAndDevicesByHouseId(string houseId)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -452,7 +500,7 @@ namespace SmartEveryDay.Data
         /// </summary>
         /// <param name="query"></param>
         /// <returns>A string indicating if the query was successful</returns>
-        private string sendQueryNoResponse(string query)
+        private string SendQueryNoResponse(string query)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -481,7 +529,7 @@ namespace SmartEveryDay.Data
         /// </summary>
         /// <param name="query"></param>
         /// <returns>A SqlDataReader containing the information asked for</returns>
-        private SqlDataReader sendQueryGetResponse(string query)
+        private SqlDataReader SendQueryGetResponse(string query)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -503,7 +551,7 @@ namespace SmartEveryDay.Data
             }
             finally
             {
-                //con.Close();
+                con.Close();
             }
         }
 
@@ -569,7 +617,7 @@ namespace SmartEveryDay.Data
 
         }
 
-        private void exampleMethod()
+        private void ExampleMethod()
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
@@ -598,5 +646,6 @@ namespace SmartEveryDay.Data
                 con.Close();
             }
         }
+
     }
 }

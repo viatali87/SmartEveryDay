@@ -16,51 +16,9 @@ namespace SmartEveryDay.Controllers
 
         public UserController()
         {
-            //db = new Models.DatabaseAdapter();
             db = DatabaseAdapter.Instance();
         }
-        [HttpPost]
-        public JsonResult sendData(string val)
-        {
-            if(val == null)
-            {
-                return Json("Data was null!");
-            } else
-            {
-                Console.Write("In sendData in UserController, going to send the databack");
-                var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
-                string country = JSONObj["country"];
-                //string res = db.saveData(country);
-                return Json("Yay!"); //Json("Yayay! " + res);
-            }
 
-        }
-
-        [HttpPost]
-        public JsonResult getAllUsers(string val)
-        {
-            List<User> userslist = db.getAllUsers();
-            foreach (var item in userslist)
-            {
-                Console.WriteLine(item.ToString());
-            }
-            return Json("All users: " + new JavaScriptSerializer().Serialize(userslist));
-
-        }
-        public string DeleteUser(Guid userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User EditUser(Guid userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public User GetUser(Guid userId)
-        {
-            throw new NotImplementedException();
-        }
 
         // GET: User
         public ActionResult UserProfile()
@@ -68,15 +26,73 @@ namespace SmartEveryDay.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult getAllUsers(string val)
+        {
+            string temp;
+            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+            try
+            {
+                // Remove escape characters that are automatically added in
+                string query = val.Substring(1, 36);
+                // Send request to database adapter
+                temp = adapter.DeleteUser(query);
+            } catch
+            {
+                return Json("User not deleted");
+            }
+            return Json(temp);
+        }
 
-        public JsonResult getAllUsers ()
+        [HttpPost]
+        public JsonResult EditUser(string val)
+        {
+            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+
+            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
+            User updatedUser = new User();
+            updatedUser.FirstName = JSONObj["firstname"];
+            updatedUser.LastName = JSONObj["lastname"];
+            updatedUser.PhoneNo = JSONObj["phonenumber"];
+            updatedUser.HouseId = new Guid(JSONObj["houseid"]);
+            updatedUser.Username = JSONObj["username"];
+            updatedUser.Email = JSONObj["email"];
+            updatedUser.IsAdmin = Convert.ToBoolean(JSONObj["isadmin"]);
+            Guid id = Guid.NewGuid();
+            updatedUser.UserId = id;
+
+            try
+            {
+                return Json(adapter.EditUser(updatedUser));
+            } catch
+            {
+                return Json("User not edited");
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetUser(string val)
+        {
+            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+            try
+            {
+                return Json(adapter.GetUserById(new Guid(val)));
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error, can not get user. " + e);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetAllUsers ()
         {
             IEnumerable<User> temp = null;
             DatabaseAdapter adapter = DatabaseAdapter.Instance(); 
 
             try
             {
-                temp = adapter.getAllUsers();
+                temp = adapter.GetAllUsers();
             }
 
             catch (System.Exception e)
