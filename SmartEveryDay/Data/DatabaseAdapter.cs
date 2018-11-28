@@ -171,7 +171,7 @@ namespace SmartEveryDay.Data
             }
             catch
             {
-                return "Error";
+                return "Error in dbadapter";
             }
             finally
             {
@@ -372,7 +372,7 @@ namespace SmartEveryDay.Data
                         Device dev = new Device();
                         dev.DeviceId = (string)reader["device_id"];
                         dev.StatusId = (int)reader["status_id"];
-                        dev.DeviceType = (string)reader["device_type"];
+                        dev.DeviceType = (int)reader["device_type"];
                         dev.DeviceName = (string)reader["device_name"];
                         dev.IsOnline = (bool)reader["is_online"];
 
@@ -418,7 +418,7 @@ namespace SmartEveryDay.Data
                         Device dev = new Device();
                         dev.DeviceId = (string)reader["device_id"];
                         dev.StatusId = (int)reader["status_id"];
-                        dev.DeviceType = (string)reader["device_type"];
+                        dev.DeviceType = (int)reader["device_type"];
                         dev.DeviceName = (string)reader["device_name"];
                         dev.IsOnline = (bool)reader["is_online"];
 
@@ -477,7 +477,7 @@ namespace SmartEveryDay.Data
                         Device dev = new Device();
                         dev.DeviceId = (string)reader["device_id"];
                         dev.StatusId = (int)reader["status_id"];
-                        dev.DeviceType = (string)reader["device_type"];
+                        dev.DeviceType = (int)reader["device_type"];
                         dev.DeviceName = (string)reader["device_name"];
                         dev.IsOnline = (bool)reader["is_online"];
                         dev.Room = (string)reader["room_name"];

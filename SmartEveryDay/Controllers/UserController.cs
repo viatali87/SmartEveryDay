@@ -27,7 +27,7 @@ namespace SmartEveryDay.Controllers
         }
 
         [HttpPost]
-        public JsonResult getAllUsers(string val)
+        public JsonResult GetAllUsers(string val)
         {
             string temp;
             DatabaseAdapter adapter = DatabaseAdapter.Instance();
@@ -37,7 +37,8 @@ namespace SmartEveryDay.Controllers
                 string query = val.Substring(1, 36);
                 // Send request to database adapter
                 temp = adapter.DeleteUser(query);
-            } catch
+            }
+            catch
             {
                 return Json("User not deleted");
             }
@@ -64,7 +65,8 @@ namespace SmartEveryDay.Controllers
             try
             {
                 return Json(adapter.EditUser(updatedUser));
-            } catch
+            }
+            catch
             {
                 return Json("User not edited");
             }
@@ -88,7 +90,7 @@ namespace SmartEveryDay.Controllers
         public JsonResult GetAllUsers ()
         {
             IEnumerable<User> temp = null;
-            DatabaseAdapter adapter = DatabaseAdapter.Instance(); 
+            DatabaseAdapter adapter = DatabaseAdapter.Instance();
 
             try
             {
@@ -102,12 +104,12 @@ namespace SmartEveryDay.Controllers
 
             try
             {
-            return Json(temp.ToList(), JsonRequestBehavior.AllowGet);
+                return Json(temp.ToList(), JsonRequestBehavior.AllowGet);
 
             }
             catch (System.Exception e)
             {
-                throw new System.ArgumentException("Error in JSon request"+ e);
+                throw new System.ArgumentException("Error in JSon request" + e);
             }
 
         }
@@ -139,9 +141,25 @@ namespace SmartEveryDay.Controllers
 
         }
 
+        [HttpPost]
         public JsonResult DeleteUser(string val)
         {
-            throw new NotImplementedException();
+            string temp;
+            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+            try
+            {
+                // Remove escape characters that are automatically added in
+                string query = val.Substring(1, 36);
+                // Send request to database adapter
+                temp = adapter.DeleteUser(query);
+            }
+            catch
+            {
+                return Json("User not deleted");
+            }
+            return Json(temp);
+
         }
+
     }
 }

@@ -18,7 +18,10 @@
 <button id="adduser">Add hardcoded user</button>
 
 <input id="inputbox2" />
-<button id="getdevices">GetAllDevicesForAHouseId</button>
+<button id="getdevices">GetAllDevices</button>
+
+<input id="inputbox3" />
+<button id="getdevicesbyhouseid">GetAllDevicesForAHouseId</button>
 
 
 <script type="text/javascript">
@@ -101,10 +104,11 @@
             var val = JSON.stringify("yay");
             $.ajax({
                 type: "POST",
-                url: "/User/GetAllDevices",
+                url: "/Device/GetAllDevices",
                 //data: { val }
             }).done(function (response) {
                 var res = response;
+                console.log(res);
                 document.getElementById("thetext").textContent += response;
 
             }).fail(function (response) {
@@ -113,6 +117,26 @@
         } // End ofget users
 
         document.getElementById("getdevices").addEventListener("click", getDevices);
+
+        function getDevicesByHouseId() {
+            document.getElementById("thetext").textContent = "Devices: ";
+            var value = document.getElementById('inputbox3').value;
+            var val = JSON.stringify(value);
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetAllDevicesByHouseId",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getdevicesbyhouseid").addEventListener("click", getDevicesByHouseId);
 
     } // Document ready ends
     );
