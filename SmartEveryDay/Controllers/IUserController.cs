@@ -12,9 +12,10 @@ namespace SmartEveryDay.Controllers
     interface IUserController
     {
         JsonResult CreateUser(string userName, string firstName, string lastName, string houseId, string phonenumber, string email, bool isAdmin);
-        String DeleteUser(Guid userId);
-        User EditUser(Guid userId);
-        User GetUser(Guid userId);
+        JsonResult GetUser(string val);
+        JsonResult GetAllUsers();
+        JsonResult EditUser(string val);
+        JsonResult DeleteUser(string val);
 
     }
 }

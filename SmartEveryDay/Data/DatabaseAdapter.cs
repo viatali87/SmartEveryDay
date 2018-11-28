@@ -23,6 +23,8 @@ namespace SmartEveryDay.Data
 
         }
 
+        
+
         public static DatabaseAdapter Instance()
         {
             if(instance == null)
@@ -40,11 +42,11 @@ namespace SmartEveryDay.Data
       
 
 
-        public User saveNewUser(User user)
+        public User SaveNewUser(User user)
         {
             try
             {
-                string attempt = sendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
+                string attempt = SendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
                 return user;
 
             }

@@ -84,7 +84,7 @@ namespace SmartEveryDay.Controllers
             }
         }
 
-        [HttpPost]
+        
         public JsonResult GetAllUsers ()
         {
             IEnumerable<User> temp = null;
@@ -129,7 +129,7 @@ namespace SmartEveryDay.Controllers
 
             try
             {
-                return Json(db.saveNewUser(newUser));
+                return Json(db.SaveNewUser(newUser));
             }
             catch (System.Exception e)
             {
@@ -139,5 +139,9 @@ namespace SmartEveryDay.Controllers
 
         }
 
+        public JsonResult DeleteUser(string val)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
