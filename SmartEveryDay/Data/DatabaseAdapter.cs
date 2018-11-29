@@ -155,6 +155,7 @@ namespace SmartEveryDay.Data
             throw new NotImplementedException();
         }
 
+        // Adds a record of status change in lights for a device
         public string addLightRecord( DateTime dt, string deviceId, int newStatus)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");

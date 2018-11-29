@@ -209,12 +209,20 @@ namespace SmartEveryDay.Controllers
             return content;
         }
 
+        // Add a record of change of status of a device
         public string addRecord(string deviceId, int newStatus, int deviceType)
         {
             if(deviceType == 1)
             {
                 return adapter.addLightRecord(DateTime.Now, deviceId, newStatus);
 
+            } if(deviceType == 2)
+            {
+                throw new NotImplementedException();
+
+            } if(deviceType == 3)
+            {
+                throw new NotImplementedException();
             }
             return null;
         }
