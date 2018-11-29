@@ -96,6 +96,7 @@ namespace SmartEveryDay.Controllers
 
             var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
             User updatedUser = new User();
+            updatedUser.UserId = new Guid(JSONObj["userid"]);
             updatedUser.FirstName = JSONObj["firstname"];
             updatedUser.LastName = JSONObj["lastname"];
             updatedUser.PhoneNo = JSONObj["phonenumber"];

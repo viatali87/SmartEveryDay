@@ -23,6 +23,13 @@
 <input id="inputbox3" />
 <button id="getdevicesbyhouseid">GetAllDevicesForAHouseId</button>
 
+<button id="edituserbutton">Edit user</button>
+<button id="getdevicesbyhouseidbutton">GetRoomsAndDevicesByHouseId</button>
+<br />
+<input id="inputTypeOfDevice" />
+<button id="getDevicesByType">GetDevicesByType</button>
+
+
 
 <script type="text/javascript">
 
@@ -48,7 +55,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/User/createUser",
+                url: "/User/CreateUser",
                 data: { val }
             }).done(function (response) {
                 var res = response;
@@ -67,7 +74,7 @@
             var val = JSON.stringify("yay");
             $.ajax({
                 type: "POST",
-                url: "/User/getAllUsers",
+                url: "/User/GetAllUsers",
                 data: { val }
             }).done(function (response) {
                 var res = response;
@@ -137,6 +144,90 @@
         } // End ofget users
 
         document.getElementById("getdevicesbyhouseid").addEventListener("click", getDevicesByHouseId);
+
+        function edituser() {
+            var t = document.getElementById("thetext");
+            //var val = JSON.stringify('{ "country": "Japan"}');
+            //var val = JSON.parse('{ "country": "Japan"}');
+            //var mylist = List<KeyValuePair<K,V>>;
+            var myDictionary = {
+                "userid": '62EADAFE-7E68-4AC1-95E9-55BE39EA35F9',
+                "firstname": "Lily",
+                "lastname": "Babababaramm",
+                "phonenumber": "777777",
+                "houseid": "CE61F280-E5F7-45A4-904A-0D2E02EE6A78",
+                "username": "LLLLL",
+                "email": "lilypadbabbara@gmail.com",
+                "isadmin": "false"
+            };
+
+            var val = JSON.stringify(myDictionary);
+            console.log("String: " + val);
+
+            $.ajax({
+                type: "POST",
+                url: "/User/EditUser",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                //document.getElementById("p").textContent += " this has just been added";
+                t.textContent += "Response: " + response;
+                alert("Response: " + res);
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End of edit user
+
+        document.getElementById("edituserbutton").addEventListener("click", edituser);
+
+        //GetRoomsAndDevicesByHouseId
+        function GetRoomsAndDevicesByHouseId() {
+            var val = JSON.stringify("CE61F280-E5F7-45A4-904A-0D2E02EE6A79");
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetRoomsAndDevicesByHouseId",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getdevicesbyhouseidbutton").addEventListener("click", GetRoomsAndDevicesByHouseId);
+
+
+        function getDevicesByType() {
+            document.getElementById("thetext").textContent = "Devices: ";
+            var value = document.getElementById('inputTypeOfDevice').value;
+
+            var myDictionary = {
+                "houseid": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                "type": value,
+            };
+
+            var val = JSON.stringify(myDictionary);
+
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetDevicesByType",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getDevicesByType").addEventListener("click", getDevicesByType);
+
+
 
     } // Document ready ends
     );

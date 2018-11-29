@@ -13,6 +13,7 @@ namespace SmartEveryDay.Models
         public int DeviceType { get; set; }
         public string DeviceName { get; set; }
         public bool IsOnline { get; set; }
+        // Not sure that we need the room properties
         public string Room { get; set; }
         public Guid RoomId { get; set; }
 
