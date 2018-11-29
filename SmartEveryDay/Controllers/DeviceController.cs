@@ -131,6 +131,23 @@ namespace SmartEveryDay.Controllers
             return Json(newRoomList);
         }
 
+        [HttpPost]
+        public JsonResult GetDevicesInARoomByType(string roomId, int type)
+        {
+            Guid Id;
+            if (roomId.Length > 36)
+            {
+                string id = roomId.Substring(1, 36);
+                Id = new Guid(id);
+            }
+            else
+            {
+                Id = new Guid(roomId);
+            }
+            return Json(adapter.getDevicesInARoomByType(Id, type));
+
+        }
+
         // Get devices froma  home by type, all lights for example
         [HttpPost]
         public JsonResult GetDevicesByType(string val)

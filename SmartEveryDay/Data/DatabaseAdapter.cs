@@ -616,6 +616,44 @@ namespace SmartEveryDay.Data
             }
         }
 
+        public List<Device> getDevicesInARoomByType(Guid roomId, int type)
+        {
+
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string deviceByType = @"SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online
+                                    FROM Device AS D
+                                    INNER JOIN Rooms_devices AS RD
+                                    ON D.device_id = RD.device_id AND RD.room_id = '" + roomId + "' AND D.device_type = " + type + " ";
+            try
+            {
+                SqlCommand command = new SqlCommand(deviceByType, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<Device> devlist = new List<Device>();
+
+                while (reader.Read())
+                {
+                    Device dev = new Device();
+                    dev.DeviceId = (string)reader["device_id"];
+                    dev.StatusId = (int)reader["status_id"];
+                    dev.DeviceType = (int)reader["device_type"];
+                    dev.DeviceName = (string)reader["device_name"];
+                    dev.IsOnline = (bool)reader["is_online"];
+                    dev.RoomId = roomId;
+                    devlist.Add(dev);
+                }
+
+                return devlist;
+            } catch
+            {
+                return null;
+            } finally
+            {
+                con.Close();
+            }
+        }
+
         /// <summary>
         /// Send a query to the database without getting a responses
         /// </summary>

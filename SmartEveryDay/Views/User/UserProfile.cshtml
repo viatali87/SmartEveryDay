@@ -12,29 +12,34 @@
     <label for="Country">Country</label>
     <input type="text" name="countryName" id="countryName" placeholder="Write country here" />
 </form>
+<br />
 <button id="getUsersButton">Get all users</button>
-<input id="inputbox" />
+<input id="inputbox" placeholder="Enter user id to delete" />
 <button id="deleteuser">Delete user</button>
 <button id="adduser">Add hardcoded user</button>
-
+<br />
 <input id="inputbox2" />
 <button id="getdevices">GetAllDevices</button>
-
-<input id="inputbox3" />
-<button id="getdevicesbyhouseid">GetAllDevicesForAHouseId</button>
-
-<button id="edituserbutton">Edit user</button>
-<button id="getdevicesbyhouseidbutton">GetRoomsAndDevicesByHouseId</button>
 <br />
-<input id="inputTypeOfDevice" />
+<input id="inputbox3" placeholder="Enter house id" />
+<button id="getdevicesbyhouseid">GetAllDevicesForAHouseId</button>
+<br />
+<button id="edituserbutton">Edit user hardcoded</button>
+<button id="getdevicesbyhouseidbutton">GetRoomsAndDevicesByHardcodedHouseId</button>
+<br />
+<input id="inputTypeOfDevice" placeholder="Enter type of device" />
 <button id="getDevicesByType">GetDevicesByType</button>
 <br />
 <br />
 <text>Insert type of device (Device type = 1 = light, 2 = blinds, 3 = water)</text>
 <br />
-<input id="inputboxtype" />
+<input id="inputboxtype" placeholder="Enter type of device"/>
 <br />
 <button id="getroomsbytypesbutton">Get Rooms by type</button>
+<br />
+<input id="inputboxroom" placeholder="Enter room id"/>
+<input id="inputboxtype2" placeholder="Enter 1 for light, 2 for blinds or 3 for water"/>
+<button id="GetDevicesInARoomByTypebutton">Get Devices for a certain room of a certain type </button>
 
 <script type="text/javascript">
 
@@ -283,6 +288,31 @@
                 dataType: 'json',
                 data: {
                     "houseId": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                    "type": type
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    $('#AccountDataTable').load();
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of GetRoomsAndDevicesByType
+
+
+        // GetDevicesInARoomByType
+        $('#GetDevicesInARoomByTypebutton').on('click', function () {
+            var type = document.getElementById('inputboxtype2').value;
+            var roomid = document.getElementById('inputboxroom').value;
+            $.ajax({
+                type: "POST",
+                url: '/Device/GetDevicesInARoomByType',
+                dataType: 'json',
+                data: {
+                    "roomId": roomid,
                     "type": type
                 },
                 success: function (response) {
