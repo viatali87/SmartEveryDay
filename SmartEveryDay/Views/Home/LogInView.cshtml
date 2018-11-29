@@ -1,0 +1,99 @@
+﻿@using SmartEveryDay.Models User
+
+@{
+    User usertmp = new SmartEveryDay.Models.User();
+    ViewBag.Title = "LogInView";
+}
+
+
+<!--Stylesheets and bootstrap for user menu icon and dropdown-->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<!--customised stylesheet-->
+<link rel="stylesheet" href="~/Content/LogInView.css" />
+
+<p>!!!</p>
+<h2>Log In View</h2>
+<p>That is view for log in for users, to getback user view</p>
+<p>Information for login: choose the user with username: Lynn,</p>
+<p> user id 7c9e6679-7425-40de-944b-e07fc1f90ae8</p>
+<p>and password: mydog10</p>
+<p>But actually it is hardcoded for now for user with that id</p>
+
+
+
+<div>
+           <div class="container">
+            <label for="uname"><b>Username</b></label>
+            <input type="text" id="UserName" placeholder="Enter Username" name="uname" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" id="pswd" placeholder="Enter Password" name="psw" required>
+
+            <button type="submit" id="btnSubmit">Login</button>
+            <label>
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <button type="button" class="cancelbtn">Cancel</button>
+            <span class="psw">Forgot <a href="#">password?</a></span>
+        </div>
+  
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+
+        $('#btnSubmit').on('click', function () {
+            console.log("Button Submit");
+
+            var username = $('#UserName').val();
+            var password = $('#pswd').val();
+            var userId = "7c9e6679-7425-40de-944b-e07fc1f90ae8";
+
+           
+
+
+            $.ajax({
+                type: "POST",
+                url: '/User/GetUser',
+                dataType: 'json',
+                data: {
+                    'val': userId,
+                   
+                },
+
+
+                success: function (response) {
+                    location.href = "/User/Index",
+
+                    //usertmp.UserId = respone.UserId;
+                   // usertmp.FirstName = response.FirstName;
+                   // usertmp.LastName = response.LastName;
+                    console.log("Success");
+                    console.log(response);
+
+                  
+
+                    
+                   
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+
+
+
+
+                }
+
+            });
+        });
+    })
+</script>

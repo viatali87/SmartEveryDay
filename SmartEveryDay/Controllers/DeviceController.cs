@@ -74,15 +74,15 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetAllDevicesByHouseId(string val)
         {
-            Guid houseId
-            return Json(adapter.GetDevicesByHouseId(houseId));
+
+            return null;
         }
 
         // Retuns a list of Rooms and each one has a list of devices
         [HttpPost]
         public JsonResult GetRoomsAndDevicesByHouseId(string val)
         {
-            return Json(adapter.GetRoomsAndDevicesByHouseId(houseId));
+            return null;
         }
 
         // Removes the connection from a home to a certain device

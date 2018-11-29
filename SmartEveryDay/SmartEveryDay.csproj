@@ -296,6 +296,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
+    <Content Include="Content\LogInView.css" />
     <Content Include="Content\UserView.css" />
     <Content Include="Content\Water.css" />
     <Content Include="favicon.ico" />
@@ -371,6 +372,14 @@
     <Content Include="Views\AdminView\AdminScenarios.cshtml" />
     <Content Include="Views\AdminView\AdminSupportCases.cshtml" />
     <Content Include="Views\AdminView\AdminReports.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Shared\_UserSharedTopMenu.cshtml" />
+    <Content Include="Views\User\WaterRooms.cshtml" />
+    <Content Include="Views\User\LightRooms.cshtml" />
+    <Content Include="Views\User\CurtainRooms.cshtml" />
+    <Content Include="Views\User\Scenarios.cshtml" />
+    <Content Include="Views\User\Reports.cshtml" />
+    <Content Include="Views\Home\LogInView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Curtains\" />

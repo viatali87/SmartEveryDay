@@ -20,11 +20,55 @@ namespace SmartEveryDay.Controllers
         }
 
 
-        // GET: User
+        // GET: User Views
+        #region Views
         public ActionResult UserProfile()
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult Index(User user)
+        {
+            
+       
+            if (user !=null)
+            {
+             
+                return View("index", User);}
+
+            else
+            {
+                return View("LogInView");
+            }
+           
+            
+        }
+
+        public ActionResult CurtainRooms()
+        {
+            return View("CurtainRooms");
+        }
+
+        public ActionResult LightRooms()
+        {
+            return View("LightRooms");
+        }
+        public ActionResult Scenarios()
+        {
+            return View("Scenarios");
+        }
+        public ActionResult WaterRooms()
+        {
+            return View("WaterRooms");
+        }
+        public ActionResult Reports()
+        {
+            return View("Reports");
+        }
+        #endregion
+
+
 
         [HttpPost]
         public JsonResult GetAllUsers(string val)

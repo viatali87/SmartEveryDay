@@ -32,6 +32,9 @@
         <h3>Re-directing to UserView view: </h3>
         <button type="button" class="btn btn-primary" id="btnUserView"> User View </button>
         
+        <h3>Re-directing to LogIn view: </h3>
+        <button type="button" class="btn btn-primary" id="btnLogIn"> LogIn User </button>
+
     </div>
     <div class="col-md-4">
         <h2>Curtains</h2>
@@ -64,10 +67,15 @@
             location.href = '@Url.Action("AdminAccounts", "AdminView")';
             console.log("button pressed")
         });
-       
+
+        $('#btnLogIn').on('click', function () {
+            location.href = '@Url.Action("LogInView", "Home")';
+            console.log("button pressed")
+        });
+
 
         $('#btnUserView').on('click', function () {
-            location.href = '@Url.Action("UserView","Home")';
+            location.href = '@Url.Action("Index","User")';
             console.log("button pressed")
         });
 
@@ -78,7 +86,7 @@
             console.log("button pressed")
         });
 
-       
+
 
     })
 
