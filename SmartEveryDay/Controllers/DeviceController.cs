@@ -53,7 +53,7 @@ namespace SmartEveryDay.Controllers
             return Json(adapter.DisableDevice(deviceId));
         }
 
-        // Returns an updated Device
+        // Returns an updated Device, takes a device
         [HttpPost]
         public JsonResult EditDevice(string val)
         {
@@ -70,7 +70,7 @@ namespace SmartEveryDay.Controllers
             return Json(list);
         }
 
-        // Returns a list of all of the devices in the home, includes what rooms they are in
+        // Returns a list of all of the devices in the home, includes what rooms they are in, takes a houseid
         [HttpPost]
         public JsonResult GetAllDevicesByHouseId(string val)
         {
@@ -79,7 +79,7 @@ namespace SmartEveryDay.Controllers
             return Json(adapter.GetDevicesByHouseId(houseId));
         }
 
-        // Retuns a list of Rooms and each one has a list of devices
+        // Retuns a list of Rooms and each one has a list of devices, takes a house id
         [HttpPost]
         public JsonResult GetRoomsAndDevicesByHouseId(string val)
         {
@@ -131,6 +131,7 @@ namespace SmartEveryDay.Controllers
             return Json(newRoomList);
         }
 
+        // Get devices of a specific type for a specific room, all lights in room with Id x for example
         [HttpPost]
         public JsonResult GetDevicesInARoomByType(string roomId, int type)
         {
@@ -148,7 +149,7 @@ namespace SmartEveryDay.Controllers
 
         }
 
-        // Get devices froma  home by type, all lights for example
+        // Get devices from a home by type, all lights for example, takes a houseid
         [HttpPost]
         public JsonResult GetDevicesByType(string val)
         {
@@ -206,6 +207,16 @@ namespace SmartEveryDay.Controllers
             var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/1");
 
             return content;
+        }
+
+        public string addRecord(string deviceId, int newStatus, int deviceType)
+        {
+            if(deviceType == 1)
+            {
+                return adapter.addLightRecord(DateTime.Now, deviceId, newStatus);
+
+            }
+            return null;
         }
 
     }

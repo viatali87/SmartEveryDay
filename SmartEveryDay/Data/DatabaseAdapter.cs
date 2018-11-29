@@ -33,14 +33,8 @@ namespace SmartEveryDay.Data
             } else
             {
                 return instance;
-            }
-            
-                
-            
+            }   
         }
-
-      
-
 
         public User SaveNewUser(User user)
         {
@@ -161,6 +155,19 @@ namespace SmartEveryDay.Data
             throw new NotImplementedException();
         }
 
+        public string addLightRecord( DateTime dt, string deviceId, int newStatus)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string id = deviceId.ToString();
+            string declaration = " DECLARE @date DATETIME, @time time SET @date='" + dt.Year + "-" + dt.Month + "-" + dt.Day + "' SET @time='" + dt.Hour + ":" + dt.Minute + ":" + dt.Second + "'SET @date=@date+CAST(@time AS DATETIME) SELECT @date AS DATETIME"; 
+            string insertquery = " INSERT INTO Light_records(device_id, device_status_id, date_time) VALUES('" + id + "', " + newStatus + ", @date)";
+            string finalQuery = declaration + insertquery;
+            return SendQueryNoResponse(finalQuery);
+            
+
+        }
+
         /*public List<List<Device>> GetRoomsAndDevicesByHouseId(Guid houseId)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
@@ -230,7 +237,7 @@ namespace SmartEveryDay.Data
             }
             catch
             {
-                return "Error in dbadapter";
+                return "Error processing request in dbadapter";
             }
             finally
             {
@@ -616,6 +623,7 @@ namespace SmartEveryDay.Data
             }
         }
 
+        // Get devices of a specific type for a specific room, all lights in room with Id x for example
         public List<Device> getDevicesInARoomByType(Guid roomId, int type)
         {
 

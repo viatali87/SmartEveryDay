@@ -40,6 +40,8 @@
 <input id="inputboxroom" placeholder="Enter room id"/>
 <input id="inputboxtype2" placeholder="Enter 1 for light, 2 for blinds or 3 for water"/>
 <button id="GetDevicesInARoomByTypebutton">Get Devices for a certain room of a certain type </button>
+<br />
+<button id="addrecordbutton">Add record hardcoded</button>
 
 <script type="text/javascript">
 
@@ -318,7 +320,30 @@
                 success: function (response) {
                     console.log("Success");
                     console.log(response);
-                    $('#AccountDataTable').load();
+                   
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of GetRoomsAndDevicesByType
+
+        // addRecord 
+        $('#addrecordbutton').on('click', function () {
+            $.ajax({
+                type: "POST",
+                url: '/Device/addRecord',
+                dataType: 'json',
+                data: {
+                    "deviceId": "DEBC101",
+                    "newStatus": 3,
+                    "deviceType": 1
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    
 
                 },
                 error: function (obj, textstatus) {
