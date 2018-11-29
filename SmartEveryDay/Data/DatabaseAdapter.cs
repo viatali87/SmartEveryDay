@@ -578,6 +578,7 @@ namespace SmartEveryDay.Data
             return RoomList;
         }
 
+        // Get devices froma  home by type, all lights for example
         public List<Device> GetTypeOfDevicesByHouseId(Guid houseId, int type)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");

@@ -28,13 +28,19 @@
 <br />
 <input id="inputTypeOfDevice" />
 <button id="getDevicesByType">GetDevicesByType</button>
-
-
+<br />
+<br />
+<text>Insert type of device (Device type = 1 = light, 2 = blinds, 3 = water)</text>
+<br />
+<input id="inputboxtype" />
+<br />
+<button id="getroomsbytypesbutton">Get Rooms by type</button>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
 
+        // SAVE A HARDCODED USER
         function save() {
             var t = document.getElementById("thetext");
             //var val = JSON.stringify('{ "country": "Japan"}');
@@ -69,6 +75,7 @@
 
         document.getElementById("adduser").addEventListener("click", save);
 
+        // GET ALL USERS
         function getUsers() {
             document.getElementById("thetext").textContent = "-----------";
             var val = JSON.stringify("yay");
@@ -87,6 +94,7 @@
 
         document.getElementById("getUsersButton").addEventListener("click", getUsers);
 
+        // DELETE USER
         function deleteuser() {
             var value = document.getElementById('inputbox').value;
             var val = JSON.stringify(value);
@@ -106,6 +114,7 @@
 
         document.getElementById("deleteuser").addEventListener("click", deleteuser);
 
+        // GET ALL DEVICES
         function getDevices() {
             document.getElementById("thetext").textContent = "Devices: ";
             var val = JSON.stringify("yay");
@@ -125,6 +134,7 @@
 
         document.getElementById("getdevices").addEventListener("click", getDevices);
 
+        // GET ALL DEVICES FROM A CERTAIN HOME
         function getDevicesByHouseId() {
             document.getElementById("thetext").textContent = "Devices: ";
             var value = document.getElementById('inputbox3').value;
@@ -145,6 +155,7 @@
 
         document.getElementById("getdevicesbyhouseid").addEventListener("click", getDevicesByHouseId);
 
+        // EDIT A USER - NOT WORKING
         function edituser() {
             var t = document.getElementById("thetext");
             //var val = JSON.stringify('{ "country": "Japan"}');
@@ -180,7 +191,7 @@
 
         document.getElementById("edituserbutton").addEventListener("click", edituser);
 
-        //GetRoomsAndDevicesByHouseId
+        // GET ROOMS AND WHAT DEVICES THEY CONTAIN FROM A CERTAIN HOME
         function GetRoomsAndDevicesByHouseId() {
             var val = JSON.stringify("CE61F280-E5F7-45A4-904A-0D2E02EE6A79");
             $.ajax({
@@ -200,6 +211,7 @@
         document.getElementById("getdevicesbyhouseidbutton").addEventListener("click", GetRoomsAndDevicesByHouseId);
 
 
+        // GET DEVICES FROM A HOME BY TYPE, ALL LIGHTS FOR EXAMPLE
         function getDevicesByType() {
             document.getElementById("thetext").textContent = "Devices: ";
             var value = document.getElementById('inputTypeOfDevice').value;
@@ -227,6 +239,63 @@
 
         document.getElementById("getDevicesByType").addEventListener("click", getDevicesByType);
 
+        // GET ROOM OF A HOME BY TYPE
+        /*GetRoomsAndDevicesByType()
+        function getRoomsByDeviceType() {
+            var type = document.getElementById('inputboxtype').value;
+            alert("In GetRoomsAndDevicesByType");
+            var myDictionary = {
+                "houseId": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                "type": value,
+            };
+
+            var val = JSON.stringify(myDictionary);
+
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetRoomsAndDevicesByType",
+                dataType: 'json',
+                data: { 
+                    'houseID': 'CE61F280-E5F7-45A4-904A-0D2E02EE6A79',
+                    'type' : type
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    $('#AccountDataTable').load();
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }
+        )}// End of get rooms by type
+        document.getElementById("getroomsbytypesbutton").addEventListener("click", GetRoomsAndDevicesByType);
+        */
+
+        // GetRoomsAndDevicesByType
+        $('#getroomsbytypesbutton').on('click', function () {
+            var type = document.getElementById('inputboxtype').value;
+
+            $.ajax({
+                type: "POST",
+                url: '/Device/GetRoomsAndDevicesByType',
+                dataType: 'json',
+                data: {
+                    "houseId": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                    "type": type
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    $('#AccountDataTable').load();
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of GetRoomsAndDevicesByType
 
 
     } // Document ready ends

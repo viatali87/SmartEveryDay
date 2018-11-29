@@ -83,11 +83,55 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetRoomsAndDevicesByHouseId(string val)
         {
-            string id = val.Substring(1, 36);
-            Guid houseId = new Guid(id);
-            return Json(adapter.GetRoomsAndDevicesByHouseId(houseId));
+            Guid HouseId;
+            if (val.Length > 36)
+            {
+                string id = val.Substring(1, 36);
+                HouseId = new Guid(id);
+            } else
+            {
+                HouseId = new Guid(val);
+            }
+            return Json(adapter.GetRoomsAndDevicesByHouseId(HouseId));
         }
 
+        // GET ROOMS IN A HOME THAT CONTAIN A SPECIFIC TYPE (1 = LIGHT, 2 = BLINDS, 3 = WATER)
+        [HttpPost]
+        public JsonResult GetRoomsAndDevicesByType(string houseId, int type)
+        {
+            Guid Id;
+            if (houseId.Length > 36)
+            {
+                string Hid = houseId.Substring(1, 36);
+                Id = new Guid(Hid);
+            }
+            else
+            {
+                Id = new Guid(houseId);
+            }
+            List<Room> newRoomList = new List<Room>();
+            List<Room> roomlist = adapter.GetRoomsAndDevicesByHouseId(Id);
+            foreach (Room R in roomlist)
+            {
+                Room temp = new Models.Room();
+                temp.Name = R.Name;
+                temp.RoomId = R.RoomId;
+                foreach (Device dev in R.RoomDevices)
+                {
+                    if(dev.DeviceType == type)
+                    {
+                        temp.AddDevice(dev);
+                    }
+                }
+                if(temp.getSizeOfDeviceList() > 0)
+                {
+                    newRoomList.Add(temp);
+                }
+            }
+            return Json(newRoomList);
+        }
+
+        // Get devices froma  home by type, all lights for example
         [HttpPost]
         public JsonResult GetDevicesByType(string val)
         {

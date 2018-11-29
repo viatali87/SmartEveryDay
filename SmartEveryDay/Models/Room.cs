@@ -20,5 +20,10 @@ namespace SmartEveryDay.Models
         {
             RoomDevices.Add(dev);
         }
+
+        public int getSizeOfDeviceList()
+        {
+            return RoomDevices.Count;
+        }
     }
 }
