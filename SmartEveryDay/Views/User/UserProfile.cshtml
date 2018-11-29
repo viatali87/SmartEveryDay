@@ -25,6 +25,9 @@
 
 <button id="edituserbutton">Edit user</button>
 <button id="getdevicesbyhouseidbutton">GetRoomsAndDevicesByHouseId</button>
+<br />
+<input id="inputTypeOfDevice" />
+<button id="getDevicesByType">GetDevicesByType</button>
 
 
 
@@ -195,6 +198,34 @@
         } // End ofget users
 
         document.getElementById("getdevicesbyhouseidbutton").addEventListener("click", GetRoomsAndDevicesByHouseId);
+
+
+        function getDevicesByType() {
+            document.getElementById("thetext").textContent = "Devices: ";
+            var value = document.getElementById('inputTypeOfDevice').value;
+
+            var myDictionary = {
+                "houseid": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                "type": value,
+            };
+
+            var val = JSON.stringify(myDictionary);
+
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetDevicesByType",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getDevicesByType").addEventListener("click", getDevicesByType);
 
 
 

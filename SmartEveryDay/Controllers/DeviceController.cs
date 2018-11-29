@@ -88,6 +88,18 @@ namespace SmartEveryDay.Controllers
             return Json(adapter.GetRoomsAndDevicesByHouseId(houseId));
         }
 
+        [HttpPost]
+        public JsonResult GetDevicesByType(string val)
+        {
+            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
+            string id = JSONObj["houseid"]; //.Substring(1, 36);
+            Guid houseId = new Guid(id);
+            int deviceType = Int32.Parse(JSONObj["type"]);
+
+            return Json(adapter.GetTypeOfDevicesByHouseId(houseId, deviceType));
+
+        }
+
         // Removes the connection from a home to a certain device
         [HttpPost]
         public JsonResult RemoveDeviceFromHome(string deviceId)
