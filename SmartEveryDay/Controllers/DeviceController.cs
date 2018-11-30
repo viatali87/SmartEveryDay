@@ -99,7 +99,7 @@ namespace SmartEveryDay.Controllers
 
 
             var client = new WebClient();
-            var content = client.DownloadString(" https://cloud.arest.io/light_id1/digital/2/0");
+            var content = client.DownloadString("https://cloud.arest.io/blinds/up");
 
             return content;
         }
@@ -108,7 +108,7 @@ namespace SmartEveryDay.Controllers
         {
 
             var client = new WebClient();
-            var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/1");
+            var content = client.DownloadString("https://cloud.arest.io/blinds/down");
 
             return content;
         }
