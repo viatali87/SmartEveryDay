@@ -275,6 +275,7 @@
     <Compile Include="Models\IRoom.cs" />
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\Room.cs" />
+    <Compile Include="Models\testCanBeDeleted.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\UnitModel.cs" />
@@ -296,6 +297,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\index.css" />
+    <Content Include="Content\LogInView.css" />
     <Content Include="Content\UserView.css" />
     <Content Include="Content\Water.css" />
     <Content Include="favicon.ico" />
@@ -361,14 +363,24 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Home\Water.cshtml" />
     <Content Include="Views\Home\Light.cshtml" />
-    <Content Include="Views\Home\AdminView1.cshtml" />
     <Content Include="Views\Home\UserView.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
-    <Content Include="Views\Home\AdminView.cshtml" />
     <Content Include="Views\Shared\_AdminLeftSidebar.cshtml" />
     <Content Include="Views\AdminView\Index.cshtml" />
     <Content Include="Views\AdminView\AdminAccounts.cshtml" />
     <Content Include="Views\Home\Curtains.cshtml" />
+    <Content Include="Views\AdminView\AdminDevices.cshtml" />
+    <Content Include="Views\AdminView\AdminScenarios.cshtml" />
+    <Content Include="Views\AdminView\AdminSupportCases.cshtml" />
+    <Content Include="Views\AdminView\AdminReports.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Shared\_UserSharedTopMenu.cshtml" />
+    <Content Include="Views\User\WaterRooms.cshtml" />
+    <Content Include="Views\User\LightRooms.cshtml" />
+    <Content Include="Views\User\CurtainRooms.cshtml" />
+    <Content Include="Views\User\Scenarios.cshtml" />
+    <Content Include="Views\User\Reports.cshtml" />
+    <Content Include="Views\Home\LogInView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Curtains\" />

@@ -10,9 +10,10 @@ namespace SmartEveryDay.Models
 
         public string DeviceId { get; set; }
         public int StatusId { get; set; }
-        public string DeviceType { get; set; }
+        public int DeviceType { get; set; }
         public string DeviceName { get; set; }
         public bool IsOnline { get; set; }
+        // Not sure that we need the room properties
         public string Room { get; set; }
         public Guid RoomId { get; set; }
 
@@ -20,13 +21,13 @@ namespace SmartEveryDay.Models
         {
             DeviceId = "";
             StatusId = -1;
-            DeviceType = "";
+            DeviceType = -1;
             DeviceName = "";
             IsOnline = false;
             Room = "";
         }
 
-        public Device(string deviceId, int statusId, string deviceType, string deviceName, bool isOnline)
+        public Device(string deviceId, int statusId, int deviceType, string deviceName, bool isOnline)
         {
             DeviceId = deviceId;
             StatusId = statusId;
@@ -36,7 +37,7 @@ namespace SmartEveryDay.Models
 
         }
 
-        public Device(string deviceId, int statusId, string deviceType, string deviceName, bool isOnline, string room, Guid roomId)
+        public Device(string deviceId, int statusId, int deviceType, string deviceName, bool isOnline, string room, Guid roomId)
         {
             DeviceId = deviceId;
             StatusId = statusId;

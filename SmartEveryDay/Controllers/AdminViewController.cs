@@ -19,5 +19,24 @@ namespace SmartEveryDay.Controllers
             return View("AdminAccounts");
         }
 
+        public ActionResult AdminDevices()
+        {
+            return View("AdminDevices");
+        }
+
+        public ActionResult AdminReports()
+        {
+            return View("AdminReports");
+        }
+        public ActionResult AdminScenarios()
+        {
+            return View("AdminScenarios");
+        }
+        public ActionResult AdminSupportCases()
+        {
+            return View("AdminSupportCases");
+        }
+
+
     }
 }

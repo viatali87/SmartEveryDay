@@ -20,45 +20,73 @@ namespace SmartEveryDay.Controllers
         }
 
 
-        // GET: User
+        // GET: User Views
+        #region Views
         public ActionResult UserProfile()
         {
             return View();
         }
 
-        [HttpPost]
-        public JsonResult CreateUser(string val)
+        [HttpGet]
+        public ActionResult Index(User user)
         {
-            Console.Write("In CreateUser in UserController");
-            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
-            User newUser = new User();
-                newUser.FirstName = JSONObj["firstname"];
-                newUser.LastName = JSONObj["lastname"];
-                newUser.PhoneNo = JSONObj["phonenumber"];
-                newUser.HouseId = new Guid(JSONObj["houseid"]);
-                newUser.Username = JSONObj["username"];
-                newUser.Email = JSONObj["email"];
-                newUser.IsAdmin = Convert.ToBoolean(JSONObj["isadmin"]);
-                Guid id = Guid.NewGuid();
-                newUser.UserId = id;
             
+       
+            if (user !=null)
+            {
              
-            return Json("Result: " + new JavaScriptSerializer().Serialize(db.SaveNewUser(newUser)));
+                return View("index", User);}
+
+            else
+            {
+                return View("LogInView");
+            }
+           
+            
         }
 
-        [HttpPost]
-        public JsonResult DeleteUser(Guid userId)
+        public ActionResult CurtainRooms()
         {
+            return View("CurtainRooms");
+        }
+
+        public ActionResult LightRooms()
+        {
+            return View("LightRooms");
+        }
+        public ActionResult Scenarios()
+        {
+            return View("Scenarios");
+        }
+        public ActionResult WaterRooms()
+        {
+            return View("WaterRooms");
+        }
+        public ActionResult Reports()
+        {
+            return View("Reports");
+        }
+        #endregion
+
+
+
+        [HttpPost]
+        public JsonResult GetAllUsers(string val)
+        {
+            string temp;
             DatabaseAdapter adapter = DatabaseAdapter.Instance();
             try
             {
-                adapter.DeleteUser(userId);
-            } catch
+                // Remove escape characters that are automatically added in
+                string query = val.Substring(1, 36);
+                // Send request to database adapter
+                temp = adapter.DeleteUser(query);
+            }
+            catch
             {
                 return Json("User not deleted");
             }
-            
-            return Json("User deleted");
+            return Json(temp);
         }
 
         [HttpPost]
@@ -68,6 +96,7 @@ namespace SmartEveryDay.Controllers
 
             var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
             User updatedUser = new User();
+            updatedUser.UserId = new Guid(JSONObj["userid"]);
             updatedUser.FirstName = JSONObj["firstname"];
             updatedUser.LastName = JSONObj["lastname"];
             updatedUser.PhoneNo = JSONObj["phonenumber"];
@@ -81,19 +110,20 @@ namespace SmartEveryDay.Controllers
             try
             {
                 return Json(adapter.EditUser(updatedUser));
-            } catch
+            }
+            catch
             {
                 return Json("User not edited");
             }
         }
 
         [HttpPost]
-        public JsonResult GetUser(Guid userId)
+        public JsonResult GetUser(string val)
         {
             DatabaseAdapter adapter = DatabaseAdapter.Instance();
             try
             {
-                return Json(adapter.GetUserById(userId));
+                return Json(adapter.GetUserById(new Guid(val)));
             }
             catch (System.Exception e)
             {
@@ -101,11 +131,11 @@ namespace SmartEveryDay.Controllers
             }
         }
 
-        [HttpPost]
+        
         public JsonResult GetAllUsers ()
         {
             IEnumerable<User> temp = null;
-            DatabaseAdapter adapter = DatabaseAdapter.Instance(); 
+            DatabaseAdapter adapter = DatabaseAdapter.Instance();
 
             try
             {
@@ -119,16 +149,62 @@ namespace SmartEveryDay.Controllers
 
             try
             {
-            return Json(temp.ToList(), JsonRequestBehavior.AllowGet);
+                return Json(temp.ToList(), JsonRequestBehavior.AllowGet);
 
             }
             catch (System.Exception e)
             {
-                throw new System.ArgumentException("Error in JSon request"+ e);
+                throw new System.ArgumentException("Error in JSon request" + e);
             }
 
         }
 
+        [HttpPost]
+        public JsonResult CreateUser(string userName, string firstName, string lastName, string houseId, string phonenumber, string email, bool isAdmin)
+        {
+            User newUser = new User();
+
+            newUser.FirstName = firstName;
+            newUser.LastName = lastName;
+            newUser.PhoneNo = phonenumber;
+            newUser.HouseId = new Guid(houseId);
+            newUser.Username = userName;
+            newUser.Email = email;
+            newUser.IsAdmin = isAdmin;
+            Guid id = Guid.NewGuid();
+            newUser.UserId = id;
+
+            try
+            {
+                return Json(db.SaveNewUser(newUser));
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in JSon request" + e);
+            }
+
+
+        }
+
+        [HttpPost]
+        public JsonResult DeleteUser(string val)
+        {
+            string temp;
+            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+            try
+            {
+                // Remove escape characters that are automatically added in
+                string query = val.Substring(1, 36);
+                // Send request to database adapter
+                temp = adapter.DeleteUser(query);
+            }
+            catch
+            {
+                return Json("User not deleted");
+            }
+            return Json(temp);
+
+        }
 
     }
 }

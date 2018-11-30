@@ -13,5 +13,15 @@ namespace SmartEveryDay.Controllers
         {
             return View();
         }
+
+        public JsonResult LogIn(string val)
+        {
+            throw new NotImplementedException();
+        }
+
+        public JsonResult LogOut(string val)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

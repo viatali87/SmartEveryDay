@@ -10,7 +10,7 @@ namespace SmartEveryDay.Models
     {
         string DeviceId { get; set; }
         int StatusId { get; set; }
-        string DeviceType { get; set; }
+        int DeviceType { get; set; }
         string DeviceName { get; set; }
         bool IsOnline { get; set; }
         string Room { get; set; }

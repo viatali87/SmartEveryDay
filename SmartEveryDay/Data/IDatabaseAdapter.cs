@@ -14,11 +14,12 @@ namespace SmartEveryDay.Data
         User SaveNewUser(User user);
         User GetUserById(Guid userId);
         User EditUser(User user);
-        string DeleteUser(Guid userId);
+        string DeleteUser(string val);
         List<User> GetAllUsers();
         List<Device> GetAllDevices();
         List<Device> GetDevicesByHouseId(Guid houseId);
-        List<List<Device>> GetRoomsAndDevicesByHouseId(Guid houseId);
+        List<Room> GetRoomsAndDevicesByHouseId(Guid houseId);
+        List<Device> GetTypeOfDevicesByHouseId(Guid houseId, int type);
         Device AddNewDevice(Device device);
         string RemoveDeviceFromHome(string deviceId);
         string DisableDevice(string deviceId);

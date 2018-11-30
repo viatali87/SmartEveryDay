@@ -23,6 +23,8 @@ namespace SmartEveryDay.Data
 
         }
 
+        
+
         public static DatabaseAdapter Instance()
         {
             if(instance == null)
@@ -31,18 +33,24 @@ namespace SmartEveryDay.Data
             } else
             {
                 return instance;
-            }
-            
-                
-            
+            }   
         }
 
         public User SaveNewUser(User user)
         {
-            string attempt = SendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
-            return GetUserById(user.UserId);
-           
+            try
+            {
+                string attempt = SendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
+                return user;
+
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in dbAdapter " + e);
+                
+            }
         }
+
 
         /// <summary>
         /// Takes a user and saves a new row in the Users table
@@ -100,12 +108,29 @@ namespace SmartEveryDay.Data
             return GetUserById(user.UserId);
         }
 
-        public string DeleteUser(Guid userId)
+        public string DeleteUser(string val)
         {
-            throw new NotImplementedException();
+            string attempt = SendQueryNoResponse("DELETE Users where Users_id = '" + val + "'");
+            return "User deleted";
         }
 
         public string EditUser(User user)
+        {
+            try
+            {
+                string querystring = "UPDATE Users SET username = '" + user.Username + "', real_first_name = '" + user.FirstName + "', real_surname = '" + user.LastName + "', house_id = '" + user.HouseId + "', phonenumber = '" + user.PhoneNo + "', email = '" + user.Email + "', isAdmin = '" + user.IsAdmin + "' WHERE Users_id = '" + user.UserId + "'";
+                string attempta = SendQueryNoResponse(querystring);
+                return "Db adapter: Successfully edited a user";
+
+            }
+            catch (System.Exception e)
+            {
+                throw new System.ArgumentException("Error in dbAdapter " + e);
+
+            }
+        }
+
+        User IDatabaseAdapter.EditUser(User user)
         {
             throw new NotImplementedException();
         }
@@ -130,10 +155,72 @@ namespace SmartEveryDay.Data
             throw new NotImplementedException();
         }
 
-        public List<List<Device>> GetRoomsAndDevicesByHouseId(Guid houseId)
+        // Adds a record of status change in lights for a device
+        public string addLightRecord( DateTime dt, string deviceId, int newStatus)
         {
-            throw new NotImplementedException();
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string id = deviceId.ToString();
+            string declaration = " DECLARE @date DATETIME, @time time SET @date='" + dt.Year + "-" + dt.Month + "-" + dt.Day + "' SET @time='" + dt.Hour + ":" + dt.Minute + ":" + dt.Second + "'SET @date=@date+CAST(@time AS DATETIME) SELECT @date AS DATETIME"; 
+            string insertquery = " INSERT INTO Light_records(device_id, device_status_id, date_time) VALUES('" + id + "', " + newStatus + ", @date)";
+            string finalQuery = declaration + insertquery;
+            return SendQueryNoResponse(finalQuery);
+            
+
         }
+
+        /*public List<List<Device>> GetRoomsAndDevicesByHouseId(Guid houseId)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string id = houseId.ToString();
+            string querystring = @"SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online, R.room_id, R.room_name 
+                                  FROM Device AS D
+                                  INNER JOIN House_devices as HD
+                                  ON HD.device_id = D.device_id
+                                  INNER JOIN Rooms_devices AS RD
+                                  ON RD.device_id = D.device_id
+                                  INNER JOIN Rooms AS R
+                                  ON R.room_id = RD.room_id
+                                  WHERE HD.house_id = '" + id + "'";
+            
+            List<Room> roomlist = new List<Room>();
+
+            try
+            {
+                using (con)
+                {
+                    SqlCommand command = new SqlCommand(querystring, con);
+                    con.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    List<Device> devlist = new List<Device>();
+                    while (reader.Read())
+                    {
+                        Device dev = new Device();
+                        dev.DeviceId = (string)reader["device_id"];
+                        dev.StatusId = (int)reader["status_id"];
+                        dev.DeviceType = (int)reader["device_type"];
+                        dev.DeviceName = (string)reader["device_name"];
+                        dev.IsOnline = (bool)reader["is_online"];
+                        dev.Room = (string)reader["room_name"];
+                        dev.RoomId = (Guid)reader["room_id"];
+                        devlist.Add(dev);
+                    }
+                }
+                
+                // Make a room and add it to the room list
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+            return null;
+        }*/
 
         private string SendQueryNoResponse(List<SqlParameter> list)
         {
@@ -151,7 +238,7 @@ namespace SmartEveryDay.Data
             }
             catch
             {
-                return "Error";
+                return "Error processing request in dbadapter";
             }
             finally
             {
@@ -352,7 +439,7 @@ namespace SmartEveryDay.Data
                         Device dev = new Device();
                         dev.DeviceId = (string)reader["device_id"];
                         dev.StatusId = (int)reader["status_id"];
-                        dev.DeviceType = (string)reader["device_type"];
+                        dev.DeviceType = (int)reader["device_type"];
                         dev.DeviceName = (string)reader["device_name"];
                         dev.IsOnline = (bool)reader["is_online"];
 
@@ -398,7 +485,7 @@ namespace SmartEveryDay.Data
                         Device dev = new Device();
                         dev.DeviceId = (string)reader["device_id"];
                         dev.StatusId = (int)reader["status_id"];
-                        dev.DeviceType = (string)reader["device_type"];
+                        dev.DeviceType = (int)reader["device_type"];
                         dev.DeviceName = (string)reader["device_name"];
                         dev.IsOnline = (bool)reader["is_online"];
 
@@ -424,45 +511,67 @@ namespace SmartEveryDay.Data
         /// </summary>
         /// <param name="houseId"></param>
         /// <returns>A list of devices</returns>
-        public List<Device> GetRoomsAndDevicesByHouseId(string houseId)
+        public List<Room> GetRoomsAndDevicesByHouseId(Guid houseId)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
-            string querystring = @"
-            
-            SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online, R.room_id, R.room_name 
-            FROM Device AS D
-            INNER JOIN House_devices as HD
-            ON HD.device_id = D.device_id
-            INNER JOIN Rooms_devices AS RD
-            ON RD.device_id = D.device_id
-            INNER JOIN Rooms AS R
-            ON R.room_id = RD.room_id
-            WHERE HD.house_id = '" + houseId + "'";
+            string roomsByHouseId = @"
+
+              SELECT R.room_id, R.room_name
+              FROM Rooms AS R
+              INNER JOIN
+              Rooms_devices AS RD
+              ON R.room_id = RD.room_id
+              INNER JOIN
+              House_devices as HD
+              ON HD.device_id = RD.device_id AND HD.house_id = '" + houseId + "' GROUP BY R.room_id, R.room_name";
 
             //SqlDataReader reader = sendQueryGetResponse(querystring);
-            List<Device> deviceList = new List<Device>();
+            List<Room> RoomList = new List<Room>();
 
             try
             {
                 using (con)
                 {
-                    SqlCommand command = new SqlCommand(querystring, con);
+                    // Find all rooms belonging to a home
+                    SqlCommand command = new SqlCommand(roomsByHouseId, con);
                     con.Open();
 
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        Device dev = new Device();
-                        dev.DeviceId = (string)reader["device_id"];
-                        dev.StatusId = (int)reader["status_id"];
-                        dev.DeviceType = (string)reader["device_type"];
-                        dev.DeviceName = (string)reader["device_name"];
-                        dev.IsOnline = (bool)reader["is_online"];
-                        dev.Room = (string)reader["room_name"];
-                        dev.RoomId = (Guid)reader["room_id"];
-                        deviceList.Add(dev);
+                        Room R = new Room();
+                        R.Name = (string)reader["room_name"];
+                        R.RoomId = (Guid)reader["room_id"];
+                        RoomList.Add(R);
+                    }
+
+                    // Get a list of devices for each room
+                    foreach (var Room in RoomList)
+                    {
+                        SqlConnection conn = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+                        // This gets a list of device for a certain roomid from a certain house
+                        string oneRoomQuery = "SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online FROM Device AS D INNER JOIN Rooms_devices as RD ON RD.device_id = D.device_id AND RD.room_id = '" + Room.RoomId + "'";
+                    using (conn)
+                        {
+                            SqlCommand comm = new SqlCommand(oneRoomQuery, conn);
+                            conn.Open();
+                            SqlDataReader rdr = comm.ExecuteReader();
+                    
+                            while (rdr.Read())
+                            {
+                                Device d = new Device();
+                                d.DeviceId = (string)rdr["device_id"];
+                                d.DeviceName = (string)rdr["device_name"];
+                                d.StatusId = (int)rdr["status_id"];
+                                d.DeviceType = (int)rdr["device_type"];
+                                d.IsOnline = (bool)rdr["is_online"];
+                                Room.AddDevice(d);
+                            }
+                        }
+                            
                     }
                 }
             }
@@ -474,7 +583,84 @@ namespace SmartEveryDay.Data
             {
                 con.Close();
             }
-            return deviceList;
+            return RoomList;
+        }
+
+        // Get devices froma  home by type, all lights for example
+        public List<Device> GetTypeOfDevicesByHouseId(Guid houseId, int type)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string deviceByType = "  SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online FROM Device AS D INNER JOIN House_devices AS H ON D.device_id = H.device_id AND H.house_id = '" + houseId + "' WHERE D.device_type = " + type;
+
+            try
+            {
+                SqlCommand command = new SqlCommand(deviceByType, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<Device> devlist = new List<Device>();
+
+                while (reader.Read())
+                {
+                    Device dev = new Device();
+                    dev.DeviceId = (string)reader["device_id"];
+                    dev.StatusId = (int)reader["status_id"];
+                    dev.DeviceType = (int)reader["device_type"];
+                    dev.DeviceName = (string)reader["device_name"];
+                    dev.IsOnline = (bool)reader["is_online"];
+                    dev.Room = (string)reader["room_name"];
+                    dev.RoomId = (Guid)reader["room_id"];
+                    devlist.Add(dev);
+                }
+
+                return devlist;
+
+            } catch
+            {
+                return null;
+            } finally
+            {
+                con.Close();
+            }
+        }
+
+        // Get devices of a specific type for a specific room, all lights in room with Id x for example
+        public List<Device> getDevicesInARoomByType(Guid roomId, int type)
+        {
+
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string deviceByType = @"SELECT D.device_id, D.status_id, D.device_type, D.device_name, D.is_online
+                                    FROM Device AS D
+                                    INNER JOIN Rooms_devices AS RD
+                                    ON D.device_id = RD.device_id AND RD.room_id = '" + roomId + "' AND D.device_type = " + type + " ";
+            try
+            {
+                SqlCommand command = new SqlCommand(deviceByType, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<Device> devlist = new List<Device>();
+
+                while (reader.Read())
+                {
+                    Device dev = new Device();
+                    dev.DeviceId = (string)reader["device_id"];
+                    dev.StatusId = (int)reader["status_id"];
+                    dev.DeviceType = (int)reader["device_type"];
+                    dev.DeviceName = (string)reader["device_name"];
+                    dev.IsOnline = (bool)reader["is_online"];
+                    dev.RoomId = roomId;
+                    devlist.Add(dev);
+                }
+
+                return devlist;
+            } catch
+            {
+                return null;
+            } finally
+            {
+                con.Close();
+            }
         }
 
         /// <summary>
@@ -628,7 +814,6 @@ namespace SmartEveryDay.Data
                 con.Close();
             }
         }
-
 
     }
 }

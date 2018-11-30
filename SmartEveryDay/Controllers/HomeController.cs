@@ -13,16 +13,17 @@ namespace SmartEveryDay.Controllers
             return View();
         }
 
+        public ActionResult LogInView()
+        {
+            ViewBag.Title = "LogInView";
 
+            return View();
+        }
 
-        public async System.Threading.Tasks.Task<ActionResult> Water()
+        public ActionResult Water()
         {
             ViewBag.Title = "Water";
-           // var remoniclient = new RemoniApiCreateClient();
-           // var other = remoniclient.CreateRemoniApiClient("nadina77@gmail.com", "NADzuk3412.");
-            // var alarms = other.Alarms.GetCollectionAsyncByqueryOptionsWithHttpMessagesAsync().Result;
-           // var temp = await other.Accounts.GetCollectionAsyncByqueryOptionsWithHttpMessagesAsync();
-          //  var name = temp.Response.StatusCode;
+          
             return View();
         }
 
@@ -45,19 +46,9 @@ namespace SmartEveryDay.Controllers
             return View();
         }
 
-        public ActionResult AdminView()
-        {
-            ViewBag.Title = "AdminView";
+       
 
-            return View();
-        }
-
-        public ActionResult AdminView1()
-        {
-            ViewBag.Title = "AdminView1";
-
-            return View();
-        }
+       
 
 
         // GET: User

@@ -39,7 +39,7 @@ namespace SmartEveryDay.Controllers
             Device dev = new Device();
             dev.DeviceId = jasonObj["deviceid"];
             dev.DeviceName = jasonObj["devicename"];
-            dev.DeviceType = jasonObj["devicetype"];
+            dev.DeviceType = int.Parse(jasonObj["devicetype"]);
             dev.Room = jasonObj["room"];
             dev.RoomId = new Guid(jasonObj["roomid"]);
             dev.IsOnline = Convert.ToBoolean(jasonObj["isonline"]);
@@ -53,9 +53,9 @@ namespace SmartEveryDay.Controllers
             return Json(adapter.DisableDevice(deviceId));
         }
 
-        // Returns an updated Device
+        // Returns an updated Device, takes a device
         [HttpPost]
-        public JsonResult EditDevice(Device updatedDevice)
+        public JsonResult EditDevice(string val)
         {
             var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
             Device dev = getDeviceFromJson(JSONObj);
@@ -66,21 +66,100 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetAllDevices()
         {
-            return Json(adapter.GetAllDevices());
+            List<Device> list = adapter.GetAllDevices();
+            return Json(list);
         }
 
-        // Returns a list of all of the devices in the home, includes what rooms they are in
+        // Returns a list of all of the devices in the home, includes what rooms they are in, takes a houseid
         [HttpPost]
-        public JsonResult GetAllDevicesByHouseId(Guid houseId)
+        public JsonResult GetAllDevicesByHouseId(string val)
         {
+            string id = val.Substring(1, 36);
+            Guid houseId = new Guid(id);
             return Json(adapter.GetDevicesByHouseId(houseId));
         }
 
-        // Retuns a list of Rooms and each one has a list of devices
+        // Retuns a list of Rooms and each one has a list of devices, takes a house id
         [HttpPost]
-        public JsonResult GetRoomsAndDevicesByHouseId(Guid houseId)
+        public JsonResult GetRoomsAndDevicesByHouseId(string val)
         {
-            return Json(adapter.GetRoomsAndDevicesByHouseId(houseId));
+            Guid HouseId;
+            if (val.Length > 36)
+            {
+                string id = val.Substring(1, 36);
+                HouseId = new Guid(id);
+            } else
+            {
+                HouseId = new Guid(val);
+            }
+            return Json(adapter.GetRoomsAndDevicesByHouseId(HouseId));
+        }
+
+        // GET ROOMS IN A HOME THAT CONTAIN A SPECIFIC TYPE (1 = LIGHT, 2 = BLINDS, 3 = WATER)
+        [HttpPost]
+        public JsonResult GetRoomsAndDevicesByType(string houseId, int type)
+        {
+            Guid Id;
+            if (houseId.Length > 36)
+            {
+                string Hid = houseId.Substring(1, 36);
+                Id = new Guid(Hid);
+            }
+            else
+            {
+                Id = new Guid(houseId);
+            }
+            List<Room> newRoomList = new List<Room>();
+            List<Room> roomlist = adapter.GetRoomsAndDevicesByHouseId(Id);
+            foreach (Room R in roomlist)
+            {
+                Room temp = new Models.Room();
+                temp.Name = R.Name;
+                temp.RoomId = R.RoomId;
+                foreach (Device dev in R.RoomDevices)
+                {
+                    if(dev.DeviceType == type)
+                    {
+                        temp.AddDevice(dev);
+                    }
+                }
+                if(temp.getSizeOfDeviceList() > 0)
+                {
+                    newRoomList.Add(temp);
+                }
+            }
+            return Json(newRoomList);
+        }
+
+        // Get devices of a specific type for a specific room, all lights in room with Id x for example
+        [HttpPost]
+        public JsonResult GetDevicesInARoomByType(string roomId, int type)
+        {
+            Guid Id;
+            if (roomId.Length > 36)
+            {
+                string id = roomId.Substring(1, 36);
+                Id = new Guid(id);
+            }
+            else
+            {
+                Id = new Guid(roomId);
+            }
+            return Json(adapter.getDevicesInARoomByType(Id, type));
+
+        }
+
+        // Get devices from a home by type, all lights for example, takes a houseid
+        [HttpPost]
+        public JsonResult GetDevicesByType(string val)
+        {
+            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
+            string id = JSONObj["houseid"]; //.Substring(1, 36);
+            Guid houseId = new Guid(id);
+            int deviceType = Int32.Parse(JSONObj["type"]);
+
+            return Json(adapter.GetTypeOfDevicesByHouseId(houseId, deviceType));
+
         }
 
         // Removes the connection from a home to a certain device
@@ -128,6 +207,24 @@ namespace SmartEveryDay.Controllers
             var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/1");
 
             return content;
+        }
+
+        // Add a record of change of status of a device
+        public string addRecord(string deviceId, int newStatus, int deviceType)
+        {
+            if(deviceType == 1)
+            {
+                return adapter.addLightRecord(DateTime.Now, deviceId, newStatus);
+
+            } if(deviceType == 2)
+            {
+                throw new NotImplementedException();
+
+            } if(deviceType == 3)
+            {
+                throw new NotImplementedException();
+            }
+            return null;
         }
 
     }

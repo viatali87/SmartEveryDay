@@ -12,13 +12,42 @@
     <label for="Country">Country</label>
     <input type="text" name="countryName" id="countryName" placeholder="Write country here" />
 </form>
-<button id="submitbutton">Click me</button>
+<br />
 <button id="getUsersButton">Get all users</button>
+<input id="inputbox" placeholder="Enter user id to delete" />
+<button id="deleteuser">Delete user</button>
+<button id="adduser">Add hardcoded user</button>
+<br />
+<input id="inputbox2" />
+<button id="getdevices">GetAllDevices</button>
+<br />
+<input id="inputbox3" placeholder="Enter house id" />
+<button id="getdevicesbyhouseid">GetAllDevicesForAHouseId</button>
+<br />
+<button id="edituserbutton">Edit user hardcoded</button>
+<button id="getdevicesbyhouseidbutton">GetRoomsAndDevicesByHardcodedHouseId</button>
+<br />
+<input id="inputTypeOfDevice" placeholder="Enter type of device" />
+<button id="getDevicesByType">GetDevicesByType</button>
+<br />
+<br />
+<text>Insert type of device (Device type = 1 = light, 2 = blinds, 3 = water)</text>
+<br />
+<input id="inputboxtype" placeholder="Enter type of device"/>
+<br />
+<button id="getroomsbytypesbutton">Get Rooms by type</button>
+<br />
+<input id="inputboxroom" placeholder="Enter room id"/>
+<input id="inputboxtype2" placeholder="Enter 1 for light, 2 for blinds or 3 for water"/>
+<button id="GetDevicesInARoomByTypebutton">Get Devices for a certain room of a certain type </button>
+<br />
+<button id="addrecordbutton">Add record hardcoded</button>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
 
+        // SAVE A HARDCODED USER
         function save() {
             var t = document.getElementById("thetext");
             //var val = JSON.stringify('{ "country": "Japan"}');
@@ -39,11 +68,11 @@
 
             $.ajax({
                 type: "POST",
-                url: "/User/createUser",
+                url: "/User/CreateUser",
                 data: { val }
             }).done(function (response) {
                 var res = response;
-                document.getElementById("p").textContent += " this has just been added";
+                //document.getElementById("p").textContent += " this has just been added";
                 t.textContent += "Response: " + response;
                 alert("Response: " + res);
             }).fail(function (response) {
@@ -51,14 +80,15 @@
             })
         } // End of save
 
-        document.getElementById("submitbutton").addEventListener("click", save);
+        document.getElementById("adduser").addEventListener("click", save);
 
+        // GET ALL USERS
         function getUsers() {
             document.getElementById("thetext").textContent = "-----------";
             var val = JSON.stringify("yay");
             $.ajax({
                 type: "POST",
-                url: "/User/getAllUsers",
+                url: "/User/GetAllUsers",
                 data: { val }
             }).done(function (response) {
                 var res = response;
@@ -70,6 +100,257 @@
         } // End ofget users
 
         document.getElementById("getUsersButton").addEventListener("click", getUsers);
+
+        // DELETE USER
+        function deleteuser() {
+            var value = document.getElementById('inputbox').value;
+            var val = JSON.stringify(value);
+            alert(val);
+            $.ajax({
+                type: "POST",
+                url: "/User/DeleteUser",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                document.getElementById("thetext").textContent += response;
+                alert("Done!");
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End of delete users
+
+        document.getElementById("deleteuser").addEventListener("click", deleteuser);
+
+        // GET ALL DEVICES
+        function getDevices() {
+            document.getElementById("thetext").textContent = "Devices: ";
+            var val = JSON.stringify("yay");
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetAllDevices",
+                //data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getdevices").addEventListener("click", getDevices);
+
+        // GET ALL DEVICES FROM A CERTAIN HOME
+        function getDevicesByHouseId() {
+            document.getElementById("thetext").textContent = "Devices: ";
+            var value = document.getElementById('inputbox3').value;
+            var val = JSON.stringify(value);
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetAllDevicesByHouseId",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getdevicesbyhouseid").addEventListener("click", getDevicesByHouseId);
+
+        // EDIT A USER - NOT WORKING
+        function edituser() {
+            var t = document.getElementById("thetext");
+            //var val = JSON.stringify('{ "country": "Japan"}');
+            //var val = JSON.parse('{ "country": "Japan"}');
+            //var mylist = List<KeyValuePair<K,V>>;
+            var myDictionary = {
+                "userid": '62EADAFE-7E68-4AC1-95E9-55BE39EA35F9',
+                "firstname": "Lily",
+                "lastname": "Babababaramm",
+                "phonenumber": "777777",
+                "houseid": "CE61F280-E5F7-45A4-904A-0D2E02EE6A78",
+                "username": "LLLLL",
+                "email": "lilypadbabbara@gmail.com",
+                "isadmin": "false"
+            };
+
+            var val = JSON.stringify(myDictionary);
+            console.log("String: " + val);
+
+            $.ajax({
+                type: "POST",
+                url: "/User/EditUser",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                //document.getElementById("p").textContent += " this has just been added";
+                t.textContent += "Response: " + response;
+                alert("Response: " + res);
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End of edit user
+
+        document.getElementById("edituserbutton").addEventListener("click", edituser);
+
+        // GET ROOMS AND WHAT DEVICES THEY CONTAIN FROM A CERTAIN HOME
+        function GetRoomsAndDevicesByHouseId() {
+            var val = JSON.stringify("CE61F280-E5F7-45A4-904A-0D2E02EE6A79");
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetRoomsAndDevicesByHouseId",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getdevicesbyhouseidbutton").addEventListener("click", GetRoomsAndDevicesByHouseId);
+
+
+        // GET DEVICES FROM A HOME BY TYPE, ALL LIGHTS FOR EXAMPLE
+        function getDevicesByType() {
+            document.getElementById("thetext").textContent = "Devices: ";
+            var value = document.getElementById('inputTypeOfDevice').value;
+
+            var myDictionary = {
+                "houseid": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                "type": value,
+            };
+
+            var val = JSON.stringify(myDictionary);
+
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetDevicesByType",
+                data: { val }
+            }).done(function (response) {
+                var res = response;
+                console.log(res);
+                document.getElementById("thetext").textContent += response;
+
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
+        } // End ofget users
+
+        document.getElementById("getDevicesByType").addEventListener("click", getDevicesByType);
+
+        // GET ROOM OF A HOME BY TYPE
+        /*GetRoomsAndDevicesByType()
+        function getRoomsByDeviceType() {
+            var type = document.getElementById('inputboxtype').value;
+            alert("In GetRoomsAndDevicesByType");
+            var myDictionary = {
+                "houseId": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                "type": value,
+            };
+
+            var val = JSON.stringify(myDictionary);
+
+            $.ajax({
+                type: "POST",
+                url: "/Device/GetRoomsAndDevicesByType",
+                dataType: 'json',
+                data: { 
+                    'houseID': 'CE61F280-E5F7-45A4-904A-0D2E02EE6A79',
+                    'type' : type
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    $('#AccountDataTable').load();
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }
+        )}// End of get rooms by type
+        document.getElementById("getroomsbytypesbutton").addEventListener("click", GetRoomsAndDevicesByType);
+        */
+
+        // GetRoomsAndDevicesByType
+        $('#getroomsbytypesbutton').on('click', function () {
+            var type = document.getElementById('inputboxtype').value;
+
+            $.ajax({
+                type: "POST",
+                url: '/Device/GetRoomsAndDevicesByType',
+                dataType: 'json',
+                data: {
+                    "houseId": "CE61F280-E5F7-45A4-904A-0D2E02EE6A79",
+                    "type": type
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    $('#AccountDataTable').load();
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of GetRoomsAndDevicesByType
+
+
+        // GetDevicesInARoomByType
+        $('#GetDevicesInARoomByTypebutton').on('click', function () {
+            var type = document.getElementById('inputboxtype2').value;
+            var roomid = document.getElementById('inputboxroom').value;
+            $.ajax({
+                type: "POST",
+                url: '/Device/GetDevicesInARoomByType',
+                dataType: 'json',
+                data: {
+                    "roomId": roomid,
+                    "type": type
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                   
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of GetRoomsAndDevicesByType
+
+        // addRecord 
+        $('#addrecordbutton').on('click', function () {
+            $.ajax({
+                type: "POST",
+                url: '/Device/addRecord',
+                dataType: 'json',
+                data: {
+                    "deviceId": "DEBC101",
+                    "newStatus": 3,
+                    "deviceType": 1
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of GetRoomsAndDevicesByType
 
 
     } // Document ready ends
