@@ -209,7 +209,7 @@ namespace SmartEveryDay.Controllers
             return content;
         }
 
-        // Add a record of change of status of a device
+        // Add a record of change of status of a device ( 1 = Light, 2 = Curtains, 3 = Water)
         public string addRecord(string deviceId, int newStatus, int deviceType)
         {
             if(deviceType == 1)
@@ -218,13 +218,20 @@ namespace SmartEveryDay.Controllers
 
             } if(deviceType == 2)
             {
-                throw new NotImplementedException();
+                return adapter.addCurtainsRecords(DateTime.Now, deviceId, newStatus);
 
             } if(deviceType == 3)
             {
                 throw new NotImplementedException();
             }
             return null;
+        }
+
+        // Gets the newest status of a device (type: 1 = Light, 2 = Curtains, 3 = Water)
+        public int getStatus(string deviceId, string type)
+        {
+            int t = Int32.Parse(type);
+            return adapter.GetStatus(deviceId, t);
         }
 
     }

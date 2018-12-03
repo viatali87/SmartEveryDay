@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using SmartEveryDay.Models;
+using System.Text;
 
 namespace SmartEveryDay.Data
 {
@@ -156,17 +157,77 @@ namespace SmartEveryDay.Data
         }
 
         // Adds a record of status change in lights for a device
-        public string addLightRecord( DateTime dt, string deviceId, int newStatus)
+        public string addLightRecord( DateTime dt, string deviceId, int newStatusId)
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
             string id = deviceId.ToString();
             string declaration = " DECLARE @date DATETIME, @time time SET @date='" + dt.Year + "-" + dt.Month + "-" + dt.Day + "' SET @time='" + dt.Hour + ":" + dt.Minute + ":" + dt.Second + "'SET @date=@date+CAST(@time AS DATETIME) SELECT @date AS DATETIME"; 
-            string insertquery = " INSERT INTO Light_records(device_id, device_status_id, date_time) VALUES('" + id + "', " + newStatus + ", @date)";
+            string insertquery = " INSERT INTO Light_records(device_id, device_status_id, date_time) VALUES('" + id + "', " + newStatusId + ", @date)";
             string finalQuery = declaration + insertquery;
             return SendQueryNoResponse(finalQuery);
             
 
+        }
+
+        // Adds a record of status change in curtains for a device
+        public string addCurtainsRecords(DateTime dt, string deviceId, int newStatusId)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+            string id = deviceId.ToString();
+            string declaration = " DECLARE @date DATETIME, @time time SET @date='" + dt.Year + "-" + dt.Month + "-" + dt.Day + "' SET @time='" + dt.Hour + ":" + dt.Minute + ":" + dt.Second + "'SET @date=@date+CAST(@time AS DATETIME) SELECT @date AS DATETIME";
+            string insertquery = " INSERT INTO Curtain_records(device_id, device_status_id, date_time) VALUES('" + id + "', " + newStatusId + ", @date)";
+            string finalQuery = declaration + insertquery;
+            return SendQueryNoResponse(finalQuery);
+        }
+
+
+        // Gets the newest status of a device. Returns an int (1 = open, 2 = closed, 3 = on, 4 = off)
+        public int GetStatus(string deviceId, int deviceType)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+            string Id = deviceId.ToString();
+            string Table;
+            int DeviceStatus = -1;
+            string querystring = "";
+            if (deviceType == 1) // If light
+            {
+                Table = "Light_records";
+            } 
+            else if(deviceType == 2) // If curtains
+            {
+                Table = "Curtain_records";
+            }
+            else // If water
+            {
+                Table = "Water_records";
+            }
+            querystring = "SELECT TOP 1 L.device_status_id, L.date_time, S.name_of_status, S.code_of_status  FROM " + Table + " AS L INNER JOIN Statuses AS S ON L.device_status_id = S.status_id WHERE L.device_id = '" + deviceId + "' ORDER BY L.date_time DESC";
+
+            try
+            {
+                using (con)
+                {
+                    SqlCommand command = new SqlCommand(querystring, con);
+                    con.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        DeviceStatus = (int)reader["device_status_id"];
+                    }
+                    return DeviceStatus;
+                }
+            }
+            catch
+            {
+                return -1;
+            }
+            finally
+            {
+                con.Close();
+            }
         }
 
         /*public List<List<Device>> GetRoomsAndDevicesByHouseId(Guid houseId)
@@ -354,9 +415,8 @@ namespace SmartEveryDay.Data
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
-            string querystring = "SELECT Users_id, Users.username, Users.real_first_name, Users.real_surname, Users.house_id, Users.email, Users.phonenumber, Users.isAdmin FROM Users";
-
-            //SqlDataReader reader = sendQueryGetResponse(querystring);
+            string querystring = "SELECT Users_id, Users.username, Users.real_first_name, Users.real_surname, Users.house_id, Users.email, Users.phonenumber,Users.isAdmin FROM Users";
+            
             List<User> userlist = new List<User>();
             try
             {
@@ -369,14 +429,11 @@ namespace SmartEveryDay.Data
                     }
                     using (SqlCommand command = new SqlCommand(querystring, con))
                     {
-                        int counter = 0;
-                        
-                        //command.ExecuteNonQuery();
                         SqlDataReader reader = command.ExecuteReader();
+                        
 
                             while (reader.Read())
                             {
-                                counter += 1;
                                 User us = new User();
                                 us.UserId = (Guid)reader["users_id"];
                                 us.Username = (string)reader["username"];
@@ -393,17 +450,21 @@ namespace SmartEveryDay.Data
                                     us.HouseId = (Guid)reader["house_id"];
                                 }
                                 userlist.Add(us);
-
                             }
-                        
-
-                        int yes = counter;
                     }
-                        
                  }
-             } catch
+             } catch (SqlException e)
             {
-                
+                StringBuilder errorMessage = new StringBuilder();
+                for (int i = 0; i < e.Errors.Count; i++)
+                {
+                    errorMessage.Append("Index #" + i + "\n" +
+                        "Message: " + e.Errors[i].Message + "\n" +
+                        "LineNumber: " + e.Errors[i].LineNumber + "\n" +
+                        "Source: " + e.Errors[i].Source + "\n" +
+                        "Procedure: " + e.Errors[i].Procedure + "\n");
+                }
+                Console.WriteLine(errorMessage.ToString());
             } finally
             {
                 con.Close();
