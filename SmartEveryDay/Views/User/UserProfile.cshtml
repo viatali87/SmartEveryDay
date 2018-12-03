@@ -42,6 +42,9 @@
 <button id="GetDevicesInARoomByTypebutton">Get Devices for a certain room of a certain type </button>
 <br />
 <button id="addrecordbutton">Add record hardcoded</button>
+<br />
+<input id="inputboxGetStatus" placeholder="Device id" />
+<button id="getStatusOfDeviceButton">Get status of device</button>
 
 <script type="text/javascript">
 
@@ -351,6 +354,30 @@
                 }
             }); // End of ajax
         }); // End of GetRoomsAndDevicesByType
+
+        //<input id="inputboxGetStatus" placeholder="Device id" />
+        //<button id="getStatusOfDeviceButton">Get status of device</button>
+        // Get a status of a device
+        $('#getStatusOfDeviceButton').on('click', function () {
+            var devId = document.getElementById('inputboxGetStatus').value;
+            $.ajax({
+                type: "POST",
+                url: '/Device/getStatus',
+                dataType: 'json',
+                data: {
+                    "deviceid": devId,
+                    "type": 1
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of GetRoomsAndDevicesByType
+
 
 
     } // Document ready ends
