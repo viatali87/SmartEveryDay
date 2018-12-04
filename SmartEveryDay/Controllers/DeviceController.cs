@@ -169,29 +169,24 @@ namespace SmartEveryDay.Controllers
             return Json(adapter.RemoveDeviceFromHome(deviceId));
         }
 
-
-
-
+        // methods that controls curtains and puts in open position 
         public string TurnCurtainsOpen()
         {
 
-
-
             var client = new WebClient();
-            var content = client.DownloadString("https://cloud.arest.io/blinds/up?params=0");
-
+            var  content = client.DownloadString("https://cloud.arest.io/blinds/up?params");
             return content;
         }
-
+        //methods that controls curtains and puts in closed position
         public string TurnCurtainsClosed()
         {
-
+ 
             var client = new WebClient();
-            var content = client.DownloadString("https://cloud.arest.io/blinds/down?params=0");
-
+            var content = client.DownloadString("https://cloud.arest.io/blinds/down?params");
             return content;
         }
 
+        //methods that controls light and puts in ON position
         public string TurnLightOn()
         {
             var client = new WebClient();
@@ -234,12 +229,12 @@ namespace SmartEveryDay.Controllers
             return content;
         }
 
+        //methods that controls light and puts in OFF position
         public string TurnLightOff()
         {
 
             var client = new WebClient();
             var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/1");
-
             return content;
         }
 

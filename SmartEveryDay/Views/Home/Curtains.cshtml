@@ -8,58 +8,115 @@
 
     $(document).ready(function () {
         var str;
+        var mesg;
+        var Curtains = true;
+        var openOrClosed;
+        var isOpenOrClosed;
+		var isOnOrOff;
+        var online;
 
-
-        //Function for turning the light on
-        $('#btnOpen').on('click', function () {
-            $.ajax({
-                // type: "GET",
-                url: '/Device/TurnCurtainsOpen',
-                dataType: 'json',
-                context: document.body
-            }).success(function (data) {
-                mesg = data.message;
-                console.log(mesg);
-            }).fail(function (data) {
-                console.log("Curtains fail");
-            })
-        });
-
-        //Function for turning the light off
-        $('#btnclosed').on('click', function () {
-
-            $.ajax({
-                // type: "GET",
-                url: '/Device/TurnCurtainsClosed',
-                dataType: 'json',
-                context: document.body
-            }).success(function (data) {
-                mesg = data.message;
-                console.log(mesg);
-            })
-            .fail(function (data) {
-                console.log("Curtains fail");
-            })
-        });
-
-        //Function for showing the status of the light
-        var x = function () {
-            $.getJSON("https://cloud.arest.io/light_id1/digital/2/", function (data) {
-                var isOnOrOff = data.return_value;
-                if (isOnOrOff == 1) {
-                    str = "Curtains is Closed";
+        //Function for showing the status of the curtains online or offline
+        var cur = function () {
+            $.getJSON("https://cloud.arest.io/blinds", function (data) {
+                 isOnOrOff = data.connected;
+                 online;
+                if (isOnOrOff == false) {
+                    online = "Requested device is not online";
                 }
-                else if (isOnOrOff == 0) {
-                    str = "Curtains is Open";
+                else if (isOnOrOff == true) {
+                    online = "Requested device is online";
                 }
-                else { str = "Not connected"; }
-                $("#statusCurtains").html(str);
+
+                $("#statusCurtainsOnline").html(online);
+
+
             });
+            //setInterval() method will execute the function once every 1 second
+           
+        }
+      
+
+
+
+        //Function for showing the status of the curtains open or closed
+        var x = function (isOpenOrClosed) {
+
+            if (isOpenOrClosed == 5) {
+                str = "Curtains is Closed";
+            }
+            else if (isOpenOrClosed == 4) {
+                str = "Curtains is Open";
+            }
+            else { str = "Not connected"; }
+           // $("#status").html("Status Curtains");
+            $("#statusCurtainsOnline1").html(str);
+
         }
         //setInterval() method will execute the function once every 1 second
-        var test = $("#statusCurtains");
-        setInterval(x.bind(null, test), 1000);
+       // var test = $("#statusCurtainsOnline1");
+       // setInterval(this.x.bind(null, test), 1000);
 
+        //Function for opening the curtains
+        $('#btnOpen').on('click', function () {
+            if(Curtains){
+                $.ajax({
+                    // type: "GET",
+                    url: '/Device/TurnCurtainsOpen',
+                    dataType: 'json',
+                    context: document.body
+                }).success(function (data) {
+                    isOpenOrClosed = data.return_value;
+                    mesg = data.return_value;
+                    x(mesg);
+                    console.log(mesg);
+                }).fail(function (data) {
+                    console.log("Curtains fail");
+                })
+                Curtains = false;
+            }
+        });
+
+        //Function for closing the curtains
+        $('#btnclosed').on('click', function () {
+            if (!Curtains) {
+                $.ajax({
+                    // type: "GET",
+                    url: '/Device/TurnCurtainsClosed',
+                    dataType: 'json',
+                    context: document.body
+                }).success(function (data) {
+                    openOrClosed = data.return_value;
+                    mesg = data.return_value;
+                    x(mesg);
+                    console.log(mesg);
+                })
+                .fail(function (data) {
+                    console.log("Curtains fail");
+                })
+                Curtains = true;
+            }
+        });
+
+ //Function for showing the status of the curtains open or closed
+        var x = function (isOpenOrClosed) {
+
+            if (isOpenOrClosed == 5) {
+                str = "Curtains is Closed";
+            }
+            else if (isOpenOrClosed == 4) {
+                str = "Curtains is Open";
+            }
+            else { str = "Not connected"; }
+           // $("#status").html("Status Curtains");
+            $("#statusCurtainsOnline1").html(str);
+
+        }
+
+        //setInterval() method will execute the function once every 1 second
+
+       // setInterval(x.bind(null, test), 1000);
+        var test1 = $("#statusCurtainsOnline");
+       //  setInterval(cur.bind(null, test1), 1000);
     })
 
 </script>
@@ -71,6 +128,13 @@
 <button id="btnclosed" class="btn btn-dark"> Closed</button>
 
 <div id="textMessage">
-    <p>Status Curtains</p>
+    <p id="status"></p>
+    <p id="statusCurtainsOnline"></p>
+    <p id="statusCurtainsOnline1"></p>
     <p id="statusCurtains"></p>
+</div>
+<div id="textMessage1">
+
+    <p id="statusCurtainsOnline"></p>
+
 </div>
