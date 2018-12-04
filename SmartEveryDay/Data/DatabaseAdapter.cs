@@ -370,41 +370,41 @@ namespace SmartEveryDay.Data
                     using (SqlCommand command = new SqlCommand(querystring, con))
                     {
                         int counter = 0;
-                        
+
                         //command.ExecuteNonQuery();
                         SqlDataReader reader = command.ExecuteReader();
 
-                            while (reader.Read())
+                        while (reader.Read())
+                        {
+                            counter += 1;
+                            User us = new User();
+                            us.UserId = (Guid)reader["users_id"];
+                            us.Username = (string)reader["username"];
+                            us.FirstName = (string)reader["real_first_name"];
+                            us.LastName = (string)reader["real_surname"];
+                            us.PhoneNo = (string)reader["phonenumber"];
+                            us.Email = (string)reader["email"];
+                            us.IsAdmin = (bool)reader["isAdmin"];
+                            if (us.IsAdmin)
                             {
-                                counter += 1;
-                                User us = new User();
-                                us.UserId = (Guid)reader["users_id"];
-                                us.Username = (string)reader["username"];
-                                us.FirstName = (string)reader["real_first_name"];
-                                us.LastName = (string)reader["real_surname"];
-                                us.PhoneNo = (string)reader["phonenumber"];
-                                us.Email = (string)reader["email"];
-                                us.IsAdmin = (bool)reader["isAdmin"];
-                                if(us.IsAdmin)
-                                {
-                                    // Skip saving house id
-                                } else
-                                {
-                                    us.HouseId = (Guid)reader["house_id"];
-                                }
-                                userlist.Add(us);
-
+                                // Skip saving house id
                             }
-                        
-
+                            else
+                            {
+                                us.HouseId = (Guid)reader["house_id"];
+                            }
+                            userlist.Add(us);
+                        }
                         int yes = counter;
                     }
-                        
-                 }
-             } catch
+
+                }
+            }
+            catch
             {
-                
-            } finally
+
+            }
+            finally
             {
                 con.Close();
             }

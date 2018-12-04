@@ -1,39 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using SmartEveryDay.Models;
 using RestSharp;
 using RestSharp.Authenticators;
 using Newtonsoft.Json;
 using SmartEveryDay.Data;
+using Newtonsoft.Json.Linq;
+using System;
 
 namespace SmartEveryDay.Controllers
 {
-    public class WaterController : BaseController
+    public class WaterController : Controller
     {
-        private IRestClient client;
-        private IRestRequest request;
-        private IRestResponse response;
-
+       
         // GET: Water
         public ActionResult Water()
         {
             return View();
 
         }
-        //this method should call RemoniDataAccess ExecuteClient - but I got errors.
-        public JsonResult getUnits1(string emeil, string password)
+       
+
+        public int GetAccountId(string email, string password)
         {
+            var myUrl = "https://api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
+
+            RemoniDataAccess RemoniDataAccess = new RemoniDataAccess();
+            IRestResponse response = RemoniDataAccess.ExecuteClient(myUrl, email, password);
+
+            dynamic conv = JsonConvert.DeserializeObject(response.Content);
+            int temp = conv[0].AccountId;
+
+            return temp;
+        }
+
+        public JsonResult GetDevices(string email, string password)
+        {
+
             List<UnitModel> temp = new List<UnitModel>();
+            RemoniDataAccess RemoniDataAccess = new RemoniDataAccess();
+            
+            var myUrl = "https://api.remoni.com/v1/Units?orderby=UnitId&top=10000";
 
-            var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
+            IRestResponse response = RemoniDataAccess.ExecuteClient(myUrl, email, password);
+            dynamic conv = JsonConvert.DeserializeObject(response.Content);
 
-          //  RemoniDataAccess response =  ExecuteClient(myUrl, emeil, password);
-           // dynamic conv = JsonConvert.DeserializeObject(response.Content);
-
-/*
             for (int i = 0; i < conv.Count; i++)
             {
                 var unit = new UnitModel
@@ -42,89 +53,22 @@ namespace SmartEveryDay.Controllers
                     UnitName = conv[i].Name
                 };
                 temp.Add(unit);
-            };*/
+            };
 
-            
-             return Json(temp, JsonRequestBehavior.AllowGet);
-
-        }
-
-
-
-
-
-
-        private JsonResult GetResult()
-        {
-            this.ConnectRemoniAPI(Method.GET);
-            var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
-            client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator("nadina77@gmail.com", "NADzuk3412.") };
-            response = client.Execute(request);
-            return Json(response.Content, JsonRequestBehavior.AllowGet);
-
-        }
-
-
-
-        [HttpGet]
-        public JsonResult getData()
-        {
-
-            /*var model = new Models.WaterModel();
-            var result = GetResult();
-            dynamic conv = JsonConvert.DeserializeObject(result.Data.ToString());
-            string temp = conv[0].Address;
-            return Json(temp, JsonRequestBehavior.AllowGet);*/
-
-            request = new RestRequest();
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddHeader("accept", "application/json");
-            request.AddHeader("accept", "application/x-yaml");
-            var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
-            client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator("nadina77@gmail.com", "NADzuk3412.") };
-            response = client.Execute(request);
-
-            int id = getAccountIdbylogin("nadina77@gmail.com", "NADzuk3412.");
-
-            getAllUnitsByAccountId(id, "nadina77@gmail.com", "NADzuk3412.");
-
-            return Json(response.Content, JsonRequestBehavior.AllowGet);
-
-
-        }
-
-        public JsonResult getUnits()
-        {
-            request = new RestRequest();
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddHeader("accept", "application/json");
-            request.AddHeader("accept", "application/x-yaml");
-            var myUrl = "https://qa.api.remoni.com/v1/Accounts?orderby=AccountId&top=10000";
-            client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator("nadina77@gmail.com", "NADzuk3412.") };
-
-            int id = getAccountIdbylogin("nadina77@gmail.com", "NADzuk3412.");
-            var temp = getAllUnitsByAccountId(id, "nadina77@gmail.com", "NADzuk3412.");
 
             return Json(temp, JsonRequestBehavior.AllowGet);
 
         }
 
-        public JsonResult getDataByUnitid(int id)
+
+        public JsonResult GetWaterValues(int id, string email, string password, string date1, string date2)
         {
+            var myUrl = "https://api.remoni.com/v1/Data?orderby=Timestamp&Timestamp=ge(" + date1 + ")&Timestamp = lt("+date2 + ")&UnitId=eq("+ id + ")&AggregateType=eq(Day)&top=10000";
 
-            List<WaterModel> temp = new List<WaterModel>();
-            var emeil = "Nadina77@gmail.com";
-            var password = "NADzuk3412.";
-            request = new RestRequest();
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddHeader("accept", "application/json");
-            request.AddHeader("accept", "application/x-yaml");
-            //still hardcoded value of id -1502, and hardcoded dates
-            var myUrl = "https://api.remoni.com/v1/Data?orderby=Timestamp&Timestamp=ge(2018-08-04)&Timestamp=lt(2018-08-04)&UnitId=eq(1502)&AggregateType=eq(Day)&top=10000";
-            client = new RestClient(myUrl) { Authenticator = new HttpBasicAuthenticator(emeil, password) };
-
-            response = client.Execute(request);
-
+            List <WaterModel> temp = new List<WaterModel>();
+            RemoniDataAccess RemoniDataAccess = new RemoniDataAccess();
+            IRestResponse response = RemoniDataAccess.ExecuteClient(myUrl, email, password);
+            
             dynamic conv = JsonConvert.DeserializeObject(response.Content);
             for (int i = 0; i < conv.Count; i++)
             {

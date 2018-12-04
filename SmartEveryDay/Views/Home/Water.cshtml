@@ -15,10 +15,19 @@
 
     $(document).ready(function () {
         var UnitId;
+        var email = "nadina77@gmail.com";
+        var password = "NADzuk3412.";
+        var date1 = "2018-08-01";
+        var date2 = "2018-08-08";
+
         $.ajax({
             type: "GET",
-            url: '/Water/getUnits',
+            url: '/Water/GetDevices',
             dataType: 'json',
+            data: {
+                'email': email,
+                'password': password
+            },
             success: function (response) {
              
                 $('#RemoniUnitTable').DataTable({
@@ -28,7 +37,7 @@
                    
                     data: response,
                     columns: [
-                        { data: 'UnitId' },
+                        
                         { data: 'UnitName' }, 
                        
                     ]
@@ -64,19 +73,21 @@
         }
     });
 
-   /* $('#button').click(function () {
-        table.row('.selected').remove().draw(false);
-    });*/
-
     $('#RemoniUnitTable tbody').on('click', 'tr', function () {
-        // var RemoniUnitTable = $('#RemoniUnitTable').dataTable();
+      
         console.log(UnitId);
         
         $.ajax({
             type: "GET",
-            url: '/Water/getDataByUnitid',
+            url: '/Water/GetWaterValues',
             dataType: 'json',
-            data: { 'id': UnitId },
+            data: {
+                'id': UnitId,
+                'email': email,
+                'password': password,
+                'date1': date1,
+                'date2': date2,
+            },
             success: function (response) {
 
                 $('#RemoniDataTable').DataTable({
@@ -126,7 +137,7 @@
 <table id="RemoniUnitTable"  class="display" style="width:100%">
     <thead>
         <tr>
-            <th>Unit Id</th>
+            
             <th>Unit Name</th>
         </tr>
     </thead>
