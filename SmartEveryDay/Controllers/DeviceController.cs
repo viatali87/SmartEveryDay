@@ -194,9 +194,43 @@ namespace SmartEveryDay.Controllers
 
         public string TurnLightOn()
         {
-
             var client = new WebClient();
             var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/0");
+
+            return content;
+        }
+
+        public string TurnLightOnOrOff(string deviceId, string type, string pin, string onOrOff)
+        {
+            int ConvertedStatus;
+            int Status = (Int32.Parse(onOrOff));
+            int DevType = (Int32.Parse(type));
+            // Check to see if you are turning the lights on or off and translate the id's into 1 or 0 which the micorcontroller understands
+            if (Status == 3)
+            {
+                ConvertedStatus = 0;
+            }
+            else if (Status == 4)
+            {
+                ConvertedStatus = 1;
+            } else {
+                throw new ArgumentException(String.Format("{0} is not a valid status", onOrOff),"onOrOff"); ;
+            }
+
+            // Assemble the url and send it on
+            var client = new WebClient();
+            string dlString = "https://cloud.arest.io/" + deviceId + "/digital/" + pin + "/" + ConvertedStatus;
+            var content = client.DownloadString(dlString);
+
+            // Extra - extract info if needed
+            var res = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(content);
+            string id = res["id"];
+            var connected = res["connected"];
+
+            // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. On relay: 0 = on and 1 = off)
+            updateDeviceStatus(deviceId, Status);
+            addRecord(deviceId, Status, DevType);
+            
             return content;
         }
 
@@ -227,11 +261,16 @@ namespace SmartEveryDay.Controllers
             return null;
         }
 
-        // Gets the newest status of a device (type: 1 = Light, 2 = Curtains, 3 = Water)
+        // Gets the newest status of a device (type: 1 = Light, 2 = Curtains, 3 = Water. Status: 1 = open, 2 = closed, 3 = on, 4 = off)
         public int getStatus(string deviceId, string type)
         {
             int t = Int32.Parse(type);
             return adapter.GetStatus(deviceId, t);
+        }
+
+        public void updateDeviceStatus(string deviceId, int newStatus)
+        {
+            adapter.updateDeviceStatus(deviceId, newStatus);
         }
 
     }

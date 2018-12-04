@@ -12,11 +12,14 @@
         $('#btnON').on('click', function () {
             $.ajax({
                 // type: "GET",
-                url: '/Device/TurnLightOn',
-                dataType: 'json',   
+                url: '/Device/TurnLightOnOrOff',
+                dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+                data: { "deviceid": "light_id1", "type": 1, "pin": 2, "onOrOff": 3 },
                 context: document.body
             }).success(function (data) {
                 mesg = data.message;
+                
                 console.log(mesg);
             }).fail(function (data) {
                 console.log("Light fail");
@@ -28,8 +31,10 @@
 
             $.ajax({
                 // type: "GET",
-                url: '/Device/TurnLightOff',
+                url: '/Device/TurnLightOnOrOff',
                 dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+                data: { "deviceid": "light_id1", "type": 1, "pin": 2, "onOrOff": 4 },
                 context: document.body
             }).success(function (data) {
                 mesg = data.message;

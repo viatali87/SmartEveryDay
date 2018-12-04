@@ -181,6 +181,16 @@ namespace SmartEveryDay.Data
             return SendQueryNoResponse(finalQuery);
         }
 
+        // Adds a record of status change in curtains for a device
+        public string updateDeviceStatus(string deviceId, int newStatusId)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+            string Id = deviceId.ToString();
+            string Query = "UPDATE Device SET Device.status_id = '" + newStatusId + "' WHERE Device.device_id = '" + deviceId + "'";
+            string FinalQuery = Query;
+            return SendQueryNoResponse(FinalQuery);
+        }
+
 
         // Gets the newest status of a device. Returns an int (1 = open, 2 = closed, 3 = on, 4 = off)
         public int GetStatus(string deviceId, int deviceType)
