@@ -188,10 +188,20 @@ namespace SmartEveryDay.Controllers
             IDatabaseAdapter adapter = DatabaseAdapter.Instance();
             try
             {
-                // Remove escape characters that are automatically added in
-                string query = val.Substring(1, 36);
+                /*string id;
+                // Remove escape characters if needed - they may be automatically added in
+                if (val.Length > 36)
+                {
+                    id = val.Substring(1, 36);
+                }
+                else
+                {
+                    id = val;
+                }
+                Guid userID = new Guid(id);*/
+
                 // Send request to database adapter
-                temp = adapter.DeleteUser(query);
+                temp = adapter.DeleteUser(ConvertStringToGuid(val));
             }
             catch
             {
@@ -201,6 +211,35 @@ namespace SmartEveryDay.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult GetUserByDeviceId(string deviceId)
+        {
+            IDatabaseAdapter adapter = DatabaseAdapter.Instance();
+
+            try
+            {
+                return Json(adapter.GetUserByDeviceId(deviceId));
+            } catch
+            {
+                return Json(Guid.Empty);
+            }
+        }
+
+        private Guid ConvertStringToGuid(string id)
+        {
+            string temp = "";
+            // Remove escape characters if needed - they may be automatically added in
+            if (id.Length > 36)
+            {
+                temp = id.Substring(1, 36);
+            }
+            else
+            {
+                temp = id;
+            }
+            Guid convertedId = new Guid(temp);
+            return convertedId;
+        }
 
     }
 }

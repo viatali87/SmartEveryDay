@@ -16,7 +16,7 @@ namespace SmartEveryDay.Data
         IUser SaveNewUser(IUser user);
         IUser GetUserById(Guid userId);
         IUser EditUser(IUser user);
-        string DeleteUser(string val);
+        string DeleteUser(Guid val);
         List<IUser> GetAllUsers();
         List<IDevice> GetAllDevices();
         List<IDevice> GetDevicesByHouseId(Guid houseId);
@@ -33,5 +33,6 @@ namespace SmartEveryDay.Data
         string updateDeviceStatus(string deviceId, int newStatusId);
         string addLightRecord(DateTime now, string deviceId, int newStatus);
         string addCurtainsRecords(DateTime now, string deviceId, int newStatus);
+        Guid GetUserByDeviceId(string deviceId);
     }
 }

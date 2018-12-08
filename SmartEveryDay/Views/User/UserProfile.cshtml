@@ -55,6 +55,11 @@
 <input id="phonenumber" placeholder="New phonenumber" /><br />
 <input id="email" placeholder="New email" /><br />
 <button id="updateuserbutton">Update user</button><button id="updateusernamebutton">Update username</button>
+<br />
+<input id="div" placeholder="deviceid" /><br />
+<button id="findUserByDeviceId">findUserByDeviceId</button>
+
+
 
 <script type="text/javascript">
 
@@ -464,6 +469,28 @@
             }); // End of ajax
         }); // End of edit user
 
+
+        // Edit user
+        $('#findUserByDeviceId').on('click', function () {
+            var deviceid = document.getElementById('div').value;
+            
+            $.ajax({
+                type: "POST",
+                url: '/User/GetUserByDeviceId',
+                dataType: 'json',
+                data: {
+
+                    "deviceId": deviceid,
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of edit user
 
 
     } // Document ready ends

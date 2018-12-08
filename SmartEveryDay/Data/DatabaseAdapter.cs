@@ -98,9 +98,9 @@ namespace SmartEveryDay.Data
             return GetUserById(user.UserId);
         }
 
-        public string DeleteUser(string val)
+        public string DeleteUser(Guid userId)
         {
-            string attempt = SendQueryNoResponse("DELETE Users where Users_id = '" + val + "'");
+            string attempt = SendQueryNoResponse("DELETE Users where Users_id = '" + userId + "'");
             return "User deleted";
         }
 
@@ -117,6 +117,36 @@ namespace SmartEveryDay.Data
             {
                 throw new System.ArgumentException("Error in dbAdapter " + e);
 
+            }
+        }
+
+        public Guid GetUserByDeviceId(string deviceId)
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+
+            string querystring = "SELECT Users_id, username, ROW_NUMBER() OVER (ORDER BY username) AS SNO FROM Users AS U INNER JOIN House_devices AS H ON H.device_id = '" + deviceId + "' WHERE H.house_id = U.house_id ORDER BY SNO DESC";
+
+            try
+            {
+                SqlCommand command = new SqlCommand(querystring, con);
+                con.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                Guid usersId = Guid.Empty;
+
+                while (reader.Read())
+                {
+                    usersId = (Guid)reader["users_id"];
+                }
+
+                return usersId;
+            }
+            catch
+            {
+                throw new KeyNotFoundException();
+            }
+            finally
+            {
+                con.Close();
             }
         }
 
