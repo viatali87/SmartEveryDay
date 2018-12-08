@@ -5,6 +5,16 @@ float: right;
  
 }
 
+#RoomPanel {
+   
+    background-color: ghostwhite;
+    float: none;
+    
+}
+
+#bulb{
+    color: white;
+}
 
 /*the user account dropdown css*/
 .navbar-login
