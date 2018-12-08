@@ -9,14 +9,14 @@ namespace SmartEveryDay.Models
     {
         public Guid RoomId { get; set; }
         public string Name { get; set; }
-        public List<Device> RoomDevices { get; set; }
+        public List<IDevice> RoomDevices { get; set; }
 
         public Room()
         {
-            RoomDevices = new List<Device>();
+            RoomDevices = new List<IDevice>();
         }
 
-        public void AddDevice(Device dev)
+        public void AddDevice(IDevice dev)
         {
             RoomDevices.Add(dev);
         }
@@ -24,6 +24,11 @@ namespace SmartEveryDay.Models
         public int getSizeOfDeviceList()
         {
             return RoomDevices.Count;
+        }
+
+        public void RemoveDevice(IDevice dev)
+        {
+            throw new NotImplementedException();
         }
     }
 }

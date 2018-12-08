@@ -10,6 +10,11 @@ namespace SmartEveryDay.Controllers
         JsonResult GetAllDevicesByHouseId(string val);
         JsonResult GetAllDevices();
         JsonResult GetRoomsAndDevicesByHouseId(string val);
+        JsonResult GetRoomsAndDevicesByType(string houseId, int type);
+        JsonResult GetDevicesInARoomByType(string roomId, int type);
+        JsonResult GetDevicesByType(string val);
+        int getStatus(string deviceId, string type);
+        void updateDeviceStatus(string deviceId, int newStatus);
         JsonResult AddNewDevice(string val);
         JsonResult RemoveDeviceFromHome(string deviceId);
         JsonResult DisableDevice(string deviceId);

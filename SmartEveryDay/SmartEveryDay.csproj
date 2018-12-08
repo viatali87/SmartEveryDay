@@ -262,6 +262,7 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WaterController.cs" />
     <Compile Include="Data\DatabaseAdapter.cs" />
+    <Compile Include="Data\IDataAccess.cs" />
     <Compile Include="Data\IDatabaseAdapter.cs" />
     <Compile Include="Data\RemoniDataAccess.cs" />
     <Compile Include="Global.asax.cs">

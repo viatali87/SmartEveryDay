@@ -12,7 +12,7 @@ namespace SmartEveryDay.Controllers
 {
     public class UserController : Controller, IUserController
     {
-        public DatabaseAdapter db;
+        public IDatabaseAdapter db;
 
         public UserController()
         {
@@ -68,44 +68,33 @@ namespace SmartEveryDay.Controllers
         }
         #endregion
 
-
-
-        [HttpPost]
-        public JsonResult GetAllUsers(string val)
+        /// <summary>
+        ///  Updates user details in the database
+        /// </summary>
+        /// <param name="userName">Name of user</param>
+        /// <param name="firstName">First name of user</param>
+        /// <param name="lastName">Last name of user</param>
+        /// <param name="houseId">House id</param>
+        /// <param name="phonenumber">Phone number</param>
+        /// <param name="email">Email</param>
+        /// <param name="isAdmin">Boolean if the user is an admin</param>
+        /// <param name="userId">id of the user</param>
+        /// <returns>The updated user from database</returns>
+        [HttpPost] 
+        public JsonResult EditUser(string userName, string firstName, string lastName, string houseId, string phonenumber, string email, bool isAdmin, string userId)
         {
-            string temp;
-            DatabaseAdapter adapter = DatabaseAdapter.Instance();
-            try
-            {
-                // Remove escape characters that are automatically added in
-                string query = val.Substring(1, 36);
-                // Send request to database adapter
-                temp = adapter.DeleteUser(query);
-            }
-            catch
-            {
-                return Json("User not deleted");
-            }
-            return Json(temp);
-        }
-
-        [HttpPost]
-        public JsonResult EditUser(string val)
-        {
-            DatabaseAdapter adapter = DatabaseAdapter.Instance();
-
-            var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
+            IDatabaseAdapter adapter = DatabaseAdapter.Instance();
+            IUser us = adapter.GetUserById(new Guid(userId));
+            
             User updatedUser = new User();
-            updatedUser.UserId = new Guid(JSONObj["userid"]);
-            updatedUser.FirstName = JSONObj["firstname"];
-            updatedUser.LastName = JSONObj["lastname"];
-            updatedUser.PhoneNo = JSONObj["phonenumber"];
-            updatedUser.HouseId = new Guid(JSONObj["houseid"]);
-            updatedUser.Username = JSONObj["username"];
-            updatedUser.Email = JSONObj["email"];
-            updatedUser.IsAdmin = Convert.ToBoolean(JSONObj["isadmin"]);
-            Guid id = Guid.NewGuid();
-            updatedUser.UserId = id;
+            updatedUser.UserId = us.UserId;
+            updatedUser.FirstName = firstName; ;
+            updatedUser.LastName = lastName;
+            updatedUser.PhoneNo = phonenumber;
+            updatedUser.HouseId = new Guid(houseId);
+            updatedUser.Username = userName;
+            updatedUser.Email = email;
+            updatedUser.IsAdmin = isAdmin;
 
             try
             {
@@ -120,7 +109,7 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetUser(string val)
         {
-            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+            IDatabaseAdapter adapter = DatabaseAdapter.Instance();
             try
             {
                 return Json(adapter.GetUserById(new Guid(val)));
@@ -134,8 +123,9 @@ namespace SmartEveryDay.Controllers
         
         public JsonResult GetAllUsers ()
         {
-            IEnumerable<User> temp = null;
-            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+            IEnumerable<IUser> temp = null;
+            IDatabaseAdapter adapter = DatabaseAdapter.Instance();
+            //adapter = (DatabaseAdapter)adapter;
 
             try
             {
@@ -186,11 +176,16 @@ namespace SmartEveryDay.Controllers
 
         }
 
+        /// <summary>
+        /// To delete a user from the database
+        /// </summary>
+        /// <param name="val">The Id of the user</param>
+        /// <returns>String informing if the user has been deleted successfully</returns>
         [HttpPost]
         public JsonResult DeleteUser(string val)
         {
             string temp;
-            DatabaseAdapter adapter = DatabaseAdapter.Instance();
+            IDatabaseAdapter adapter = DatabaseAdapter.Instance();
             try
             {
                 // Remove escape characters that are automatically added in
@@ -205,6 +200,7 @@ namespace SmartEveryDay.Controllers
             return Json(temp);
 
         }
+
 
     }
 }

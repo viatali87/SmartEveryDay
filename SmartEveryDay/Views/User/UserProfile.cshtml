@@ -45,6 +45,16 @@
 <br />
 <input id="inputboxGetStatus" placeholder="Device id" />
 <button id="getStatusOfDeviceButton">Get status of device</button>
+<br />
+<br />
+<input id="UserID" placeholder="User id" /><br />
+<input id="UserName" placeholder="New user name" /><br />
+<input id="firstname" placeholder="New firstname" /><br />
+<input id="lastname" placeholder="New lastname" /><br />
+<input id="houseid" placeholder="houseid" /><br />
+<input id="phonenumber" placeholder="New phonenumber" /><br />
+<input id="email" placeholder="New email" /><br />
+<button id="updateuserbutton">Update user</button><button id="updateusernamebutton">Update username</button>
 
 <script type="text/javascript">
 
@@ -377,6 +387,82 @@
                 }
             }); // End of ajax
         }); // End of GetRoomsAndDevicesByType
+
+
+        // Edit user
+        $('#updateuserbutton').on('click', function () {
+            var userid = document.getElementById('UserID').value;
+            var firstname = document.getElementById('firstname').value;
+            var lastname = document.getElementById('lastname').value;
+            var houseid = document.getElementById('houseid').value;
+            var phonenumber = document.getElementById('phonenumber').value;
+            var email = document.getElementById('email').value;
+            var username = document.getElementById('UserName').value;
+            
+            $.ajax({
+                type: "POST",
+                url: '/User/EditUser',
+                dataType: 'json',
+                data: {
+                    
+                    "userName": username,
+                    "firstname" : firstname,
+                    "lastname" : lastname,
+                    "houseId": houseid,
+                    "phonenumber": phonenumber,
+                    "email" : email,
+                    "userId": userid
+
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of edit user
+
+
+        // Edit user
+        $('#updateusernamebutton').on('click', function () {
+            var userid = document.getElementById('UserID').value;
+            var username = document.getElementById('UserName').value;
+            var firstname = document.getElementById('firstname').value;
+            var lastname = document.getElementById('lastname').value;
+            var phonenumber = document.getElementById('phonenumber').value;
+            var email = document.getElementById('email').value;
+            var username = document.getElementById('UserName').value;
+            var houseid = document.getElementById('houseid').value;
+            houseid
+
+            $.ajax({
+                type: "POST",
+                url: '/User/EditUser',
+                dataType: 'json',
+                data: {
+                    "userName": username,
+                    "firstName": firstname,
+                    "lastName": lastname,
+                    "houseId": houseid,
+                    "phonenumber": phonenumber,
+                    "email": email,
+                    "userId": userid
+
+                    //string userName, string firstName, string lastName, string houseId, string phonenumber, string email, bool isAdmin, string userId
+                    // string userid, string newusername, string firstName, string lastName, string houseId, string phonenumber, string email
+                                //string userName, string firstName, string lastName, string houseId, string phonenumber, string email, bool isAdmin, string userId
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+                }
+            }); // End of ajax
+        }); // End of edit user
 
 
 

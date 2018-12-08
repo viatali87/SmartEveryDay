@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace SmartEveryDay.Models
 {
-    interface IRoom
+    public interface IRoom
     {
+        Guid RoomId { get; set; }
+        string Name { get; set; }
+        List<IDevice> RoomDevices { get; set; }
+
+        void AddDevice(IDevice dev);
+        void RemoveDevice(IDevice dev);
+        int getSizeOfDeviceList();
     }
 }

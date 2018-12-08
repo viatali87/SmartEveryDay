@@ -11,19 +11,27 @@ namespace SmartEveryDay.Data
 {
     public interface IDatabaseAdapter
     {
-        User SaveNewUser(User user);
-        User GetUserById(Guid userId);
-        User EditUser(User user);
+        
+        // User
+        IUser SaveNewUser(IUser user);
+        IUser GetUserById(Guid userId);
+        IUser EditUser(IUser user);
         string DeleteUser(string val);
-        List<User> GetAllUsers();
-        List<Device> GetAllDevices();
-        List<Device> GetDevicesByHouseId(Guid houseId);
-        List<Room> GetRoomsAndDevicesByHouseId(Guid houseId);
-        List<Device> GetTypeOfDevicesByHouseId(Guid houseId, int type);
-        Device AddNewDevice(Device device);
+        List<IUser> GetAllUsers();
+        List<IDevice> GetAllDevices();
+        List<IDevice> GetDevicesByHouseId(Guid houseId);
+        // Rooms
+        List<IRoom> GetRoomsAndDevicesByHouseId(Guid houseId);
+        List<IDevice> GetDevicesInARoomByType(Guid roomId, int type);
+        List<IDevice> GetTypeOfDevicesByHouseId(Guid houseId, int type);
+        // Devices
+        IDevice AddNewDevice(IDevice device);
         string RemoveDeviceFromHome(string deviceId);
         string DisableDevice(string deviceId);
-        Device EditDevice(Device updatedDevice);
-
+        IDevice EditDevice(IDevice updatedDevice);
+        int GetStatus(string deviceId, int deviceType);
+        string updateDeviceStatus(string deviceId, int newStatusId);
+        string addLightRecord(DateTime now, string deviceId, int newStatus);
+        string addCurtainsRecords(DateTime now, string deviceId, int newStatus);
     }
 }
