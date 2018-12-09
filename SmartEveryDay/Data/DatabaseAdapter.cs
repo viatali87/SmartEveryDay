@@ -15,8 +15,6 @@ namespace SmartEveryDay.Data
 {
     public class DatabaseAdapter : IDatabaseAdapter
     {
-        // :)
-
         private static IDatabaseAdapter _instance { get; set;  }
 
         public static IDatabaseAdapter Instance()
