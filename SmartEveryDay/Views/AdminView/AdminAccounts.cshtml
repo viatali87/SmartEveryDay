@@ -13,9 +13,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var UnitId;
-        var UnitName;
-        //script to load all users
+           //script to load all users
         $.ajax({
             type: "GET",
             url: '/User/GetAllUsers',
@@ -49,7 +47,6 @@
         //script to save new user in db
         $('#btnSubmitUser').on('click', function () {
             console.log("Button Submit");
-
 
             var firstname = $('#firstname').val();
             var lastname = $('#lastname').val();
@@ -93,6 +90,115 @@
             });
         });
 
+        //script to click on the account table and fetch account by clicked row id
+        $('#AccountDataTable').on('click', 'tbody tr', function () {
+
+            var accountTable = $('#AccountDataTable').dataTable();
+            var currentRowData = accountTable.api().row(this).data();
+            var userId = currentRowData.UserId;
+            var accountTitle = currentRowData.FirstName + " " + currentRowData.LastName;
+            $('#newModal1').modal('show');
+            $('#acountTitle').text(accountTitle);
+            $('#cardTextAcount').html(""); //clear the fields before loading new
+            $('#deviceText').html("");//clear the fields before loading new
+            $('#countDevices').html("");//clear the fields before loading new
+            var accountInfo = "";
+            var deviceInfo = "";
+            var houseId;
+            
+         //function to  receive account information
+            $.ajax({
+                type: "POST",
+                url: '/User/GetUser',
+                dataType: 'json',
+                data: {
+                    'val': userId,
+                
+                },
+
+
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    $('#cardTextAcount').html(""); //clear the fields before loading new
+                
+                    accountInfo += "User id: " + response.UserId;
+                    accountInfo += " <br/> UserName: " + response.Username;
+                    accountInfo += " <br/> FirstName: " + response.FirstName;
+                    accountInfo += " <br/> LastName: " + response.LastName;
+                    accountInfo += " <br/> HouseId: " + response.HouseId;
+                    
+                    houseId = response.HouseId;
+
+                    $('#cardTextAcount').append(accountInfo);
+
+                    //function to receive all devices for account by houseId if account if received
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Device/GetAllDevicesByHouseI1d',
+                        dataType: 'json',
+                        data: {
+                            'val': houseId,
+
+                        },
+
+
+                        success: function (res) {
+                            console.log("Success Devices");
+                            $('#deviceText').html("");
+                            $('#countDevices').html("");
+
+                            console.log(res);
+                            for (var i = 0; i < res.length; i++) {
+
+                                deviceInfo += "<br/> ---- "+[i+1]+"--- device----------------"
+                                deviceInfo += "<br/> Device id: " + res[i].DeviceId;
+                                deviceInfo += " <br/> DeviceName: " + res[i].DeviceName;
+                                accountInfo += " <br/> DeviceType: " + res[i].DeviceType;
+                                accountInfo += " <br/> IsOnline: " + res[i].IsOnline;
+                                accountInfo += " <br/> Room: " + res[i].Room;
+                                deviceInfo += " <br/> RoomId: " + res[i].RoomId;
+                                deviceInfo += " <br/> StatusId: " + res[i].StatusId;
+
+                            }
+
+                            $('#deviceText').append(deviceInfo);
+                            $('#countDevices').text("Devices in total:" + res.length);
+                        },
+                        error: function (obj, textstatus) {
+                            console.log("Error js");
+                            deviceInfo += "nothing to display. Errror in request"
+                            $('#deviceText').append(deviceInfo);
+                        }
+
+                    });
+
+
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+
+                }
+
+            });
+
+            
+
+
+
+
+        })
+
+
+
+
+
+
+
+
+
     })
 
 
@@ -125,7 +231,7 @@
 
 </div>
 
-<!-- Modal -->
+<!-- Modal 1 for display Create new User Form-->
 <div class="modal" id="newModal" role="dialog" aria-labelledby="exampleModalCenterTitle">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -190,6 +296,58 @@
 
 
 </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal 2 for display User account -->
+<div class="modal" id="newModal1" role="dialog" aria-labelledby="exampleModalCenterTitle">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acountTitle">Account </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card dark mb-3">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#AcountInformation">Acount</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#AcountDevices">Devices</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#AccountScenarios">Scenarios</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="AcountInformation">
+                            <p class="card-text" id="cardTextAcount"></p>
+                            <a href="#" class="btn btn-primary">Edit acount</a>
+                        </div>
+                        <div class="tab-pane" id="AcountDevices">
+                            <p id="countDevices" >  </p>
+                            <p class="card-text" id="deviceText"></p>
+                        </div>
+
+                        <div class="tab-pane" id="AccountScenarios">
+                            <h3>Scenarios</h3>
+                        </div>
+
+                        </div>
+                    </div>
+
+
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>

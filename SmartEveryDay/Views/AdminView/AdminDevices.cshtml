@@ -3,5 +3,221 @@
     Layout = "~/Views/Shared/_AdminLeftSidebar.cshtml";
 }
 
-<h2>AdminDevices</h2>
 
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "POST",
+            url: '/Device/GetAllDevices',
+            dataType: 'json',
+            data: {
+
+            },
+
+
+            success: function (response) {
+
+                $('#DeviceDataTable').DataTable({
+                    data: response,
+                    columns: [
+                        { data: 'DeviceId' },
+                        { data: 'DeviceName' },
+                        { data: 'DeviceType' },
+                        { data: 'IsOnline' },
+                        { data: 'Room' },
+                        { data: 'RoomId' },
+                        { data: 'StatusId' },
+
+
+                    ]
+                }
+                );
+                console.log("Success Devices");
+
+                console.log(response);
+
+            },
+            error: function (obj, textstatus) {
+                console.log("Error js");
+
+            }
+
+        });
+
+        //script to click on the device table and fetch device by clicked row id
+        $('#DeviceDataTable').on('click', 'tbody tr', function () {
+
+            var deviceTable = $('#DeviceDataTable').dataTable();
+            var currentRowData = deviceTable.api().row(this).data();
+            var deviceId = currentRowData.DeviceId;
+            $('#newModal1').modal('show');
+            
+            $('#deviceText').html(""); // clear device text before loading new one
+            var accountTitle = "Account"
+            $('#acountTitle').text(accountTitle);
+            $('#cardTextAcount').html(""); //clear the fields before loading new
+            $('#deviceText').html("");//clear the fields before loading new
+            $('#countDevices').html("");//clear the fields before loading new
+            var accountInfo = "";
+            var deviceInfo = "";
+            var houseId;
+/*
+            //function to  receive account information
+            $.ajax({
+                type: "POST",
+                url: '/User/GetUser',
+                dataType: 'json',
+                data: {
+                    'val': userId,
+
+                },
+
+
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                    $('#cardTextAcount').html(""); //clear the fields before loading new
+
+                    accountInfo += "User id: " + response.UserId;
+                    accountInfo += " <br/> UserName: " + response.Username;
+                    accountInfo += " <br/> FirstName: " + response.FirstName;
+                    accountInfo += " <br/> LastName: " + response.LastName;
+                    accountInfo += " <br/> HouseId: " + response.HouseId;
+
+                    houseId = response.HouseId;
+
+                    $('#cardTextAcount').append(accountInfo);
+
+                    //function to receive all devices for account by houseId if account if received
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Device/GetAllDevicesByHouseI1d',
+                        dataType: 'json',
+                        data: {
+                            'val': houseId,
+
+                        },
+
+
+                        success: function (res) {
+                            console.log("Success Devices");
+                            $('#deviceText').html("");
+                            $('#countDevices').html("");
+
+                            console.log(res);
+                            for (var i = 0; i < res.length; i++) {
+
+                                deviceInfo += "<br/> ---- " + [i + 1] + "--- device----------------"
+                                deviceInfo += "<br/> Device id: " + res[i].DeviceId;
+                                deviceInfo += " <br/> DeviceName: " + res[i].DeviceName;
+                                accountInfo += " <br/> DeviceType: " + res[i].DeviceType;
+                                accountInfo += " <br/> IsOnline: " + res[i].IsOnline;
+                                accountInfo += " <br/> Room: " + res[i].Room;
+                                deviceInfo += " <br/> RoomId: " + res[i].RoomId;
+                                deviceInfo += " <br/> StatusId: " + res[i].StatusId;
+
+                            }
+
+                            $('#deviceText').append(deviceInfo);
+                            $('#countDevices').text("Devices in total:" + res.length);
+                        },
+                        error: function (obj, textstatus) {
+                            console.log("Error js");
+                            deviceInfo += "nothing to display. Errror in request"
+                            $('#deviceText').append(deviceInfo);
+                        }
+
+                    });
+
+
+
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+
+                }
+
+            });*/
+        })
+    });
+
+</script>
+
+
+
+<h2>AdminDevices</h2>
+<div>
+    <table id="DeviceDataTable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Device Id</th>
+                <th>Device Name</th>
+                <th>Device Type</th>
+                <th>Is Online</th>
+                <th>Room</th>
+                <th>Room Id</th>
+                <th>Status Id</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<!-- Modal 2 for display User account -->
+<div class="modal" id="newModal1" role="dialog" aria-labelledby="exampleModalCenterTitle">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acountTitle">Account </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card dark mb-3">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#AcountInformation">Acount</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#AcountDevices">Devices</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#AccountScenarios">Scenarios</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="AcountInformation">
+                            <p class="card-text" id="cardTextAcount"></p>
+                            <a href="#" class="btn btn-primary">Edit acount</a>
+                        </div>
+                        <div class="tab-pane" id="AcountDevices">
+                            <p id="countDevices">  </p>
+                            <p class="card-text" id="deviceText"></p>
+                        </div>
+
+                        <div class="tab-pane" id="AccountScenarios">
+                            <h3>Scenarios</h3>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

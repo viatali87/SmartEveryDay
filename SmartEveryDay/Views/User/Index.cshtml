@@ -1,18 +1,49 @@
 ﻿
 
 @{
-    var username = "hardcoded value";
+    var username = "Nadina";
 
     Layout = "~/Views/Shared/_UserSharedTopMenu.cshtml";
 }
 
 <h2>Index User View</h2>
-<h3> Username = @username</h3>
+<h3>  @username</h3>
 
 
 <script type="text/javascript">
     $(document).ready(function () {
         console.log("document ready");
+
+        var houseId = "CE61F280-E5F7-45A4-904A-0D2E02EE6A79";
+        var responseObj = [];
+        var deviceName;
+        $.ajax({
+            type: "POST",
+            url: '/Device/GetRoomsAndDevicesByHouseId',
+            dataType: 'json',
+            data: {
+                'val': houseId,
+                
+
+            },
+            success: function (response) {
+                console.log("Success");
+                console.log(response);
+
+                for (var i = 0; i < response.length; i++) {
+                    console.log("here will be check by device type and statuss");
+                    console.log("and than we would change the pictogram color depending on status");
+                }
+
+
+            },
+            error: function (obj, textstatus) {
+                console.log("Error js");
+                console.log(houseId);
+
+            }
+
+        });
 
 
 

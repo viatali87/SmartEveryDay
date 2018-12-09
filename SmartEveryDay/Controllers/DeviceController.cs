@@ -79,6 +79,21 @@ namespace SmartEveryDay.Controllers
             return Json(adapter.GetDevicesByHouseId(houseId));
         }
 
+        public JsonResult GetAllDevicesByHouseI1d(string val)
+        {
+            Guid houseId;
+            if (val.Length > 36)
+            {
+                string id = val.Substring(1, 36);
+                houseId = new Guid(id);
+            }
+            else
+            {
+                houseId = new Guid(val);
+            }
+            return Json(adapter.GetDevicesByHouseId(houseId));
+        }
+
         // Retuns a list of Rooms and each one has a list of devices, takes a house id
         [HttpPost]
         public JsonResult GetRoomsAndDevicesByHouseId(string val)
