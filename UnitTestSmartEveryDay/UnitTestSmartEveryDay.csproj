@@ -101,6 +101,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="OpenLea.cs" />
     <Compile Include="UserControllerUnitTest.cs" />
     <Compile Include="DeviceControllerUnitTest.cs" />
     <Compile Include="GetUserByIdUnitTest.cs" />
