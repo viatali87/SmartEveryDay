@@ -1,0 +1,94 @@
+﻿
+
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/index.css">
+</head>
+<div class="row">
+    <div class="col-md-4">
+
+        <h2>Light </h2>
+
+        <button type="button" class="btn btn-success" id="btnLight"> Light </button>
+
+        <p>
+            ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+            is an ideal platform for building RESTful applications on the .NET Framework.
+        </p>
+
+    </div>
+    
+    <div class="col-md-4">
+        <h2>Flow Water </h2>
+        <!--<button type="button" class="btn btn-primary " id="btnWater"> @Html.ActionLink("Water","Water", "Home") </button> -->
+
+        <button type="button" class="btn btn-primary" id="btnWater"> Flow Water </button>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <h3>Re-directing to Admin view: </h3>
+         <button type="button" class="btn btn-primary " id="btnAdminView"> Admin View  </button>
+        <
+
+        <h3>Re-directing to UserView view: </h3>
+        <button type="button" class="btn btn-primary" id="btnUserView"> User View </button>
+        
+        <h3>Re-directing to LogIn view: </h3>
+        <button type="button" class="btn btn-primary" id="btnLogIn"> LogIn User </button>
+
+    </div>
+    <div class="col-md-4">
+        <h2>Curtains</h2>
+         
+
+        <button type="button" class="btn btn-warning" id="btnCurtains"> Curtains </button>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+    </div>
+</div>
+
+
+<!--Home buttons by press opens next url-->
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#btnLight').on('click', function () {
+            location.href = '@Url.Action("Light","Home")';
+            console.log("button pressed")
+        });
+
+        $('#btnCurtains').on('click', function () {
+            console.log('In pula mea')
+                location.href = '@Url.Action("Curtains","Home")';
+                console.log("button pressed")
+            });
+
+        $('#btnAdminView').on('click', function () {
+            location.href = '@Url.Action("AdminAccounts", "AdminView")';
+            console.log("button pressed")
+        });
+
+        $('#btnLogIn').on('click', function () {
+            location.href = '@Url.Action("LogInView", "Home")';
+            console.log("button pressed")
+        });
+
+
+        $('#btnUserView').on('click', function () {
+            location.href = '@Url.Action("Index","User")';
+            console.log("button pressed")
+        });
+
+
+
+        $('#btnWater').on('click', function () {
+            location.href = '@Url.Action("Water", "Home")';
+            console.log("button pressed")
+        });
+
+
+
+    })
+
+</script>
+

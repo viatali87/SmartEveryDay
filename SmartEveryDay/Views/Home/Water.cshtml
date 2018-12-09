@@ -1,0 +1,181 @@
+﻿@model SmartEveryDay.Models.WaterModel
+
+@{
+    ViewBag.Title = "Water";
+    
+ }
+
+ 
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/Water.css" />
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var UnitId;
+        var email = "nadina77@gmail.com";
+        var password = "NADzuk3412.";
+        var date1 = "2018-08-01";
+        var date2 = "2018-08-08";
+
+        $.ajax({
+            type: "GET",
+            url: '/Water/GetDevices',
+            dataType: 'json',
+            data: {
+                'email': email,
+                'password': password
+            },
+            success: function (response) {
+             
+                $('#RemoniUnitTable').DataTable({
+
+                    "searching": false,
+                    "lengthChange": false,
+                   
+                    data: response,
+                    columns: [
+                        
+                        { data: 'UnitName' }, 
+                       
+                    ]
+                }
+                );
+              
+
+
+            },
+            error: function (obj, textstatus) {
+                alert(obj.msg);
+            }
+        });
+
+//onclick function to click on the row and display extra data on modal
+    $('#RemoniUnitTable tbody').on('click', 'tr', function () {
+        var table = $('#RemoniUnitTable').DataTable();
+   //     var table1 = $('#RemoniDataTable').DataTable();
+        var currentRowData = table.row(this).data();
+         UnitId = currentRowData.UnitId;
+        var UnitName = currentRowData.UnitName;
+        $('#ModalTitle').text(UnitId + "  " + UnitName);
+        
+     
+
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    });
+
+    $('#RemoniUnitTable tbody').on('click', 'tr', function () {
+      
+        console.log(UnitId);
+        
+        $.ajax({
+            type: "GET",
+            url: '/Water/GetWaterValues',
+            dataType: 'json',
+            data: {
+                'id': UnitId,
+                'email': email,
+                'password': password,
+                'date1': date1,
+                'date2': date2,
+            },
+            success: function (response) {
+
+                $('#RemoniDataTable').DataTable({
+
+                    "searching": true,
+                    "lengthChange": true,
+
+                    data: response,
+                    columns: [
+                        { data: 'Temperature' },
+                        { data: 'timeStamp' },
+                        { data: 'DataType' },
+
+                    ]
+
+                }
+
+                   
+                );
+
+
+
+            },
+            error: function (obj, textstatus) {
+                alert(obj.msg);
+              
+            }
+        });
+
+
+        $('#newModal').modal('show');
+       
+      
+
+        });
+        
+    });
+
+
+
+</script>
+
+
+
+<!-- html part for the page-->
+<h2>Water</h2>
+<table id="RemoniUnitTable"  class="display" style="width:100%">
+    <thead>
+        <tr>
+            
+            <th>Unit Name</th>
+        </tr>
+    </thead>
+    <tbody>
+           
+    </tbody>
+</table>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal" id="newModal" role="dialog" aria-labelledby="exampleModalCenterTitle" >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="RemoniDataTable" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Tmp</th>
+                            <th>timestamp</th>
+                            <th>DataType</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

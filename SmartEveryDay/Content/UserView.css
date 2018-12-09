@@ -1,0 +1,93 @@
+﻿
+
+#id2 {
+float: right;
+ 
+}
+
+#RoomPanel {
+   
+    background-color: ghostwhite;
+    float: none;
+    
+}
+
+#bulb{
+    color: white;
+}
+
+/*the user account dropdown css*/
+.navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size
+{
+    font-size: 87px;
+}
+
+
+
+ /* The navigation bar container with icons */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    
+}
+
+/* Navbar links */
+.topnav a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    
+    text-decoration: none;
+    font-size: 750%;
+}
+
+/* On different screeans, make the menu links stack on top of each other instead of next to each other */
+@media screen and (max-width: 345px) {
+    .topnav a {
+        float: none;
+        width: 100%;
+    }
+
+   
+}
+
+
+@media screen and (max-width: 500px) {
+    .topnav a {
+        float: none;
+        width: 100%;
+    }
+}
+ @media screen and (max-width: 700px) {
+    .topnav a {
+        float: none;
+        width: 100%;
+    }
+} 
+
+ 
+
+
+
+
+
+
+
+
+

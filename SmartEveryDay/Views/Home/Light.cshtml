@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Light";
+}
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var str;
+
+
+        //Function for turning the light on
+        $('#btnON').on('click', function () {
+            $.ajax({
+                // type: "GET",
+                url: '/Device/TurnLightOnOrOff',
+                dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+                data: { "deviceid": "light_id1", "type": 1, "pin": 2, "onOrOff": 3 },
+                context: document.body
+            }).success(function (data) {
+                mesg = data.message;
+                
+                console.log(mesg);
+                console.log(data);
+            }).fail(function (data) {
+                console.log("Light fail");
+            })
+        });
+
+        //Function for turning the light off
+        $('#btnOFF').on('click', function () {
+
+            $.ajax({
+                // type: "GET",
+                url: '/Device/TurnLightOnOrOff',
+                dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+                data: { "deviceid": "light_id1", "type": 1, "pin": 2, "onOrOff": 4 },
+                context: document.body
+            }).success(function (data) {
+                mesg = data.message;
+                console.log(mesg);
+            })
+            .fail(function (data) {
+                console.log("Light fail");
+            })
+        });
+
+        //Function for showing the status of the light
+        var x = function () {
+            $.getJSON("https://cloud.arest.io/light_id1/digital/2/", function (data) {
+                var isOnOrOff = data.return_value;
+                if (isOnOrOff == 1) {
+                    str = "Light is OFF";
+                }
+                else if (isOnOrOff == 0) {
+                    str = "Light is ON";
+                }
+                else { str = "Not connected"; }
+                $("#statusLight").html(str);
+            });
+        }
+        //setInterval() method will execute the function once every 1 second
+        var test = $("#statusLight");
+        setInterval(x.bind(null, test), 1000);
+
+    })
+
+</script>
+<!-- html part for the light page-->
+<h2>Light</h2>
+<p id="Text"> Turn the light on or off </p>
+<button id="btnON" class="btn btn-info"> ON </button>
+<button id="btnOFF" class="btn btn-dark"> OFF</button>
+
+<div id="textMessage">
+    <p>Status Light</p>
+    <p id="statusLight"></p>
+</div>

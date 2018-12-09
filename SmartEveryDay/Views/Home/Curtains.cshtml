@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewBag.Title = "Curtains";
+}
+
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var str;
+        var mesg;
+        var Curtains = true;
+        var openOrClosed;
+        var isOpenOrClosed;
+		var isOnOrOff;
+        var online;
+
+        //Function for showing the status of the curtains online or offline
+        var cur = function () {
+            $.getJSON("https://cloud.arest.io/blinds", function (data) {
+                 isOnOrOff = data.connected;
+                 online;
+                if (isOnOrOff == false) {
+                    online = "Requested device is not online";
+                }
+                else if (isOnOrOff == true) {
+                    online = "Requested device is online";
+                }
+
+                $("#statusCurtainsOnline").html(online);
+
+
+            });
+            //setInterval() method will execute the function once every 1 second
+           
+        }
+      
+
+
+
+        //Function for showing the status of the curtains open or closed
+        var x = function (isOpenOrClosed) {
+
+            if (isOpenOrClosed == 5) {
+                str = "Curtains is Closed";
+            }
+            else if (isOpenOrClosed == 4) {
+                str = "Curtains is Open";
+            }
+            else { str = "Not connected"; }
+           // $("#status").html("Status Curtains");
+            $("#statusCurtainsOnline1").html(str);
+
+        }
+        //setInterval() method will execute the function once every 1 second
+       // var test = $("#statusCurtainsOnline1");
+       // setInterval(this.x.bind(null, test), 1000);
+
+        //Function for opening the curtains
+        $('#btnOpen').on('click', function () {
+            if(Curtains){
+                $.ajax({
+                    // type: "GET",
+                    url: '/Device/TurnCurtainsOpen',
+                    dataType: 'json',
+                    context: document.body
+                }).success(function (data) {
+                    isOpenOrClosed = data.return_value;
+                    mesg = data.return_value;
+                    x(mesg);
+                    console.log(mesg);
+                }).fail(function (data) {
+                    console.log("Curtains fail");
+                })
+                Curtains = false;
+            }
+        });
+
+        //Function for closing the curtains
+        $('#btnclosed').on('click', function () {
+            if (!Curtains) {
+                $.ajax({
+                    // type: "GET",
+                    url: '/Device/TurnCurtainsClosed',
+                    dataType: 'json',
+                    context: document.body
+                }).success(function (data) {
+                    openOrClosed = data.return_value;
+                    mesg = data.return_value;
+                    x(mesg);
+                    console.log(mesg);
+                })
+                .fail(function (data) {
+                    console.log("Curtains fail");
+                })
+                Curtains = true;
+            }
+        });
+
+ //Function for showing the status of the curtains open or closed
+        var x = function (isOpenOrClosed) {
+
+            if (isOpenOrClosed == 5) {
+                str = "Curtains is Closed";
+            }
+            else if (isOpenOrClosed == 4) {
+                str = "Curtains is Open";
+            }
+            else { str = "Not connected"; }
+           // $("#status").html("Status Curtains");
+            $("#statusCurtainsOnline1").html(str);
+
+        }
+
+        //setInterval() method will execute the function once every 1 second
+
+       // setInterval(x.bind(null, test), 1000);
+        var test1 = $("#statusCurtainsOnline");
+       //  setInterval(cur.bind(null, test1), 1000);
+    })
+
+</script>
+
+<h2>Curtains</h2>
+
+<p id="Text"> Turn the curtains in open or closed position </p>
+<button id="btnOpen" class="btn btn-info"> Open </button>
+<button id="btnclosed" class="btn btn-dark"> Closed</button>
+
+<div id="textMessage">
+    <p id="status"></p>
+    <p id="statusCurtainsOnline"></p>
+    <p id="statusCurtainsOnline1"></p>
+    <p id="statusCurtains"></p>
+</div>
+<div id="textMessage1">
+
+    <p id="statusCurtainsOnline"></p>
+
+</div>

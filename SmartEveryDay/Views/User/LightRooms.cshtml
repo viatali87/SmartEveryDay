@@ -1,0 +1,105 @@
+﻿
+@{
+    var houseId = "CE61F280-E5F7-45A4-904A-0D2E02EE6A79";
+    Layout = "~/Views/Shared/_UserSharedTopMenu.cshtml";
+}
+
+<!--Stylesheets and bootstrap for user menu icon and dropdown-->
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!--Stylesheets for the icons -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var houseId = "CE61F280-E5F7-45A4-904A-0D2E02EE6A79";
+
+        $.ajax({
+            type: "POST",
+            url: '/Device/GetRoomsAndDevicesByType',
+            dataType: 'json',
+            data: {
+                'houseId': houseId,
+                'type': 1,
+
+            },
+            success: function (response) {
+                console.log("Success");
+                console.log(response);
+
+                //clear the data before load new data
+                $('#roomData').html("");
+                var temp = "";
+
+                for (var i = 0; i < response.length; i++) {
+                    $('#roomData').append("<button class='btn btn-primary btn-block type='button'  id='btn' data-id=" + response[i].RoomId + "'>" + response[i].Name + " <i style='font-size:24px' class='fa'>&#xf0eb; </i></button><div class='content hide' id='content'><h4>Dynamically Registered On Event Attribute by Parsing htmlString</h4><code>");
+
+                    var button = document.getElementById('btn');
+                    button.setAttribute("id", "room" + i); //giving new id's to room buttons for more easy work later with them
+                    var div = document.getElementById('content');
+                    div.setAttribute("id", "content" + i); //giving id to content;
+
+
+                    document.getElementById('room' + i).addEventListener('click', showHide);
+
+                    for (var j = 0; j < response[i].RoomDevices.length; j++) {
+
+                        if ((response[i].RoomDevices[j].StatusId) == 4)  //if in room light is on
+                        {
+                            $("#room" + [i]).css("color", "yellow");  //change room light to yellow
+                            $('#bulb').css("color", "yellow");      //change the main bulb color to yellow
+
+                        }
+
+                    }
+
+                }
+
+
+
+            },
+            error: function (obj, textstatus) {
+                console.log("Error js");
+
+            }
+
+        });
+
+      
+
+
+        function showHide(event) {
+            var tgt = event.target;
+            console.log(this.id); //this is buttons id
+            
+            if (tgt.tagName === "BUTTON") {
+                var code = tgt.nextElementSibling;
+                code.classList.toggle('hide');
+            }
+            return false;
+        }
+
+
+    });
+</script>
+
+
+
+
+
+<h2 align="center" id="bulb"><i style="font-size:50px" class="fa">&#xf0eb; </i></h2>
+<div>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <div class="card" id="RoomPanel">
+            <div class="card-body" id="roomData">   </div>
+        </div>
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+
+
