@@ -13,6 +13,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         console.log("document ready");
+        $('#bulb').css("color", "white");
+        $('#curtains').css("color", "white");
 
         var houseId = "CE61F280-E5F7-45A4-904A-0D2E02EE6A79";
         var responseObj = [];
@@ -31,8 +33,26 @@
                 console.log(response);
 
                 for (var i = 0; i < response.length; i++) {
-                    console.log(" 15 here will be check by device type and statuss");
-                    console.log("and than we would change the pictogram color depending on status");
+
+
+                    for (var j = 0; j < response[i].RoomDevices.length; j++) {
+                        console.log(" Devicetype: " +response[i].RoomDevices[j].DeviceType);
+                        console.log("StatusId: " +response[i].RoomDevices[j].StatusId);
+                        if ((response[i].RoomDevices[j].DeviceType ==1) && (response[i].RoomDevices[j].StatusId) == 3)  //device is light and light is on
+                        {
+                            console.log("llklkl");
+                            $('#bulb').css("color", "yellow");      //change the main bulb color to yellow
+
+                        }
+                        else if ((response[i].RoomDevices[j].DeviceType == 2) && (response[i].RoomDevices[j].StatusId) == 1)  //device is curtain and curtain is opened
+                        {
+                            console.log("llklkl");
+                            $('#curtains').css("color", "purple");      //change the main curtain pict color to purple
+
+                        }
+
+                    }
+                   
                 }
 
 
