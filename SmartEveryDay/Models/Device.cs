@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SmartEveryDay.Models
 {
-    public class Device : IDevice
+    public class Device : IDevice // :)
     {
 
         public string DeviceId { get; set; }
