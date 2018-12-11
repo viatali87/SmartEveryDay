@@ -83,6 +83,28 @@ namespace SmartEveryDay.Controllers
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetWaterCurrentStatus(int id, string email, string password, string date1)
+        {
+            var myUrl = "https://api.remoni.com/v1/Data?orderby=Timestamp&Timestamp=ge(" + date1 + ")&Timestamp = lt()&UnitId=eq(" + id + ")&AggregateType=eq(Raw)&top=2";
+
+            List<WaterModel> temp = new List<WaterModel>();
+            RemoniDataAccess RemoniDataAccess = new RemoniDataAccess();
+            IRestResponse response = RemoniDataAccess.ExecuteClient(myUrl, email, password);
+
+            dynamic conv = JsonConvert.DeserializeObject(response.Content);
+            for (int i = 0; i < conv.Count; i++)
+            {
+                var data = new WaterModel
+                {
+                    DataType = conv[i].DataType,
+                    Temperature = conv[i].Value,
+                    timeStamp = conv[i].Timestamp
+                };
+                temp.Add(data);
+            }
+            return Json(temp, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Water/Details/5
         public ActionResult Details(int id)
         {

@@ -20,6 +20,103 @@
 @Styles.Render("~/Content/css")
 @Scripts.Render("~/bundles/modernizr")
 
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        console.log("document ready");
+
+        var houseId = "CE61F280-E5F7-45A4-904A-0D2E02EE6A79";
+        
+        $.ajax({
+            type: "POST",
+            url: '/Device/GetRoomsAndDevicesByHouseId',
+            dataType: 'json',
+            data: {
+                'val': houseId,
+
+
+            },
+            success: function (response) {
+                console.log("Success");
+                console.log(response);
+                $('#bulb').css("color", "white");
+                $('#curtains').css("color", "white");
+                $('#waterDrop').css("color", "white");
+
+                for (var i = 0; i < response.length; i++) {
+
+
+                    for (var j = 0; j < response[i].RoomDevices.length; j++) {
+                        console.log(" Devicetype: " +response[i].RoomDevices[j].DeviceType);
+                        console.log("StatusId: " +response[i].RoomDevices[j].StatusId);
+                        if ((response[i].RoomDevices[j].DeviceType ==1) && (response[i].RoomDevices[j].StatusId) == 3)  //device is light and light is on
+                        {
+                            console.log("llklkl");
+                            $('#bulb').css("color", "yellow");      //change the main bulb color to yellow
+
+                        }
+                        else if ((response[i].RoomDevices[j].DeviceType == 2) && (response[i].RoomDevices[j].StatusId) == 1)  //device is curtain and curtain is opened
+                        {
+                            console.log("llklkl");
+                            $('#curtains').css("color", "purple");      //change the main curtain pict color to purple
+
+                        }
+
+                    }
+
+                }
+
+
+            },
+            error: function (obj, textstatus) {
+                console.log("Error js");
+                console.log(houseId);
+
+            }
+
+        });
+
+        //variables to retrieve Remoni values. Right now hardcoded, later passed from db and user input
+        var UnitId = 1502;
+        var email = "nadina77@gmail.com";
+        var password = "NADzuk3412.";
+        var date1 = "2018-08-09T02:00"; //day now hardcoded
+       
+
+        $.ajax({
+            type: "GET",
+            url: '/Water/GetWaterCurrentStatus',
+            dataType: 'json',
+            data: {
+                'id': UnitId,
+                'email': email,
+                'password': password,
+                'date1': date1,
+               
+            },
+            success: function (responseRemoni) {
+                console.log(responseRemoni)
+                if ((responseRemoni[1].Temperature - responseRemoni[2].Temperature) > 5)
+                {
+                    $('#waterDrop').css("color", "blue");
+                }
+
+            },
+            error: function (obj, textstatus) {
+                console.log("Error js");
+                console.log(houseId);
+
+            }
+
+        });
+
+
+
+    });
+</script>
+
+
 <div class="container">
     <div id="UserViewHeader">
         <div class="row">
@@ -77,7 +174,7 @@
 
     <div class="topnav">
         <div class="row">
-            <div class="align-content-md-center col-md-3"> <a href="/User/WaterRooms" ><i class="fas fa-tint"></i></a></div>
+            <div class="align-content-md-center col-md-3"> <a href="/User/WaterRooms" ><i class="fas fa-tint" id="waterDrop"></i></a></div>
             <div class="align-content-md-center col-md-3">
                 <a href="/User/LightRooms"><i class="fas fa-lightbulb" id="bulb"></i></a>
             </div>
