@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartEveryDay.Models
 {
-    interface IDevice
+    public interface IDevice
     {
         string DeviceId { get; set; }
         int StatusId { get; set; }

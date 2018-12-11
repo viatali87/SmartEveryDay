@@ -12,7 +12,7 @@ namespace SmartEveryDay.Controllers
 {
     public class DeviceController : Controller, IDeviceController
     {
-        DatabaseAdapter adapter;
+        IDatabaseAdapter adapter;
 
         // GET: Device
         public ActionResult Index()
@@ -30,13 +30,13 @@ namespace SmartEveryDay.Controllers
         public JsonResult AddNewDevice(string val)
         {
             var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
-            Device dev = getDeviceFromJson(JSONObj);
+            IDevice dev = getDeviceFromJson(JSONObj);
             return Json(adapter.AddNewDevice(dev));
         }
 
-        private Device getDeviceFromJson(Dictionary<string, string> jasonObj)
+        private IDevice getDeviceFromJson(Dictionary<string, string> jasonObj)
         {
-            Device dev = new Device();
+            IDevice dev = new Device();
             dev.DeviceId = jasonObj["deviceid"];
             dev.DeviceName = jasonObj["devicename"];
             dev.DeviceType = int.Parse(jasonObj["devicetype"]);
@@ -58,7 +58,7 @@ namespace SmartEveryDay.Controllers
         public JsonResult EditDevice(string val)
         {
             var JSONObj = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(val);
-            Device dev = getDeviceFromJson(JSONObj);
+            IDevice dev = getDeviceFromJson(JSONObj);
             return Json(adapter.EditDevice(dev));
         }
 
@@ -66,7 +66,7 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetAllDevices()
         {
-            List<Device> list = adapter.GetAllDevices();
+            List<IDevice> list = adapter.GetAllDevices();
             return Json(list);
         }
 
@@ -74,7 +74,15 @@ namespace SmartEveryDay.Controllers
         [HttpPost]
         public JsonResult GetAllDevicesByHouseId(string val)
         {
-            string id = val.Substring(1, 36);
+            string id;
+            if (val.Length > 36)
+            {
+                id = val.Substring(1, 36);
+            }
+            else
+            {
+                id = val;
+            }
             Guid houseId = new Guid(id);
             return Json(adapter.GetDevicesByHouseId(houseId));
         }
@@ -124,14 +132,14 @@ namespace SmartEveryDay.Controllers
             {
                 Id = new Guid(houseId);
             }
-            List<Room> newRoomList = new List<Room>();
-            List<Room> roomlist = adapter.GetRoomsAndDevicesByHouseId(Id);
+            List<IRoom> newRoomList = new List<IRoom>();
+            List<IRoom> roomlist = adapter.GetRoomsAndDevicesByHouseId(Id);
             foreach (Room R in roomlist)
             {
-                Room temp = new Models.Room();
+                IRoom temp = new Room();
                 temp.Name = R.Name;
                 temp.RoomId = R.RoomId;
-                foreach (Device dev in R.RoomDevices)
+                foreach (IDevice dev in R.RoomDevices)
                 {
                     if(dev.DeviceType == type)
                     {
@@ -160,7 +168,7 @@ namespace SmartEveryDay.Controllers
             {
                 Id = new Guid(roomId);
             }
-            return Json(adapter.getDevicesInARoomByType(Id, type));
+            return Json(adapter.GetDevicesInARoomByType(Id, type));
 
         }
 

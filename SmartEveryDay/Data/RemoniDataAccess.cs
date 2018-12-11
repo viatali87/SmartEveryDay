@@ -19,6 +19,7 @@ namespace SmartEveryDay.Data
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddHeader("accept", "application/json");
             request.AddHeader("accept", "application/x-yaml");
+            
         }
         
         public IRestResponse ExecuteClient(string myUrl, string email, string password)

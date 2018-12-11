@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartEveryDay.Models
 {
-    interface IUser
+    public interface IUser
     {
         Guid UserId { get; set; }
         string Username { get; set; }
@@ -16,5 +16,7 @@ namespace SmartEveryDay.Models
         string PhoneNo { get; set; }
         string Email { get; set; }
         bool IsAdmin { get; set; }
+
+        string toString();
     }
 }
