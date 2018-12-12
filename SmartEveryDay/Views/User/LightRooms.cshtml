@@ -49,7 +49,7 @@
                                       
                     for (var j = 0; j < response[i].RoomDevices.length; j++) {
 
-                        if ((response[i].RoomDevices[j].StatusId) == 3)  //if in room light is on
+                        if ((response[i].RoomDevices[j].StatusId) == 4)  //if in room light is on
                         {
                             $('#'+ response[i].RoomId).css("color", "yellow");  //change room light to yellow
                             $('#bulb').css("color", "yellow");      //change the main bulb color to yellow

@@ -99,8 +99,10 @@
                 $('#waterDrop').css("color", "white");
                 var temp = [];
                 var temp1;
+              
+
                 for (var i = 0; i < responseRemoni.length; i++) {
-                    console.log((responseRemoni[i].Temperature));
+                    
                     temp[i] = (responseRemoni[i].Temperature);
                 }
                 if ((temp[1] - temp[0])<5)
