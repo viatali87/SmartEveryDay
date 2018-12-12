@@ -15,13 +15,11 @@ namespace SmartEveryDay.Data
 {
     public class DatabaseAdapter : IDatabaseAdapter
     {
-
-        // :)
         private static IDatabaseAdapter _instance { get; set;  }
 
         private DatabaseAdapter()
         {
-
+            // :)
         }
 
         public static IDatabaseAdapter Instance()
@@ -38,7 +36,11 @@ namespace SmartEveryDay.Data
             try
             {
                 string attempt = SendQueryNoResponse("INSERT INTO Users(Users_id, username, real_first_name, real_surname, house_id, phonenumber, email, isAdmin) VALUES('" + user.UserId + "','" + user.Username + "','" + user.FirstName + "','" + user.LastName + "', '" + user.HouseId + "','" + user.PhoneNo + "', '" + user.Email + "', '" + user.IsAdmin + "')");
-                return user;
+                if(Equals(attempt, "Query processed successfully"))
+                {
+                    return user;
+                }
+                return new User();
 
             }
             catch (System.Exception e)
@@ -117,7 +119,8 @@ namespace SmartEveryDay.Data
             {
                 string querystring = "UPDATE Users SET username = '" + user.Username + "', real_first_name = '" + user.FirstName + "', real_surname = '" + user.LastName + "', house_id = '" + user.HouseId + "', phonenumber = '" + user.PhoneNo + "', email = '" + user.Email + "', isAdmin = '" + user.IsAdmin + "' WHERE Users_id = '" + user.UserId + "'";
                 string attempta = SendQueryNoResponse(querystring);
-                return GetUserById(user.UserId);
+                //return GetUserById(user.UserId);
+                return user;
 
             }
             catch (System.Exception e)
@@ -205,11 +208,10 @@ namespace SmartEveryDay.Data
         // Adds a record of status change in curtains for a device
         public string updateDeviceStatus(string deviceId, int newStatusId)
         {
-            SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
+            //SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
             string Id = deviceId.ToString();
             string Query = "UPDATE Device SET Device.status_id = '" + newStatusId + "' WHERE Device.device_id = '" + deviceId + "'";
-            string FinalQuery = Query;
-            return SendQueryNoResponse(FinalQuery);
+            return SendQueryNoResponse(Query);
         }
 
 
@@ -607,6 +609,7 @@ namespace SmartEveryDay.Data
         {
             SqlConnection con = new SqlConnection(@"Data Source=nadinavitalielea.database.windows.net;Initial Catalog=DB_Everyday;Persist Security Info=True;User ID=SED;Password=SmartEveryDay1");
 
+            // Query gets a list of rooms that belong to a house, their id and names
             string roomsByHouseId = @"
 
               SELECT R.room_id, R.room_name
@@ -770,12 +773,16 @@ namespace SmartEveryDay.Data
                 SqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = query;
-                cmd.ExecuteNonQuery();
-                return "Query processed successfully";
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if(rowsAffected > 0)
+                {
+                    return "Query processed successfully";
+                }
+                return "Query did not process";
             }
-            catch
+            catch 
             {
-                return "Error";
+                return "Query failed";
             } finally
             {
                 con.Close();
