@@ -291,5 +291,38 @@ namespace SmartEveryDay.Controllers
             adapter.updateDeviceStatus(deviceId, newStatus);
         }
 
+        public string OpenOrCloseCurtains(string deviceId, string openOrClosed)
+        {
+            string ConvertedStatus;
+            int Status = (Int32.Parse(openOrClosed));
+            int DevType = 2;
+            // Change the status id numbers into something that the aRest cloud understnands 1 = open =  up and 2 = closed = down
+            if (Status == 1)
+            {
+                ConvertedStatus = "up";
+            }
+            else if (Status == 2)
+            {
+                ConvertedStatus = "down";
+            }
+            else
+            {
+                throw new ArgumentException(String.Format("{0} is not a valid status for curtains", openOrClosed), "openOrClosed"); ;
+            }
+
+            // Assemble the url and send it on
+            // cloud.arest.io/blinds/down?params to close but cloud.arest.io/blinds/up?params to open
+            var client = new WebClient();
+            string dlString = "https://cloud.arest.io/" + deviceId + "/ " + ConvertedStatus + "?params";
+            var content = client.DownloadString(dlString);
+
+            // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. On relay: 0 = on and 1 = off)
+            // Update the status of the device in the database and add a record of the activity
+            updateDeviceStatus(deviceId, Status);
+            addRecord(deviceId, Status, DevType);
+
+            return content;
+        }
+
     }
 }
