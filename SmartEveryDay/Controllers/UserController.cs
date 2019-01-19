@@ -219,8 +219,9 @@ namespace SmartEveryDay.Controllers
             try
             {
                 return Json(adapter.GetUserByDeviceId(deviceId));
-            } catch
+            } catch (Exception e)
             {
+                Console.Write("No user found");
                 return Json(Guid.Empty);
             }
         }
