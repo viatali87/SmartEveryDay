@@ -3,7 +3,12 @@
     Layout = "~/Views/Shared/_AdminLeftSidebar.cshtml";
 }
 
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
+
+<!------ Include the above in your HEAD tag ---------->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
@@ -13,6 +18,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        var userId;
+        var houseId;
 
         $.ajax({
             type: "POST",
@@ -58,97 +66,100 @@
             var deviceTable = $('#DeviceDataTable').dataTable();
             var currentRowData = deviceTable.api().row(this).data();
             var deviceId = currentRowData.DeviceId;
+            var deviceName = currentRowData.DeviceName;
+            $('#deviceName').html(deviceName);
             $('#newModal1').modal('show');
-            
-            $('#deviceText').html(""); // clear device text before loading new one
-            var accountTitle = "Account"
-            $('#acountTitle').text(accountTitle);
-            $('#cardTextAcount').html(""); //clear the fields before loading new
-            $('#deviceText').html("");//clear the fields before loading new
-            $('#countDevices').html("");//clear the fields before loading new
-            var accountInfo = "";
-            var deviceInfo = "";
-            var houseId;
-/*
-            //function to  receive account information
+
+            console.log(deviceId);
+
+            //function to get user acount ID by device id
             $.ajax({
                 type: "POST",
-                url: '/User/GetUser',
+                url: '/User/GetUserByDeviceId',
                 dataType: 'json',
                 data: {
-                    'val': userId,
+                    'deviceId': deviceId,
 
                 },
 
 
                 success: function (response) {
                     console.log("Success");
-                    console.log(response);
-                    $('#cardTextAcount').html(""); //clear the fields before loading new
-
-                    accountInfo += "User id: " + response.UserId;
-                    accountInfo += " <br/> UserName: " + response.Username;
-                    accountInfo += " <br/> FirstName: " + response.FirstName;
-                    accountInfo += " <br/> LastName: " + response.LastName;
-                    accountInfo += " <br/> HouseId: " + response.HouseId;
-
-                    houseId = response.HouseId;
-
-                    $('#cardTextAcount').append(accountInfo);
-
-                    //function to receive all devices for account by houseId if account if received
-
-                    $.ajax({
-                        type: "POST",
-                        url: '/Device/GetAllDevicesByHouseI1d',
-                        dataType: 'json',
-                        data: {
-                            'val': houseId,
-
-                        },
-
-
-                        success: function (res) {
-                            console.log("Success Devices");
-                            $('#deviceText').html("");
-                            $('#countDevices').html("");
-
-                            console.log(res);
-                            for (var i = 0; i < res.length; i++) {
-
-                                deviceInfo += "<br/> ---- " + [i + 1] + "--- device----------------"
-                                deviceInfo += "<br/> Device id: " + res[i].DeviceId;
-                                deviceInfo += " <br/> DeviceName: " + res[i].DeviceName;
-                                accountInfo += " <br/> DeviceType: " + res[i].DeviceType;
-                                accountInfo += " <br/> IsOnline: " + res[i].IsOnline;
-                                accountInfo += " <br/> Room: " + res[i].Room;
-                                deviceInfo += " <br/> RoomId: " + res[i].RoomId;
-                                deviceInfo += " <br/> StatusId: " + res[i].StatusId;
-
-                            }
-
-                            $('#deviceText').append(deviceInfo);
-                            $('#countDevices').text("Devices in total:" + res.length);
-                        },
-                        error: function (obj, textstatus) {
-                            console.log("Error js");
-                            deviceInfo += "nothing to display. Errror in request"
-                            $('#deviceText').append(deviceInfo);
-                        }
-
-                    });
-
-
+                    userId = response;
+                    getUser(userId);
 
                 },
                 error: function (obj, textstatus) {
                     console.log("Error js");
 
                 }
+            });
 
-            });*/
+            // function to receive full account info by userId
+            function getUser(userId) {
+                $.ajax({
+                    type: "POST",
+                    url: '/User/GetUser',
+                    dataType: 'json',
+                    data: {
+                        'val': userId,
+
+                    },
+
+
+                    success: function (res) {
+                        console.log("Get User by Id ");
+
+                        console.log(res);
+                        houseId = res.HouseId;
+                        console.log("houseId " + houseId);
+                        getAllDevicesByHouseId(houseId);
+
+
+                    },
+                    error: function (obj, textstatus) {
+                        console.log("Error js");
+
+                    }
+
+                })
+            };
+
+
+
+            
+
+
+
+
+
+
         })
-    });
+
+        function getAllDevicesByHouseId(houseId) {
+            // function to receive all devices for account by houseId if account if received
+
+            $.ajax({
+                type: "POST",
+                url: '/Device/GetAllDevicesByHouseI1d',
+                dataType: 'json',
+                data: {
+                    'val': houseId,
+                },
+                success: function (res1) {
+                    console.log("Get All devices by House Id 1: ");
+                    console.log(res1);
+                },
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+
+                }
+
+            })
+        }
+    })
+
+
 
 </script>
 
@@ -171,52 +182,61 @@
         <tbody></tbody>
     </table>
 </div>
-<!-- Modal 2 for display User account -->
-<div class="modal" id="newModal1" role="dialog" aria-labelledby="exampleModalCenterTitle">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+<!-- Modal 2 for display device  -->
+<div class="modal fade" id="newModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-success" role="document">
+        <!--Content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="acountTitle">Account </h5>
+            <div class="modal-header" style="border-bottom: 4px solid #2e77bc; background-color: #f2dede; color: #a94446;">
+                <h3 class="modal-title  font-weight-bold" id="DeviceName"></h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            </div>
+                </div>
+            <div style="margin-top: 1px; background-color: #2e77bc; height: 1px; width: 100%;"></div>
             <div class="modal-body">
-                <div class="card dark mb-3">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#AcountInformation">Acount</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#AcountDevices">Devices</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#AccountScenarios">Scenarios</a>
-                            </li>
+                <div class="row">
+
+                    <div class="col-xs-6">
+
+                        <ul class="list-unstyled" style="line-height: 2">
+                            <li><span class="text-success"><i class="fa fa-database"></i></span> <span style="color: #acacac; font-size: 9pt; text-align: left;">DRH ID</span> <span style="font-size: 9pt; text-align: left;">296</span></li>
+                            <li><span class="text-success"><i class="fa fa-desktop"></i></span> <span style="color: #acacac; font-size: 9pt; text-align: left;">Hostname</span> <span style="font-size: 9pt; text-align: left;">BDSPUKL0540543</span></li>
+                            <li><span class="text-success"><i class="fa fa-building-o"></i></span> <span style="color: #acacac; font-size: 9pt; text-align: left;">Location Stored</span> <span style="font-size: 9pt; text-align: left;">BKP0203231</span></li>
+                            <li><span class="text-success"><i class="fa fa-user"></i></span> <span style="color: #acacac; font-size: 9pt; text-align: left;">User</span> <span style="font-size: 9pt; text-align: left;">Test User</span></li>
+
+                            <a href="#"><span class="label label-primary">View Spring record</span></a>
+                            <a href="#"><span class="label label-primary">View on EIP</span></a>
+
+                            <div style="margin-top: 8px; margin-bottom: 8px; width: 100%; height: 1px; background-color: #d9d9d9;"></div>
+                            <li><span style="color: #acacac; font-size: 8pt; text-align: left;">Staff Number</span> <span style="font-size: 8pt; text-align: left;">B0834933</span></li>
+                            <li><span style="color: #acacac; font-size: 8pt; text-align: left;">Employment Status</span> <span style="font-size: 8pt; text-align: left;">Current</span></li>
+                            <li><span style="color: #acacac; font-size: 8pt; text-align: left;">Login ID</span> <span style="font-size: 8pt; text-align: left;">broyTest</span></li>
+                            <li><span style="color: #acacac; font-size: 8pt; text-align: left;">Department</span> <span style="font-size: 8pt; text-align: left;">Test Department</span></li>
+
+
                         </ul>
                     </div>
-                    <div class="tab-content clearfix">
-                        <div class="tab-pane active" id="AcountInformation">
-                            <p class="card-text" id="cardTextAcount"></p>
-                            <a href="#" class="btn btn-primary">Edit acount</a>
+                    <div class="col-xs-6">
+                        <div class="well">
+                            <div style="color: #acacac; font-size: 9pt; text-align: center; padding: 0px; margin-bottom: 6px;">Engineer Actions</div>
+                            <button type="submit" class="btn btn-success btn-block"><i class="fa fa-building-o"></i> Change Location</button>
+                            <button type="submit" class="btn btn-success btn-block"><i class="fa fa-refresh"></i> Reclaim / Replace</button>
+                            <button type="submit" class="btn btn-warning btn-block"><i class="fa fa-warning"></i> Report Discrepancy</button>
+                            <div style="color: #acacac; font-size: 9pt; text-align: center; padding: 0px; margin-bottom: 6px; margin-top: 6px;">Admin Actions</div>
+                            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-arrow-down"></i> Drop In</button>
+                            <a href="/forgot/" class="btn btn-primary btn-block"><i class="fa fa-search"></i> CFI</a>
                         </div>
-                        <div class="tab-pane" id="AcountDevices">
-                            <p id="countDevices">  </p>
-                            <p class="card-text" id="deviceText"></p>
-                        </div>
-
-                        <div class="tab-pane" id="AccountScenarios">
-                            <h3>Scenarios</h3>
-                        </div>
-
                     </div>
                 </div>
-
-
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            <div class="modal-header alert-primary">
+                <h3 class="modal-title alert-heading font-weight-bold" id="title"></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     </div>

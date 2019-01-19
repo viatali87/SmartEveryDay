@@ -4,9 +4,15 @@
 }
 
 <!--Stylesheets and bootstrap for user menu icon and dropdown-->
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 
 <!--Stylesheets for the icons -->
@@ -16,7 +22,10 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        
+
+
+
+
         var houseId = "CE61F280-E5F7-45A4-904A-0D2E02EE6A79";
         var responseObj = [];
         var deviceName;
@@ -40,18 +49,18 @@
                 for (var i = 0; i < response.length; i++) {
                     responseObj[i] = response[i];
 
-
+                    //Buttons with room names from db autogenereated for the view
                     $('#roomData').append("<button class='btn btn-primary btn-block type='button'  id='btn' data-id=" + response[i].RoomId + "'>" + response[i].Name + " <i style='font-size:24px' class='fa'>&#xf0eb; </i></button>");
 
                     var button = document.getElementById('btn');
-                    button.setAttribute("id", response[i].RoomId); //giving new id's to room buttons for more easy work later with them
+                    button.setAttribute("id", response[i].RoomId); //giving new id's to room buttons (than all buttons have unik ID)
                     button.addEventListener('click', modalShow);
-                                      
+
                     for (var j = 0; j < response[i].RoomDevices.length; j++) {
 
                         if ((response[i].RoomDevices[j].StatusId) == 4)  //if in room light is on
                         {
-                            $('#'+ response[i].RoomId).css("color", "yellow");  //change room light to yellow
+                            $('#' + response[i].RoomId).css("color", "yellow");  //change room light to yellow
                             $('#bulb').css("color", "yellow");      //change the main bulb color to yellow
 
                         }
@@ -75,17 +84,17 @@
 
         });
 
-      
 
+        //function to open room with devices in that room
         function modalShow() {
             var devices = "";
             var roomId = this.id;
 
-            console.log(this.id); //this is buttons id
+            console.log(this.id); //this is buttons id = with room Id
 
             for (var i = 0; i < responseObj.length; i++) {
 
-                $('#newModal').modal('show');
+                $('#centralModalSuccess').modal('show');
 
 
                 if (responseObj[i].RoomId == roomId) {
@@ -93,28 +102,32 @@
                     $('#title').html(responseObj[i].Name);
 
                     for (var j = 0; j < responseObj[i].RoomDevices.length; j++) {
-                        console.log(responseObj[i]);
 
-                        $('#modalBody').append("<p id='roomtextId'>" + responseObj[i].RoomDevices[j].DeviceName + " </p><div class='card' id='lightStatus'><p id='light'>Device Statuss " + responseObj[i].RoomDevices[j].StatusId + " </p><div class='card-body' id='lightData'><button class='btn' id='btn1'> Press me!</button> </div></div>");
+                        var deviceName = responseObj[i].RoomDevices[j].DeviceName;
 
-                        var button1 = document.getElementById('btn1');
+                        //$('#modalBody').append("<p id='roomtextId'> </p><div class='card' id='lightStatus'> <div class='card-header'> " + deviceName + " </p><div class='card-body' id='lightData'> <div class='onoffswitch'><input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' checked><label class='onoffswitch-label' id='labelId' for='myonoffswitch'><span class='onoffswitch-inner'></span><span class='onoffswitch-switch'></span></label></div>");
+                        $('#modalBody').append("<p id='roomtextId'> </p><div class='card' id='lightStatus'> <div class='card-header'> " + deviceName + " </div> <p id='light'>Device Statuss " + responseObj[i].RoomDevices[j].StatusId + " </p><div class='card-body' id='lightData'> <div class='onoffswitch'><input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' checked><label class='onoffswitch-label' id='labelId' for='myonoffswitch'><span class='onoffswitch-inner'></span><span class='onoffswitch-switch'></span></label></div>");
 
-                        if (responseObj[i].RoomDevices[j].StatusId == 3)
+
+                        if (responseObj[i].RoomDevices[j].StatusId == 4) //light status ==4,light is off
                         {
-                            $('#btn1').text("Press to TURN OFF");
-                            $('#btn1').css("background-color", "green");
-                           
+                            $('#myonoffswitch').prop('checked', false);
+                            $('#light').html("Device status: OFF");
+
                         }
                         else {
-                            $('#btn1').text("Press to TURN ON");
-                            $('#btn1').css("background-color", "grey");
-                            
+                            $('#myonoffswitch').prop('checked', true); //light status ==3, light is ON
+                            $('#light').html("Device status: ON");
+
                         }
 
-                        button1.setAttribute("id", responseObj[i].RoomDevices[j].DeviceId); //giving new id's to room buttons for more easy work later with them
-                        deviceName = responseObj[i].RoomDevices[j].DeviceName;
+                        document.getElementById('myonoffswitch').setAttribute('id', responseObj[i].RoomDevices[j].DeviceId); //shcange id for switch, than each switch has unik id
+                        document.getElementById('labelId').setAttribute('id', 'labelId' + responseObj[i].RoomDevices[j].DeviceId); //change label id
+                        document.getElementById('labelId' + responseObj[i].RoomDevices[j].DeviceId).setAttribute('for', responseObj[i].RoomDevices[j].DeviceId); //change label value that is the same as switch
+                        document.getElementById('light').setAttribute('id', responseObj[i].RoomDevices[j].DeviceId + "light");
+                        document.getElementById(responseObj[i].RoomDevices[j].DeviceId).addEventListener('click', t1); //add script to each switch
 
-                        button1.addEventListener('click', changeLight);
+
                     }
 
 
@@ -123,40 +136,142 @@
 
         };
 
-        function changeLight() {
+
+        function t1() {
             var deviceId = this.id;
-           
-            if ($('#'+deviceId).val("Press to TURN OFF")) {
-                $('#' + deviceId).text("Press to TURN ON");
+            console.log(this.id);
+            var isCheked = $('#' + deviceId).is(":checked");
+
+            if (isCheked == true) {
+                
+                turnOnAndOffLight("light_id3", 1, 2, 3);
+                $('#' + deviceId + "light").html("Device status: ON");
 
             }
             else {
-                $('#' + deviceId).text("Press to TURN OFF");
-            }
-
                 
 
+                turnOnAndOffLight(deviceId, 1, 2, 4);
+                $('#' + deviceId + "light").html("Device status: OFF");
+
+            }
+
+
+        };
+
+        function turnOffLightNew() {
+            $.ajax({
+                type: "GET",
+                url: '/Device/TurnLightOff',
+                dataType: 'json',
+                data: {
+                    'houseId': houseId,
+                    'type': 1,
+
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                },
+
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+
+                },
+            })
+        };
+
+        function turnOnLightNew() {
+            $.ajax({
+                type: "GET",
+                url: '/Device/TurnLightOn',
+                dataType: 'json',
+                data: {
+                    'houseId': houseId,
+                    'type': 1,
+
+                },
+                success: function (response) {
+                    console.log("Success");
+                    console.log(response);
+                },
+
+                error: function (obj, textstatus) {
+                    console.log("Error js");
+
+                },
+            })
+        };
+
+        function turnOnAndOffLight(id, type, pin, status) {
+
+
             //Function for turning the light on
-            
-                $.ajax({
-                    // type: "GET",
-                    url: '/Device/TurnLightOnOrOff',
-                    dataType: 'json',
-                    // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
-                    data: { "deviceid": "light_id1", "type": 1, "pin": 2, "onOrOff": 3 },
-                    context: document.body
-                }).success(function (data) {
-                    mesg = data.message;
 
-                    console.log(mesg);
-                    console.log(data);
-                }).fail(function (data) {
-                    console.log("Light fail");
-                })
-            };
-       
+            $.ajax({
+                // type: "GET",
+                url: '/Device/TurnLightOnOrOff',
+                dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+                data: { "deviceid": id, "type": type, "pin": pin, "onOrOff": status },
 
-       
+                context: document.body
+            }).success(function (data) {
+                mesg = data.message;
+
+                console.log(mesg);
+                console.log(data);
+            }).fail(function (data) {
+                console.log("Light fail");
+            })
+        };
+
+
+
+        function turnOffLight() {
+           
+
+            //Function for turning the light on
+
+            $.ajax({
+                // type: "GET",
+                url: '/Device/TurnLightOff',
+                dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+               // data: { "deviceid": "light_id0", "type": 1, "pin": 2, "onOrOff": 4 },
+                context: document.body
+            }).success(function (data) {
+                mesg = data.message;
+
+                console.log(mesg);
+                console.log(data);
+            }).fail(function (data) {
+                console.log("Light fail");
+            })
+        };
+
+        function turnOnLight() {
+           
+
+            //Function for turning the light on
+
+            $.ajax({
+                // type: "GET",
+                url: '/Device/TurnLightOn',
+                dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+               // data: { "deviceid": "light_id0", "type": 1, "pin": 2, "onOrOff": 3 },
+                context: document.body
+            }).success(function (data) {
+                mesg = data.message;
+
+                console.log(mesg);
+                console.log(data);
+            }).fail(function (data) {
+                console.log("Light fail");
+            })
+        };
+
 
 
     });
@@ -166,7 +281,7 @@
 
 
 
-<h2 align="center" id="bulb"><i style="font-size:50px" class="fa">&#xf0eb; </i></h2>
+
 <div>
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
@@ -179,19 +294,27 @@
 
 
 <!-- Modal -->
-<div class="modal" id="newModal" role="dialog" aria-labelledby="exampleModalCenterTitle">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="modalBody">
 
+<div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-success modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header alert-primary">
+                                <h3 class="modal-title alert-heading font-weight-bold"  id="title"></h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
             </div>
-            </div>
-           
+                            <div class="modal-body alert-primary" id="modalBody">
+
+                            </div>
         </div>
-    </div>
+
+     </div>
+</div>
+
+
+
+
+
