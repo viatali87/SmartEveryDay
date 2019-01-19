@@ -213,7 +213,7 @@ namespace SmartEveryDay.Controllers
         public string TurnLightOn()
         {
             var client = new WebClient();
-            var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/0");
+            var content = client.DownloadString("https://cloud.arest.io/light_id3/digital/2/0");
 
             return content;
         }
@@ -257,7 +257,7 @@ namespace SmartEveryDay.Controllers
         {
 
             var client = new WebClient();
-            var content = client.DownloadString("https://cloud.arest.io/light_id1/digital/2/1");
+            var content = client.DownloadString("https://cloud.arest.io/light_id3/digital/2/1");
             return content;
         }
 
