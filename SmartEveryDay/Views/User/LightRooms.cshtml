@@ -105,27 +105,27 @@
 
                         var deviceName = responseObj[i].RoomDevices[j].DeviceName;
 
+                        //$('#modalBody').append("<p id='roomtextId'> </p><div class='card' id='lightStatus'> <div class='card-header'> " + deviceName + " </p><div class='card-body' id='lightData'> <div class='onoffswitch'><input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' checked><label class='onoffswitch-label' id='labelId' for='myonoffswitch'><span class='onoffswitch-inner'></span><span class='onoffswitch-switch'></span></label></div>");
                         $('#modalBody').append("<p id='roomtextId'> </p><div class='card' id='lightStatus'> <div class='card-header'> " + deviceName + " </div> <p id='light'>Device Statuss " + responseObj[i].RoomDevices[j].StatusId + " </p><div class='card-body' id='lightData'> <div class='onoffswitch'><input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' checked><label class='onoffswitch-label' id='labelId' for='myonoffswitch'><span class='onoffswitch-inner'></span><span class='onoffswitch-switch'></span></label></div>");
 
 
-                        if (responseObj[i].RoomDevices[j].StatusId == 3) //light is off
+                        if (responseObj[i].RoomDevices[j].StatusId == 4) //light status ==4,light is off
                         {
                             $('#myonoffswitch').prop('checked', false);
+                            $('#light').html("Device status: OFF");
 
                         }
                         else {
-                            $('#myonoffswitch').prop('checked', true); //light status ==4, light is ON
-
+                            $('#myonoffswitch').prop('checked', true); //light status ==3, light is ON
+                            $('#light').html("Device status: ON");
 
                         }
-
 
                         document.getElementById('myonoffswitch').setAttribute('id', responseObj[i].RoomDevices[j].DeviceId); //shcange id for switch, than each switch has unik id
                         document.getElementById('labelId').setAttribute('id', 'labelId' + responseObj[i].RoomDevices[j].DeviceId); //change label id
                         document.getElementById('labelId' + responseObj[i].RoomDevices[j].DeviceId).setAttribute('for', responseObj[i].RoomDevices[j].DeviceId); //change label value that is the same as switch
-
+                        document.getElementById('light').setAttribute('id', responseObj[i].RoomDevices[j].DeviceId + "light");
                         document.getElementById(responseObj[i].RoomDevices[j].DeviceId).addEventListener('click', t1); //add script to each switch
-
 
 
                     }
@@ -142,16 +142,18 @@
             console.log(this.id);
             var isCheked = $('#' + deviceId).is(":checked");
 
-
             if (isCheked == true) {
-                console.log(isCheked);
-                turnOnLightNew();
-                console.log("turn on pressed");
+                
+                turnOnAndOffLight("light_id3", 1, 2, 3);
+                $('#' + deviceId + "light").html("Device status: ON");
+
             }
             else {
-                console.log(isCheked);
-                turnOffLightNew();
-                console.log("turn off pressed");
+                
+
+                turnOnAndOffLight(deviceId, 1, 2, 4);
+                $('#' + deviceId + "light").html("Device status: OFF");
+
             }
 
 
@@ -200,6 +202,30 @@
                 },
             })
         };
+
+        function turnOnAndOffLight(id, type, pin, status) {
+
+
+            //Function for turning the light on
+
+            $.ajax({
+                // type: "GET",
+                url: '/Device/TurnLightOnOrOff',
+                dataType: 'json',
+                // Status in db: 1 = open, 2 = closed, 3 = on, 4 = off. Device type: 1 = Light, 2 = Curtains, 3 = Water
+                data: { "deviceid": id, "type": type, "pin": pin, "onOrOff": status },
+
+                context: document.body
+            }).success(function (data) {
+                mesg = data.message;
+
+                console.log(mesg);
+                console.log(data);
+            }).fail(function (data) {
+                console.log("Light fail");
+            })
+        };
+
 
 
         function turnOffLight() {
