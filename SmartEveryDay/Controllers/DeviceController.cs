@@ -297,6 +297,13 @@ namespace SmartEveryDay.Controllers
             return adapter.GetStatus(deviceId, t);
         }
 
+        public JsonResult checkStatus(string deviceId, string type)
+        {
+            int t = Int32.Parse(type);
+            int result = adapter.GetStatus(deviceId, t);
+            return Json(result);
+        }
+
         public void updateDeviceStatus(string deviceId, int newStatus)
         {
             adapter.updateDeviceStatus(deviceId, newStatus);

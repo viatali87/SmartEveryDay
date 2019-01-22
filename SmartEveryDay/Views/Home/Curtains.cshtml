@@ -9,7 +9,8 @@
     $(document).ready(function () {
         var str;
         var mesg;
-        var CurtainsClosed = checkStatus();
+        var CurtainsClosed;
+        checkStatus();
         var openOrClosed;
         var isOpenOrClosed;
 		var isOnOrOff;
@@ -36,14 +37,22 @@
         }
 
         function checkStatus() {
-            //var deviceId = JSON.stringify(deviceId);
-            //var type = JSON.stringify(type);
+            var deviceId = JSON.stringify(deviceId);
+            var type = JSON.stringify(type);
             $.ajax({
                 type: "POST",
-                url: "/Device/getCurtainStatus",
+                url: "/Device/checkStatus",
+                data: {
+                    "deviceId": "blinds",
+                    "type": 2
+                },
             }).done(function (response) {
-                var res = response;
-                return res.data;
+                alert(response);
+                if (response != 2) {
+                    CurtainsClosed = false;
+                    alert("if res != 2 " + CurtainsClosed);
+                } else { CurtainsClosed = true; }
+                
             }).fail(function (response) {
                 console.log("Ajax failed")
             })
@@ -72,6 +81,7 @@
 
         //Function for opening the curtains
         $('#btnOpen').on('click', function () {
+            //alert("CurtainsClosed = " + CurtainsClosed);
             if (CurtainsClosed) {
                 $.ajax({
                     // type: "GET",
@@ -92,6 +102,7 @@
 
         //Function for closing the curtains
         $('#btnclosed').on('click', function () {
+            //alert("CurtainsClosed = " + CurtainsClosed);
             if (!CurtainsClosed) {
                 $.ajax({
                     // type: "GET",
@@ -139,7 +150,7 @@
 
 <p id="Text"> Turn the curtains in open or closed position </p>
 <button id="btnOpen" class="btn btn-info"> Open </button>
-<button id="btnclosed" class="btn btn-dark"> Closed</button>
+<button id="btnclosed" class="btn btn-dark"> Close</button>
 
 <div id="textMessage">
     <p id="status"></p>
