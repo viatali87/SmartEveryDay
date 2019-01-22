@@ -104,6 +104,8 @@
         function getUsers() {
             document.getElementById("thetext").textContent = "-----------";
             var val = JSON.stringify("yay");
+            
+            
             $.ajax({
                 type: "POST",
                 url: "/User/GetAllUsers",

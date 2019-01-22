@@ -9,7 +9,7 @@
     $(document).ready(function () {
         var str;
         var mesg;
-        var Curtains = true;
+        var CurtainsClosed = checkStatus();
         var openOrClosed;
         var isOpenOrClosed;
 		var isOnOrOff;
@@ -33,6 +33,20 @@
             });
             //setInterval() method will execute the function once every 1 second
            
+        }
+
+        function checkStatus() {
+            //var deviceId = JSON.stringify(deviceId);
+            //var type = JSON.stringify(type);
+            $.ajax({
+                type: "POST",
+                url: "/Device/getCurtainStatus",
+            }).done(function (response) {
+                var res = response;
+                return res.data;
+            }).fail(function (response) {
+                console.log("Ajax failed")
+            })
         }
       
 
@@ -58,7 +72,7 @@
 
         //Function for opening the curtains
         $('#btnOpen').on('click', function () {
-            if(Curtains){
+            if (CurtainsClosed) {
                 $.ajax({
                     // type: "GET",
                     url: '/Device/TurnCurtainsOpen',
@@ -72,13 +86,13 @@
                 }).fail(function (data) {
                     console.log("Curtains fail");
                 })
-                Curtains = false;
+                CurtainsClosed = false;
             }
         });
 
         //Function for closing the curtains
         $('#btnclosed').on('click', function () {
-            if (!Curtains) {
+            if (!CurtainsClosed) {
                 $.ajax({
                     // type: "GET",
                     url: '/Device/TurnCurtainsClosed',
@@ -93,7 +107,7 @@
                 .fail(function (data) {
                     console.log("Curtains fail");
                 })
-                Curtains = true;
+                CurtainsClosed = true;
             }
         });
 

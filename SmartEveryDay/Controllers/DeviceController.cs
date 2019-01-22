@@ -198,6 +198,8 @@ namespace SmartEveryDay.Controllers
 
             var client = new WebClient();
             var  content = client.DownloadString("https://cloud.arest.io/blinds/up?params");
+            updateDeviceStatus("blinds", 1);
+            addRecord("blinds", 1, 2);
             return content;
         }
         //methods that controls curtains and puts in closed position
@@ -206,6 +208,8 @@ namespace SmartEveryDay.Controllers
  
             var client = new WebClient();
             var content = client.DownloadString("https://cloud.arest.io/blinds/down?params");
+            updateDeviceStatus("blinds", 2);
+            addRecord("blinds", 2, 2);
             return content;
         }
 
@@ -258,6 +262,13 @@ namespace SmartEveryDay.Controllers
 
             var client = new WebClient();
             var content = client.DownloadString("https://cloud.arest.io/light_id3/digital/2/1");
+            return content;
+        }
+
+        public string getCurtainStatus()
+        {
+            var client = new WebClient();
+            var content = client.DownloadString("https://cloud.arest.io/blinds");
             return content;
         }
 
