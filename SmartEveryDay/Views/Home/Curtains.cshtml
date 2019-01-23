@@ -47,7 +47,7 @@
                     "type": 2
                 },
             }).done(function (response) {
-                alert("check status and stauts is: " + response);
+                //alert("check status and stauts is: " + response);
                 if (response != 2) {
                     CurtainsClosed = false;
                     //alert("if res != 2 " + CurtainsClosed);
@@ -81,7 +81,7 @@
 
         //Function for opening the curtains
         $('#btnOpen').on('click', function () {
-            alert("CurtainsClosed = " + CurtainsClosed);
+            //alert("CurtainsClosed = " + CurtainsClosed);
             if (CurtainsClosed) {
                 $.ajax({
                     // type: "GET",
@@ -93,16 +93,17 @@
                     mesg = data.return_value;
                     x(mesg);
                     console.log(mesg);
+                    CurtainsClosed = false;
                 }).fail(function (data) {
                     console.log("Curtains fail");
                 })
-                CurtainsClosed = false;
+                //CurtainsClosed = false;
             }
         });
 
         //Function for closing the curtains
         $('#btnclosed').on('click', function () {
-            alert("CurtainsClosed = " + CurtainsClosed);
+            //alert("CurtainsClosed = " + CurtainsClosed);
             if (!CurtainsClosed) {
                 $.ajax({
                     // type: "GET",
@@ -114,11 +115,12 @@
                     mesg = data.return_value;
                     x(mesg);
                     console.log(mesg);
+                    CurtainsClosed = true;
                 })
                 .fail(function (data) {
                     console.log("Curtains fail");
                 })
-                CurtainsClosed = true;
+                //CurtainsClosed = true;
             }
         });
 
