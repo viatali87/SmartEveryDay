@@ -47,10 +47,10 @@
                     "type": 2
                 },
             }).done(function (response) {
-                alert(response);
+                alert("check status and stauts is: " + response);
                 if (response != 2) {
                     CurtainsClosed = false;
-                    alert("if res != 2 " + CurtainsClosed);
+                    //alert("if res != 2 " + CurtainsClosed);
                 } else { CurtainsClosed = true; }
                 
             }).fail(function (response) {
@@ -81,7 +81,7 @@
 
         //Function for opening the curtains
         $('#btnOpen').on('click', function () {
-            //alert("CurtainsClosed = " + CurtainsClosed);
+            alert("CurtainsClosed = " + CurtainsClosed);
             if (CurtainsClosed) {
                 $.ajax({
                     // type: "GET",
@@ -102,7 +102,7 @@
 
         //Function for closing the curtains
         $('#btnclosed').on('click', function () {
-            //alert("CurtainsClosed = " + CurtainsClosed);
+            alert("CurtainsClosed = " + CurtainsClosed);
             if (!CurtainsClosed) {
                 $.ajax({
                     // type: "GET",

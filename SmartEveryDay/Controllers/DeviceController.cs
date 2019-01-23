@@ -193,13 +193,20 @@ namespace SmartEveryDay.Controllers
         }
 
         // methods that controls curtains and puts in open position 
-        public string TurnCurtainsOpen()
+        public string TurnCurtainsOpen() // Return value 5 = curtains are open
         {
 
             var client = new WebClient();
             var  content = client.DownloadString("https://cloud.arest.io/blinds/up?params");
-            updateDeviceStatus("blinds", 1);
-            addRecord("blinds", 1, 2);
+            var res = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(content);
+            string returnvalue = res["return_value"];
+            int retval = Int32.Parse(returnvalue);
+            if(retval == 5)
+            {
+                updateDeviceStatus("blinds", 1);
+                addRecord("blinds", 1, 2);
+            }
+
             return content;
         }
         //methods that controls curtains and puts in closed position
@@ -208,8 +215,15 @@ namespace SmartEveryDay.Controllers
  
             var client = new WebClient();
             var content = client.DownloadString("https://cloud.arest.io/blinds/down?params");
-            updateDeviceStatus("blinds", 2);
-            addRecord("blinds", 2, 2);
+            var res = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(content);
+            string returnvalue = res["return_value"];
+            int retval = Int32.Parse(returnvalue);
+            if (retval == 4)
+            {
+                updateDeviceStatus("blinds", 2);
+                addRecord("blinds", 2, 2);
+            }
+
             return content;
         }
 
